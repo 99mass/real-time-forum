@@ -15,7 +15,7 @@ import (
 func Index(db *sql.DB) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		helper.EnableCors(&w)
 		ok, pageError := middlewares.CheckRequest(r, "/verifySession", "post")
 		if !ok {
 			helper.ErrorPage(w, pageError)
