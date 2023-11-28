@@ -12,7 +12,21 @@
 <body>
          <div class="content">
            <div class="registre-content">
-                <img src="assets/img/StuckatHomeAloneTime.png" alt="">
+            <div class="form">
+                <form>
+                    <div class="form-group">
+                      <input type="text" required/><label>Username</label>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" required/><label>Password</label>
+                    </div>
+                    <input type="button" value="Sign In" class="submit"> 
+                    <div class="row">
+                      <p>Not Yet Registered? <a href="#">Sign Up</a></p>
+                    </div>
+                  </form>
+            </div>
+                <img src="assets/img/back.jpg" alt="">
            </div>
            <!-- <div class="login-content">
             
@@ -209,9 +223,9 @@
         </div>
       </div>   -->
 
-      <script type="module" >
+      <!-- <script type="module" >
           import { isSessionFound } from "./js/verify_sessions.js";
           isSessionFound();
-      </script>
+      </script> -->
 </body>
 </html>

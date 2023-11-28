@@ -1,21 +1,112 @@
 .content{
     width: 80%;
     height: 80%;
-    border: 2px solid gray;
+    /* border: 2px solid gray; */
+    
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+    display: flex;
 }
-.registre-content {
+.content .registre-content {
+    width: 100%;
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
-.registre-content .image-auth{
-    /* background-image: url("assets/img/StuckatHomeAloneTime.png"); */
-    /* position: absolute; */
+.registre-content img{
      width: 50%;
-     border: 1px solid brown;
-     height: 80px;
+     height: 70%;
+     /* border-radius: 50px; */
 }
+
+.form{
+    width:30%;
+    height: 100%;
+    margin-right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid gray; */
+}
+
+  form{
+    width: 100%;
+    font-size: 20px;
+  }
+  .form-group {
+  position: relative;
+  padding: 20px 0;
+  margin: auto;
+  max-width: 100%;
+  }
+  
+  .form-group input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1.4px solid var(--whiteffffff);
+  font-size: 18px;
+  padding: 10px 0;
+  display: block;
+  width: 100%;
+  }
+  
+  .form-group label {
+  color: var(--whiteffffff);
+  font-size: 16px;
+  font-weight: 100;
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  transform: translateY(30px);
+  transition: all 0.2s ease-in-out;
+  left: 0px;
+  }
+  
+  .form-group input:valid,
+  .form-group input:focus {
+  border-bottom-color: var(--whiteffffff);
+  color: var(--whiteffffff);
+  outline: none;
+  }
+  
+  .form-group input:valid + label,
+  .form-group input:focus + label {
+  color: var(--whiteffffff);
+  font-size: 14px;
+  transform: translateY(0);
+  }
+  .submit{
+    background: var(--black2c353d);
+      padding: 15px 0;
+      outline: none;
+      font-size: 18px;
+      width: 100%;
+      margin: 17px 0;
+      cursor: pointer;
+      color: var(--whiteffffff);
+      border-radius: 5px;
+      transition: 0.1s;
+      border: 1px solid var(--black2c353d);
+  }
+  .submit:hover{
+    background: var(--rgb1);
+  }
+  .row p{
+    margin-top: 15px;
+    text-align: center;
+    color: var(--whiteffffff);
+  }
+  a{ 
+    text-decoration: none;
+  }
+  .row a{
+    color: var(--rgb1);
+  }
+
+  .last{
+    text-align: center;
+      padding: 5px;
+  }

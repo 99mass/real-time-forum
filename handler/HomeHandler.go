@@ -38,6 +38,7 @@ func Index(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
+		fmt.Println(sess)
 		if helper.VerifySession(db, sess) {
 			homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 

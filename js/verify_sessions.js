@@ -8,10 +8,18 @@ const isSessionFound = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({sessionID: sessionId}),
+            body: JSON.stringify({session: sessionId}),
         })
-        .then(response => response.json())
-        .then(data => console.log("data"+data))
+        .then(response => {
+            
+            if (response.headers.get('content-type').includes('application/json')) {
+                return response.json();
+            } else {
+                console.log(response.status);
+                throw new Error('Received non-JSON response');
+            }
+        })
+        .then(data => console.log(data))
         .catch((error) => {
           console.error('Error:', error);
         });
