@@ -1,0 +1,59 @@
+Objects:
+- User
+- Post
+- Comment
+- Caterogy
+
+
+Pages:
+- Login
+- Register
+- Home
+- Post
+- UserPage
+- Profil
+
+
+
+# Requirements :
+
+    SQLite Database:
+        [v] Use SQLite to store data suchg as users, posts, comments, etc.
+        [v] Create a database structure based on an entity relationship diagram.
+        [x] Utilize SELECT, CREATE, and INSERT queries.
+
+    Authentication:
+        [ ] Implement user registration with email, username, and password.
+            [x] Confirm Password
+            [v] check User Name Validation
+            [v] check Email validation
+            [v] check Password validation
+        [x] Check for duplicate emails during registration.
+        [x] Encrypt and securely store passwords.
+        [ ] Create login sessions using cookies with expiration dates.
+        [ ] Implement UUID for session management (Bonus task).
+
+    Communication:
+        [ ] Registered users can create posts and comments.
+        [ ] Associate categories with posts.
+        [ ] Posts and comments are visible to all users, while non-registered users can only view.
+
+    Likes and Dislikes:
+        [ ] Registered users can like or dislike posts and comments.
+        [ ] Display the number of likes and dislikes to all users.
+
+    Filtering:
+        [ ] Implement a filter mechanism to allow users to filter posts by categories, created posts, and liked posts.
+        [ ] Filtering by categories can be thought of as subforums.
+
+    Docker:
+        [ ] Use Docker for the project.
+        [ ] Learn about Docker basics, containerization, compatibility, creating images, etc.
+
+    Instructions and Guidelines:
+        [ ] Follow best practices for coding.
+        [ ] Handle website errors and HTTP status codes.
+        [ ] Handle technical errors.
+        [ ] Use unit testing with test files.
+        [ ] Utilize allowed packages including sqlite3, bcrypt, and UUID.
+        [ ] Do not use frontend libraries or frameworks.

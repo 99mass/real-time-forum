@@ -1,0 +1,83 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table categories {
+  id integer [primary key]
+  name_category varchar
+  created_at timestamp
+}
+Table sessions {
+  id integer [primary key]
+  user_id integer
+  expired_at timestamp
+  created_at timestamp 
+}
+
+Table posts_categories{
+  posts_id integer [primary key]
+  categories_id integer [primary key]
+}
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar
+  password varchar
+  created_at timestamp
+}
+
+Table posts {
+  id integer [primary key]
+  title varchar
+  content text [note: 'Content of the post']
+  user_id integer
+  categories_id integer
+  created_at timestamp
+}
+Table comment {
+  id integer [primary key]
+  content text [note: 'Content of the comment']
+  user_id integer
+  posts_id integer
+  created_at timestamp
+}
+Table post_likes {
+  id integer [primary key]
+  user_id integer
+  posts_id integer
+  created_at timestamp
+}
+Table post_dislikes {
+  id integer [primary key]
+  user_id integer
+  posts_id integer
+  created_at timestamp
+}
+Table comment_likes {
+  id integer [primary key]
+  user_id integer
+  posts_id integer
+  created_at timestamp
+}
+Table comment_dislikes {
+  id integer [primary key]
+  user_id integer
+  posts_id integer
+  created_at timestamp
+}
+
+Ref: posts_categories.categories_id > categories.id
+Ref: posts_categories.posts_id > posts.id
+Ref: sessions.user_id > users.id
+Ref: posts.user_id > users.id // many-to-one
+Ref: posts.categories_id > categories.id
+Ref: comment.user_id > users.id
+Ref: comment.posts_id > posts.id
+Ref: post_likes.user_id > users.id
+Ref: post_likes.posts_id > posts.id
+Ref: post_dislikes.user_id > users.id
+Ref: post_dislikes.posts_id > posts.id
+Ref: comment_likes.user_id > users.id
+Ref: comment_likes.posts_id > posts.id
+Ref: comment_dislikes.user_id > users.id
+Ref: comment_dislikes.posts_id > posts.id
