@@ -10,6 +10,9 @@ type ErrorResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 }
+type SessionRequest struct{
+	Session 	string `json:"session"`
+}
 type LoginRequest struct {
     Email    string `json:"email"`
     Motdepasse string `json:"motdepasse"`
