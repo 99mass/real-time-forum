@@ -25,6 +25,7 @@ body{
 .corps .menu-gauche{
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 30%;
     height: 90%;
     background-color: #2c353d;
@@ -52,17 +53,21 @@ body{
 .corps .menu-gauche div{
     display: flex;
     justify-content: center;
-   width: 100%;
+   width: 30%;
+   padding: 10px 15px;
    color: var(--whiteffffff);
+   background-color: var(--black-1e252b);
    font-size: 22px;
    text-align: center;
    margin-bottom: 20px;
    text-transform: capitalize;
+   border-radius: 10px;
    cursor: pointer;
 }
 .corps .menu-gauche div:first-of-type{
     display: flex;
     align-items: center;
+    background: transparent;
     margin-top: 30px;
     font-size: 28px;
     cursor:default;

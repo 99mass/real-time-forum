@@ -1,0 +1,20 @@
+.content{
+    width: 80%;
+    height: 80%;
+    border: 2px solid gray;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.registre-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.registre-content .image-auth{
+    position: absolute;
+     width: 50%;
+     border: 1px solid brown;
+     height: 80%;
+}
