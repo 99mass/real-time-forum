@@ -1,8 +1,6 @@
 .content{
     width: 80%;
     height: 80%;
-    /* border: 2px solid gray; */
-    
     position: absolute;
     top: 50%;
     left: 50%;
@@ -19,7 +17,6 @@
 .registre-content img{
      width: 50%;
      height: 70%;
-     /* border-radius: 50px; */
 }
 
 .form{
@@ -29,12 +26,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 2px solid gray; */
 }
 
   form{
     width: 100%;
     font-size: 20px;
+  }
+  form h1{
+    text-align: center;
+    color: var(--rgb1);
+    text-transform: capitalize;
   }
   .form-group {
   position: relative;
@@ -42,17 +43,23 @@
   margin: auto;
   max-width: 100%;
   }
+ .form-2 .form-group {
+    padding: 10px 0;
+    }
   
   .form-group input {
-  background-color: transparent;
+  background: transparent;
   border: none;
+  color: var(--whiteffffff);
   border-bottom: 1.4px solid var(--whiteffffff);
   font-size: 18px;
   padding: 10px 0;
   display: block;
   width: 100%;
   }
-  
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
   .form-group label {
   color: var(--whiteffffff);
   font-size: 16px;
@@ -78,6 +85,31 @@
   font-size: 14px;
   transform: translateY(0);
   }
+
+  select{
+    position: relative;
+    padding: 10px 0;
+    margin: auto;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 16px;
+    color: var(--whiteffffff);
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--whiteffffff);
+  }
+  select:focus{
+   color: var(--black2c353d);
+  }
+.bloc-btn{
+  display: flex;
+  align-items: center;
+
+}
+.bloc-btn div{
+  margin-left: -60px;
+}
   .submit{
     background: var(--black2c353d);
       padding: 15px 0;
@@ -91,22 +123,69 @@
       transition: 0.1s;
       border: 1px solid var(--black2c353d);
   }
+  .form-2  .submit{
+      padding: 10px 0;
+      margin: 10px 0;
+      margin-bottom: 0px;
+  }
   .submit:hover{
     background: var(--rgb1);
   }
   .row p{
     margin-top: 15px;
+    font-size: 16px;
     text-align: center;
     color: var(--whiteffffff);
   }
-  a{ 
-    text-decoration: none;
-  }
-  .row a{
+
+  .row span{
     color: var(--rgb1);
+    cursor: pointer;
   }
 
-  .last{
-    text-align: center;
-      padding: 5px;
+
+  /* Medias querys */
+  @media screen and (max-width:1200px) {
+    body{
+      overflow-y: scroll;
+     }
+    .content{
+      width: 100%;
+      height: fit-content;
+      top: 0px;
+      left: 0px;
+      transform: none;
+    }
+    .content  .form-2{
+      margin-bottom: 60px;
+    }
+    .content .registre-content {
+     
+      flex-direction: column-reverse;
+    }
+  .form{
+    width:40%;
+    margin-right: 0px;
+  }
+  }
+  @media screen and (max-width:768px) {
+    .submit{
+      background: var(--black2c353d);
+        padding: 10px 0;
+        margin: 13px 0;
+
+    }
+  }
+
+  @media screen and (max-width:500px) {
+    .registre-content img{
+      width: 100%;
+
+    }
+    .form{
+      width:75%;
+    }
+    .form-2{
+      width: fit-content;
+    }
   }

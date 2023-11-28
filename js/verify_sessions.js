@@ -1,9 +1,11 @@
+import { linkApi } from "./helper/api_link.js";
+
 const isSessionFound = () => {
-    // let sessionId = sessionStorage.getItem('sessionID');
+   
     let sessionId = getCookie('sessionID');
     if (sessionId) {
         console.log("Session found: " + sessionId);
-        fetch('http://localhost:8080/verifySession', {
+        fetch(`${linkApi}verifySession`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

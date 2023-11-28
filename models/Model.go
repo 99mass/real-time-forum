@@ -10,18 +10,18 @@ type ErrorResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 }
-type SessionRequest struct{
-	Session 	string `json:"session"`
+type SessionRequest struct {
+	Session string `json:"session"`
 }
 type LoginRequest struct {
-    Email    string `json:"email"`
-    Motdepasse string `json:"motdepasse"`
+	Email      string `json:"email"`
+	Motdepasse string `json:"motdepasse"`
 }
 type RegisterRequest struct {
-	UserName string `json:"username"`
-	Email	string	`json:"email"`
-	Password	string `json:"password"`
-	Confpassword	string	`json:"confpassword"`
+	UserName     string `json:"username"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	Confpassword string `json:"confpassword"`
 }
 
 type User struct {
