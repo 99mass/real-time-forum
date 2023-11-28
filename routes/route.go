@@ -8,7 +8,7 @@ import (
 )
 
 func Route(db *sql.DB) {
-	http.HandleFunc("/", handler.Index(db))
+	http.HandleFunc("/verifySession", handler.Index(db))
 	http.HandleFunc("/signin", handler.SinginHandler(db))
 	http.HandleFunc("/register", handler.RegisterHandler(db))
 	http.HandleFunc("/mypage", handler.GetMypage(db))
