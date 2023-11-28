@@ -13,8 +13,9 @@
     align-items: center;
 }
 .registre-content .image-auth{
-    position: absolute;
+    /* background-image: url("assets/img/StuckatHomeAloneTime.png"); */
+    /* position: absolute; */
      width: 50%;
      border: 1px solid brown;
-     height: 80%;
+     height: 80px;
 }
