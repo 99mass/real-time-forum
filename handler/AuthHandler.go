@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"time"
@@ -26,7 +27,10 @@ func SinginHandler(db *sql.DB) http.HandlerFunc {
 		case http.MethodPost:
 			ok, pageError := middlewares.CheckRequest(r, "/signin", "post")
 			if !ok {
-				helper.ErrorPage(w, pageError)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "not found",
+				}, pageError)
 				return
 			}
 
@@ -79,16 +83,28 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 		case http.MethodPost:
 			ok, pageError := middlewares.CheckRequest(r, "/register", "post")
 			if !ok {
-				helper.ErrorPage(w, pageError)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "not found",
+				}, pageError)
 				return
 			}
-			username := r.FormValue("username")
+			var registerReq models.RegisterRequest
+			err := json.NewDecoder(r.Body).Decode(&registerReq)
+			if err != nil {
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: "incorrect request",
+				},http.StatusBadRequest)
+				return
+			}
+			username := registerReq.UserName
 			username = strings.TrimSpace(username)
-			email := r.FormValue("email")
+			email := registerReq.Email
 			email = strings.TrimSpace(email)
-			password := r.FormValue("password")
+			password := registerReq.Password
 			password = strings.TrimSpace(password)
-			confirmPassword := r.FormValue("password_validation")
+			confirmPassword := registerReq.Confpassword
 			confirmPassword = strings.TrimSpace(confirmPassword)
 			// Hasher le mot de passe
 			hashedPassword, _ := helper.HashPassword(password)
@@ -96,9 +112,12 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			ok, ErrAuth := helper.CheckRegisterFormat(username, email, password, confirmPassword, db)
 
 			if !ok {
-				homeData.ErrorAuth = ErrAuth
-				helper.RenderTemplate(w, "register", "auth", homeData)
-				homeData.ErrorAuth = models.ErrorAuth{}
+				//homeData.ErrorAuth = ErrAuth
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: "register format:"+ErrAuth.GeneralError+ErrAuth.EmailError+ErrAuth.PasswordError+ErrAuth.UserNameError,
+				},http.StatusBadRequest)
+				//homeData.ErrorAuth = models.ErrorAuth{}
 				return
 			}
 
@@ -113,20 +132,23 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 			// create a session - TODO
 			helper.AddSession(w, id, db)
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			helper.SendResponse(w,user,http.StatusOK)
 			//helper.RenderTemplate(w, "index", "index", "homedata")
 			return
 
-		case http.MethodGet:
-			helper.DeleteSession(w, r)
-			ok, pageError := middlewares.CheckRequest(r, "/register", "get")
-			if !ok {
-				helper.ErrorPage(w, pageError)
-				return
-			}
-			helper.RenderTemplate(w, "register", "auth", homeData)
+		// case http.MethodGet:
+		// 	helper.DeleteSession(w, r)
+		// 	ok, pageError := middlewares.CheckRequest(r, "/register", "get")
+		// 	if !ok {
+		// 		helper.ErrorPage(w, pageError)
+		// 		return
+		// 	}
+		// 	helper.RenderTemplate(w, "register", "auth", homeData)
 		default:
-			helper.ErrorPage(w, http.StatusMethodNotAllowed)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error Method",
+				Message: "Method not Allowed",
+			},http.StatusMethodNotAllowed)
 			return
 		}
 	}
