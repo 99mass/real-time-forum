@@ -15,7 +15,6 @@ import (
 func Index(db *sql.DB) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		helper.EnableCors(&w)
 		ok, pageError := middlewares.CheckRequest(r, "/verifySession", "post")
 		if !ok {
 			helper.ErrorPage(w, pageError)
@@ -38,7 +37,6 @@ func Index(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
-		fmt.Println(sess)
 		if helper.VerifySession(db, sess) {
 			homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 

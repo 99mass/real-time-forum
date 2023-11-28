@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	"forum/handler"
+	"forum/helper"
 )
 
-
 func Route(db *sql.DB) {
-	http.HandleFunc("/verifySession", handler.Index(db))
-	http.HandleFunc("/signin", handler.SinginHandler(db))
-	http.HandleFunc("/register", handler.RegisterHandler(db))
+	http.HandleFunc("/verifySession", helper.CorsMiddleware(handler.Index(db)))
+	http.HandleFunc("/signin", helper.CorsMiddleware(handler.SinginHandler(db)))
+	http.HandleFunc("/register", helper.CorsMiddleware(handler.RegisterHandler(db)))
 	http.HandleFunc("/mypage", handler.GetMypage(db))
 	http.HandleFunc("/post", handler.GetOnePost(db))
 	http.HandleFunc("/profil", handler.GetProfil(db))
@@ -23,7 +23,7 @@ func Route(db *sql.DB) {
 	http.HandleFunc("/dislikepost", handler.DislikePoste(db))
 	http.HandleFunc("/likecomment", handler.LikeComment(db))
 	http.HandleFunc("/dislikecomment", handler.DislikeComment(db))
-	http.HandleFunc("/search",handler.Search(db))
-	http.HandleFunc("/filter",handler.Filter(db))
-	http.HandleFunc("/filtermypage",handler.FilterMyPage(db))
+	http.HandleFunc("/search", handler.Search(db))
+	http.HandleFunc("/filter", handler.Filter(db))
+	http.HandleFunc("/filtermypage", handler.FilterMyPage(db))
 }
