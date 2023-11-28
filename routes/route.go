@@ -7,6 +7,7 @@ import (
 	"forum/handler"
 )
 
+
 func Route(db *sql.DB) {
 	http.HandleFunc("/verifySession", handler.Index(db))
 	http.HandleFunc("/signin", handler.SinginHandler(db))
