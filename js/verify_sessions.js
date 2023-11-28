@@ -3,15 +3,15 @@ const isSessionFound = () => {
     let sessionId = getCookie('sessionID');
     if (sessionId) {
         console.log("Session found: " + sessionId);
-        fetch('http://127.0.0.1:8080/verifySession', {
+        fetch('http://localhost:8080/verifySession', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({sessionId: sessionId}),
+            body: JSON.stringify({sessionID: sessionId}),
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => console.log("data"+data))
         .catch((error) => {
           console.error('Error:', error);
         });
