@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -55,6 +57,21 @@ func CheckRegisterFormat(username, email, password, confirmPassword string, db *
 	}
 	//fmt.Println(ErrAuth.EmailError,)
 	return ok, *ErrAuth
+}
+
+func CheckGender(gender string)(bool,error){
+	if strings.ToLower(gender)== "male" || strings.ToLower(gender) == "female"{
+		return true,nil
+	}
+	return false,errors.New("gender must be male or female")
+}
+
+func CheckAge(age string)(int,bool,error){
+	res,err := strconv.Atoi(age)
+	if err != nil{
+		return 0,false,errors.New("age must be an integer")
+	}
+	return res,true,nil
 }
 
 // Check if the form it valid and try to connect the user

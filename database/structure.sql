@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     gender TEXT NOT NULL,
-    age TEXT NOT NULL,
+    age INTEGER NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

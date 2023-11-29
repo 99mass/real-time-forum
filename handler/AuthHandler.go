@@ -115,6 +115,22 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			confirmPassword := registerReq.Confpassword
 			confirmPassword = strings.TrimSpace(confirmPassword)
 			// Hasher le mot de passe
+			validage,ageok,err := helper.CheckAge(age)
+			if !ageok {
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: err.Error(),
+				},http.StatusBadRequest)
+				return
+			}
+			genderOk,err:=helper.CheckGender(gender)
+			if !genderOk {
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: err.Error(),
+				},http.StatusBadRequest)
+				return
+			}
 			hashedPassword, _ := helper.HashPassword(password)
 
 			ok, ErrAuth := helper.CheckRegisterFormat(username, email, password, confirmPassword, db)
@@ -134,7 +150,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 				FirstName: firstname,
 				LastName: lastname,
 				Gender: gender,
-				Age: age,
+				Age: validage,
 				Email:     email,
 				Password:  hashedPassword,
 				CreatedAt: time.Now(),

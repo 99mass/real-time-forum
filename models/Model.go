@@ -34,7 +34,7 @@ type User struct {
 	FirstName string
 	LastName  string
 	Gender    string
-	Age       string
+	Age       int
 	Email     string
 	Password  string
 	CreatedAt time.Time
