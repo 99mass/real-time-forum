@@ -100,6 +100,14 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			}
 			username := registerReq.UserName
 			username = strings.TrimSpace(username)
+			firstname := registerReq.FirstName
+			firstname = strings.TrimSpace(firstname)
+			lastname := registerReq.LastName
+			lastname = strings.TrimSpace(lastname)
+			gender := registerReq.Gender
+			gender = strings.TrimSpace(gender)
+			age := registerReq.Age
+			age = strings.TrimSpace(age)
 			email := registerReq.Email
 			email = strings.TrimSpace(email)
 			password := registerReq.Password
@@ -123,12 +131,23 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 			user := models.User{
 				Username:  username,
+				FirstName: firstname,
+				LastName: lastname,
+				Gender: gender,
+				Age: age,
 				Email:     email,
 				Password:  hashedPassword,
 				CreatedAt: time.Now(),
 			}
 
-			id, _ := controller.CreateUser(db, user)
+			id, err := controller.CreateUser(db, user)
+			if err != nil {
+				helper.SendResponse(w,models.ErrorResponse{
+                 Status: "error",
+				 Message: "User not created: "+err.Error(),
+				},http.StatusBadRequest)
+				return
+			}
 
 			// create a session - TODO
 			helper.AddSession(w, id, db)

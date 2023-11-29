@@ -12,8 +12,8 @@ import (
 
 func CreateUser(db *sql.DB, user models.User) (uuid.UUID, error) {
 	query := `
-        INSERT INTO users (id, username, email, password, created_at)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO users (id, username,firstname,lastname,gender,age, email, password, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     `
 
 	newUUID, err := uuid.NewV4()
@@ -21,7 +21,7 @@ func CreateUser(db *sql.DB, user models.User) (uuid.UUID, error) {
 		return uuid.UUID{}, err
 	}
 
-	_, err = db.Exec(query, newUUID.String(), user.Username, user.Email, user.Password, time.Now())
+	_, err = db.Exec(query, newUUID.String(), user.Username, user.FirstName, user.LastName, user.Gender, user.Age, user.Email, user.Password, time.Now())
 	if err != nil {
 		return uuid.UUID{}, err
 	}
@@ -31,7 +31,7 @@ func CreateUser(db *sql.DB, user models.User) (uuid.UUID, error) {
 
 func GetAllUsers(db *sql.DB) ([]models.User, error) {
 	query := `
-        SELECT id, username, email, password, created_at
+        SELECT id, username,firstname,lastname,gender,age, email, password, created_at
         FROM users;
     `
 
@@ -44,7 +44,7 @@ func GetAllUsers(db *sql.DB) ([]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		var user models.User
-		err := rows.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+		err := rows.Scan(&user.ID, &user.Username, &user.FirstName, &user.LastName, &user.Gender, &user.Age, &user.Email, &user.Password, &user.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -57,14 +57,14 @@ func GetAllUsers(db *sql.DB) ([]models.User, error) {
 // GetUserByID retrieves a user by their UUID ID from the database.
 func GetUserByID(db *sql.DB, userID uuid.UUID) (*models.User, error) {
 	query := `
-		SELECT id, username, email, password, created_at
+	    SELECT id, username,firstname,lastname,gender,age, email, password, created_at
 		FROM users
 		WHERE id = ?;
 	`
 
 	row := db.QueryRow(query, userID)
 	user := &models.User{}
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+	err := row.Scan(&user.ID, &user.Username, &user.FirstName, &user.LastName, &user.Gender, &user.Age, &user.Email, &user.Password, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// No user found for the given ID
@@ -79,7 +79,7 @@ func GetUserByID(db *sql.DB, userID uuid.UUID) (*models.User, error) {
 // GetUserByEmail retrieves a user by their email address from the database.
 func GetUserByEmail(db *sql.DB, email string) (*models.User, error) {
 	query := `
-		SELECT id, username, email, password, created_at
+	    SELECT id, username,firstname,lastname,gender,age, email, password, created_at
 		FROM users
 		WHERE email = ?
 		LIMIT 1;
@@ -87,7 +87,7 @@ func GetUserByEmail(db *sql.DB, email string) (*models.User, error) {
 
 	row := db.QueryRow(query, email)
 	user := &models.User{}
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+	err := row.Scan(&user.ID, &user.Username, &user.FirstName, &user.LastName, &user.Gender, &user.Age, &user.Email, &user.Password, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// No user found for the given email
@@ -173,7 +173,7 @@ func DeleteUser(db *sql.DB, userID uuid.UUID) error {
 
 // Verification duplicatat pseudo ou email.
 
-func IsDuplicateEmail(db *sql.DB,  email string) (bool, error) {
+func IsDuplicateEmail(db *sql.DB, email string) (bool, error) {
 	query := `
         SELECT COUNT(*)
         FROM users
@@ -213,14 +213,14 @@ func IsDuplicateUsername(db *sql.DB, username string) (bool, error) {
 // Function to get user by username
 func GetUserByUsername(db *sql.DB, username string) (*models.User, error) {
 	query := `
-		SELECT id, username, email, password, created_at
+	    SELECT id, username,firstname,lastname,gender,age, email, password, created_at
 		FROM users
 		WHERE username = ?
 		LIMIT 1;
 	`
 
 	var user models.User
-	err := db.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+	err := db.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.FirstName, &user.LastName, &user.Gender, &user.Age, &user.Email, &user.Password, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}

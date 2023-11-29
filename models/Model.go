@@ -19,6 +19,10 @@ type LoginRequest struct {
 }
 type RegisterRequest struct {
 	UserName     string `json:"username"`
+	FirstName    string `json:"firstname"`
+	LastName     string `json:"lastname"`
+	Gender       string `json:"gender"`
+	Age          string `json:"age"`
 	Email        string `json:"email"`
 	Password     string `json:"password"`
 	Confpassword string `json:"confpassword"`
@@ -27,6 +31,10 @@ type RegisterRequest struct {
 type User struct {
 	ID        uuid.UUID
 	Username  string
+	FirstName string
+	LastName  string
+	Gender    string
+	Age       string
 	Email     string
 	Password  string
 	CreatedAt time.Time
