@@ -85,7 +85,7 @@ const  signInForm = ()=> {
 
         let data = {
             Email: email,
-            Password: password
+            Motdepasse: password
         };
         console.log(data);
         
@@ -95,13 +95,22 @@ const  signInForm = ()=> {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+            
         })
-        .then(response => response.json())
-        .then(data => {
-             // Hide spinner
-             spinner.style.display = 'none';
-            console.log('Success:', data);
-        })
+        // .then(response => response.json())
+        .then(response => console.log(response.status))
+
+        // .then(data => {
+        //     if (data.st) {
+                
+        //     }
+           
+        //      // Hide spinner
+        //      spinner.style.display = 'none';
+        //     console.log('Success:', data);
+        //     formSignIn.style.display="none"
+        //     return
+        // })
         .catch((error) => {
              // Hide spinner
              spinner.style.display = 'none';
