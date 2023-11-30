@@ -3,6 +3,7 @@ import { linkApi } from "./helper/api_link.js";
 const isSessionFound = () => {
    
     let sessionId = getCookie('sessionID');
+    console.log(sessionId)
     if (sessionId) {
         console.log("Session found: " + sessionId);
         fetch(`${linkApi}verifySession`, {

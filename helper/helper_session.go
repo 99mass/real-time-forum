@@ -31,7 +31,7 @@ func AddSession(w http.ResponseWriter, userID uuid.UUID, db *sql.DB) {
 			Name:     "sessionID",
 			Value:    sessionID.String(),
 			Expires:  expiration,
-			HttpOnly: true,
+			HttpOnly: false,
 			Path:     "/",
 		}
 
@@ -96,7 +96,7 @@ func DeleteSession(w http.ResponseWriter, r *http.Request) {
 		Name:     "sessionID",
 		Value:    "",         // Empty value
 		Expires:  time.Now(), // Set to a time in the past
-		HttpOnly: true,
+		HttpOnly: false,
 		Path:     "/",
 	}
 
@@ -114,7 +114,7 @@ func UpdateCookieSession(w http.ResponseWriter, sessionID uuid.UUID, db *sql.DB)
 		Name:     "sessionID",
 		Value:    sessionID.String(),
 		Expires:  expiration,
-		HttpOnly: true,
+		HttpOnly: false,
 		Path:     "/",
 	}
 
