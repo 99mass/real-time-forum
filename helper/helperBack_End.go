@@ -206,10 +206,10 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func CheckFormAddPost(r *http.Request, db *sql.DB) error {
-	postTitle := r.FormValue("title")
+func CheckFormAddPost(post models.AddPostRequest, db *sql.DB) error {
+	postTitle := post.Title
 	postTitle = strings.TrimSpace(postTitle)
-	postContent := r.FormValue("content")
+	postContent := post.Content
 	postContent = strings.TrimSpace(postContent)
 	// content and title empty
 	if postTitle == "" || postContent == "" {
@@ -224,7 +224,7 @@ func CheckFormAddPost(r *http.Request, db *sql.DB) error {
 	if postContent == "@$" {
 		return errors.New("the number of characters must not exceed 1000")
 	}
-	_postCategorystring := r.Form["category"]
+	_postCategorystring := post.Category
 	// No category received
 	if len(_postCategorystring) == 0 {
 		return errors.New("no category selected")

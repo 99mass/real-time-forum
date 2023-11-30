@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -217,7 +218,10 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 
 		ok, errorPage := middlewares.CheckRequest(r, "/addpost", "post")
 		if !ok {
-			helper.ErrorPage(w, errorPage)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "Method is not allowed",
+			}, errorPage)
 			return
 		}
 		session, err := helper.GetSessionRequest(r)
@@ -227,7 +231,18 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 
 		if helper.VerifySession(db, session) {
 
-			errForm := helper.CheckFormAddPost(r, db)
+			var newPost models.AddPostRequest
+
+			err := json.NewDecoder(r.Body).Decode(&newPost)
+			if err != nil {
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "incorrect json format",
+				}, http.StatusBadRequest)
+				return
+			}
+
+			errForm := helper.CheckFormAddPost(newPost, db)
 			if errForm != nil {
 				homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 
@@ -241,19 +256,28 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					helper.UpdateCookieSession(w, sessionID, db)
 				}
 				homeData.Error = errForm.Error()
-
-				helper.RenderTemplate(w, "index", "index", homeData)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: homeData.Error,
+				}, http.StatusBadRequest)
+				//helper.RenderTemplate(w, "index", "index", homeData)
 				return
 			}
 			// Analyser le formulaire avec le champ de fichier "image_post"
-			err := r.ParseMultipartForm(20000) // Limite de taille du fichier de 10 Mo
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+			if r.Header.Get("Content-Type") == "multipart/form-data" {
+				// Parse multipart form data
+				err := r.ParseMultipartForm(20000)
+				if err != nil {
+					helper.SendResponse(w, models.ErrorResponse{
+						Status:  "error",
+						Message: "size of file is greater than 20KB",
+					}, http.StatusBadRequest)
+					return
+				}
 			}
-			postTitle := r.FormValue("title")
-			postContent := r.FormValue("content")
-			_postCategorystring := r.Form["category"]
+			postTitle := newPost.Title
+			postContent := newPost.Content
+			_postCategorystring := newPost.Category
 			// var _postCategoryuuid []uuid.UUID
 			var _postCategories []models.Category
 			// for _, v := range _postCategorystring {
@@ -270,7 +294,11 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 			user, err := controller.GetUserBySessionId(session, db)
 			if err != nil {
 				controller.DeleteSession(db, session)
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "this session is not valid",
+				}, http.StatusBadRequest)
+				//http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
 			var post models.Post
@@ -287,7 +315,10 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 
 					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
+						helper.SendResponse(w,models.ErrorResponse{
+							Status: "error",
+							Message: err.Error(),
+						},http.StatusInternalServerError)
 						return
 					}
 
@@ -297,7 +328,10 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					}
 					homeData.Error = "this type of file is not allowed"
 
-					helper.RenderTemplate(w, "index", "index", homeData)
+					helper.SendResponse(w,models.ErrorResponse{
+						Status: "error",
+						Message: homeData.Error,
+					},http.StatusBadRequest)
 					return
 				}
 				if img_header.Size > 20971520 {
@@ -340,186 +374,191 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 
 			_, err = controller.CreatePost(db, post)
 			if err != nil {
-				helper.ErrorPage(w, http.StatusInternalServerError)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "the server is unable to create this post",
+				}, http.StatusInternalServerError)
+				//helper.ErrorPage(w, http.StatusInternalServerError)
 				return
 			}
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			helper.SendResponse(w, post, http.StatusOK)
+			//http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 
 	}
 }
 
-func AddPostHandlerForMyPage(db *sql.DB) http.HandlerFunc {
+// func AddPostHandlerForMyPage(db *sql.DB) http.HandlerFunc {
 
-	return func(w http.ResponseWriter, r *http.Request) {
+// 	return func(w http.ResponseWriter, r *http.Request) {
 
-		ok, errorPage := middlewares.CheckRequest(r, "/addpostmypage", "post")
-		if !ok {
-			helper.ErrorPage(w, errorPage)
-			return
-		}
-		session, err := helper.GetSessionRequest(r)
-		if err != nil {
-			return
-		}
+// 		ok, errorPage := middlewares.CheckRequest(r, "/addpostmypage", "post")
+// 		if !ok {
+// 			helper.ErrorPage(w, errorPage)
+// 			return
+// 		}
+// 		session, err := helper.GetSessionRequest(r)
+// 		if err != nil {
+// 			return
+// 		}
 
-		if helper.VerifySession(db, session) {
-			sessiondata := true
+// 		if helper.VerifySession(db, session) {
+// 			sessiondata := true
 
-			errForm := helper.CheckFormAddPost(r, db)
-			if errForm != nil {
-				user, err := controller.GetUserBySessionId(session, db)
-				if err != nil {
-					controller.DeleteSession(db, session)
-					http.Redirect(w, r, "/", http.StatusSeeOther)
-					return
-				}
-				category, err := controller.GetAllCategories(db)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusInternalServerError)
-					return
-				}
-				CatId := r.FormValue("categorie")
-				if CatId != "" {
-					CategID, err := uuid.FromString(CatId)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusBadRequest)
-						return
-					}
-					PostsDetails, err := helper.GetPostsForOneUserAndCategory(db, user.ID, CategID)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusBadRequest)
-						return
-					}
+// 			errForm := helper.CheckFormAddPost(r, db)
+// 			if errForm != nil {
+// 				user, err := controller.GetUserBySessionId(session, db)
+// 				if err != nil {
+// 					controller.DeleteSession(db, session)
+// 					http.Redirect(w, r, "/", http.StatusSeeOther)
+// 					return
+// 				}
+// 				category, err := controller.GetAllCategories(db)
+// 				if err != nil {
+// 					helper.ErrorPage(w, http.StatusInternalServerError)
+// 					return
+// 				}
+// 				CatId := r.FormValue("categorie")
+// 				if CatId != "" {
+// 					CategID, err := uuid.FromString(CatId)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusBadRequest)
+// 						return
+// 					}
+// 					PostsDetails, err := helper.GetPostsForOneUserAndCategory(db, user.ID, CategID)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusBadRequest)
+// 						return
+// 					}
 
-					datas := new(models.DataMypage)
-					datas.Datas = PostsDetails
-					datas.Session = sessiondata
-					datas.User = user
-					datas.CategoryID = CategID
-					datas.Category = category
-					datas.Error = errForm.Error()
-					helper.RenderTemplate(w, "mypage", "mypages", datas)
-				} else {
-					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
-					datas := new(models.DataMypage)
-					datas.Datas = PostsDetails
+// 					datas := new(models.DataMypage)
+// 					datas.Datas = PostsDetails
+// 					datas.Session = sessiondata
+// 					datas.User = user
+// 					datas.CategoryID = CategID
+// 					datas.Category = category
+// 					datas.Error = errForm.Error()
+// 					helper.RenderTemplate(w, "mypage", "mypages", datas)
+// 				} else {
+// 					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusInternalServerError)
+// 						return
+// 					}
+// 					datas := new(models.DataMypage)
+// 					datas.Datas = PostsDetails
 
-					datas.Session = sessiondata
-					datas.User = user
-					datas.Category = category
-					datas.Error = errForm.Error()
-					helper.RenderTemplate(w, "mypage", "mypages", datas)
-				}
-				return
-			}
-			postTitle := r.FormValue("title")
-			postContent := r.FormValue("content")
-			_postCategorystring := r.Form["category"]
-			// var _postCategoryuuid []uuid.UUID
-			var _postCategories []models.Category
-			// for _, v := range _postCategorystring {
-			// 	catuuid, _ := uuid.FromString(v)
-			// 	_postCategoryuuid = append(_postCategoryuuid, catuuid)
-			// }
-			for _, v := range _postCategorystring {
-				var cat models.Category
-				catuuid, _ := uuid.FromString(v)
-				cat.ID = catuuid
-				_postCategories = append(_postCategories, cat)
-			}
+// 					datas.Session = sessiondata
+// 					datas.User = user
+// 					datas.Category = category
+// 					datas.Error = errForm.Error()
+// 					helper.RenderTemplate(w, "mypage", "mypages", datas)
+// 				}
+// 				return
+// 			}
+// 			postTitle := r.FormValue("title")
+// 			postContent := r.FormValue("content")
+// 			_postCategorystring := r.Form["category"]
+// 			// var _postCategoryuuid []uuid.UUID
+// 			var _postCategories []models.Category
+// 			// for _, v := range _postCategorystring {
+// 			// 	catuuid, _ := uuid.FromString(v)
+// 			// 	_postCategoryuuid = append(_postCategoryuuid, catuuid)
+// 			// }
+// 			for _, v := range _postCategorystring {
+// 				var cat models.Category
+// 				catuuid, _ := uuid.FromString(v)
+// 				cat.ID = catuuid
+// 				_postCategories = append(_postCategories, cat)
+// 			}
 
-			user, err := controller.GetUserBySessionId(session, db)
-			if err != nil {
-				controller.DeleteSession(db, session)
-				http.Redirect(w, r, "/", http.StatusSeeOther)
-				return
-			}
-			var post models.Post
-			image, img_header, err := r.FormFile("image_post")
-			if err != nil {
-				post = models.Post{
-					UserID:     user.ID,
-					Title:      postTitle,
-					Content:    postContent,
-					Categories: _postCategories,
-				}
-			} else {
-				if !helper.VerifImage(img_header.Filename) {
-					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
-					category, err := controller.GetAllCategories(db)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
-					datas := new(models.DataMypage)
-					datas.Datas = PostsDetails
+// 			user, err := controller.GetUserBySessionId(session, db)
+// 			if err != nil {
+// 				controller.DeleteSession(db, session)
+// 				http.Redirect(w, r, "/", http.StatusSeeOther)
+// 				return
+// 			}
+// 			var post models.Post
+// 			image, img_header, err := r.FormFile("image_post")
+// 			if err != nil {
+// 				post = models.Post{
+// 					UserID:     user.ID,
+// 					Title:      postTitle,
+// 					Content:    postContent,
+// 					Categories: _postCategories,
+// 				}
+// 			} else {
+// 				if !helper.VerifImage(img_header.Filename) {
+// 					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusInternalServerError)
+// 						return
+// 					}
+// 					category, err := controller.GetAllCategories(db)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusInternalServerError)
+// 						return
+// 					}
+// 					datas := new(models.DataMypage)
+// 					datas.Datas = PostsDetails
 
-					datas.Session = sessiondata
-					datas.User = user
-					datas.Category = category
-					datas.Error = "this type of file is not allowed"
-					helper.RenderTemplate(w, "mypage", "mypages", datas)
-					return
-				}
-				if img_header.Size > 20971520 {
-					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
-					category, err := controller.GetAllCategories(db)
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
-					datas := new(models.DataMypage)
-					datas.Datas = PostsDetails
+// 					datas.Session = sessiondata
+// 					datas.User = user
+// 					datas.Category = category
+// 					datas.Error = "this type of file is not allowed"
+// 					helper.RenderTemplate(w, "mypage", "mypages", datas)
+// 					return
+// 				}
+// 				if img_header.Size > 20971520 {
+// 					PostsDetails, err := helper.GetPostsForOneUser(db, user.ID)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusInternalServerError)
+// 						return
+// 					}
+// 					category, err := controller.GetAllCategories(db)
+// 					if err != nil {
+// 						helper.ErrorPage(w, http.StatusInternalServerError)
+// 						return
+// 					}
+// 					datas := new(models.DataMypage)
+// 					datas.Datas = PostsDetails
 
-					datas.Session = sessiondata
-					datas.User = user
-					datas.Category = category
-					datas.Error = "the size of the file can't be over than 20Mo"
-					helper.RenderTemplate(w, "mypage", "mypages", datas)
-					return
-				}
-				imageData, err := ioutil.ReadAll(image)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusInternalServerError)
-					return
-				}
-				name := helper.NewName()
-				err = ioutil.WriteFile("./static/image/"+name+img_header.Filename, imageData, 0644)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusInternalServerError)
-					return
-				}
+// 					datas.Session = sessiondata
+// 					datas.User = user
+// 					datas.Category = category
+// 					datas.Error = "the size of the file can't be over than 20Mo"
+// 					helper.RenderTemplate(w, "mypage", "mypages", datas)
+// 					return
+// 				}
+// 				imageData, err := ioutil.ReadAll(image)
+// 				if err != nil {
+// 					helper.ErrorPage(w, http.StatusInternalServerError)
+// 					return
+// 				}
+// 				name := helper.NewName()
+// 				err = ioutil.WriteFile("./static/image/"+name+img_header.Filename, imageData, 0644)
+// 				if err != nil {
+// 					helper.ErrorPage(w, http.StatusInternalServerError)
+// 					return
+// 				}
 
-				post = models.Post{
-					UserID:     user.ID,
-					Title:      postTitle,
-					Content:    postContent,
-					Categories: _postCategories,
-					Image:      name + img_header.Filename,
-				}
-			}
-			_, err = controller.CreatePost(db, post)
-			if err != nil {
-				return
-			}
-			http.Redirect(w, r, "/mypage", http.StatusSeeOther)
-		}
+// 				post = models.Post{
+// 					UserID:     user.ID,
+// 					Title:      postTitle,
+// 					Content:    postContent,
+// 					Categories: _postCategories,
+// 					Image:      name + img_header.Filename,
+// 				}
+// 			}
+// 			_, err = controller.CreatePost(db, post)
+// 			if err != nil {
+// 				return
+// 			}
+// 			http.Redirect(w, r, "/mypage", http.StatusSeeOther)
+// 		}
 
-	}
-}
+// 	}
+// }
 
 // Like post
 func LikePoste(db *sql.DB) http.HandlerFunc {

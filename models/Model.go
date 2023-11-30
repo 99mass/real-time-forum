@@ -6,6 +6,7 @@ import (
 	"github.com/gofrs/uuid"
 )
 
+// these models are for the different post request
 type ErrorResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
@@ -17,6 +18,7 @@ type LoginRequest struct {
 	Email      string `json:"email"`
 	Motdepasse string `json:"motdepasse"`
 }
+
 type RegisterRequest struct {
 	UserName     string `json:"username"`
 	FirstName    string `json:"firstname"`
@@ -27,6 +29,15 @@ type RegisterRequest struct {
 	Password     string `json:"password"`
 	Confpassword string `json:"confpassword"`
 }
+
+type AddPostRequest struct {
+	Title    string   `json:"title"`
+	Content  string   `json:"content"`
+	Category []string `json:"category"`
+	Image    string   `json:"image"`
+}
+
+// These models are for Database
 
 type User struct {
 	ID        uuid.UUID
