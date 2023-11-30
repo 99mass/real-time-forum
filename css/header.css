@@ -1,10 +1,14 @@
 header{
+    width: 98%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     margin: 0px;
     background-color: #2c353d;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
 }
 .titre{
     width: 45%;

@@ -1,33 +1,34 @@
-import { linkApi ,header} from "../helper/api_link.js";
-import { isSessionFound } from "../verify_sessions.js";
+import { linkApi } from "../helper/api_link.js";
+// import { isSessionFound } from "../verify_sessions.js";
+import { displayFom } from "../pages/signUpSignIn.js";
 
-const content=document.querySelector('.content');
 
-const corps=document.querySelector('.corps');
+// afficher les formulaires
+displayFom(1);
 
 const formSignIn=document.querySelector('.form-1');
 const formSignUp=document.querySelector('.form-2');
+const _ContentForms=document.querySelector('.content');
 let spinner = document.querySelector('.spinner');
 let rowFormSignIn=document.querySelector('.form-1 .row');
 let rowFormSignUp=document.querySelector('.form-2 .row');
 
-formSignUp.style.display="none"
+if (rowFormSignIn) {    
+    rowFormSignIn.addEventListener('click',()=>{
+        formSignIn.remove()
+        displayFom(2);
+    })
+}
 
-header.style.display="none"
-// corps.style.display="none"
+if (rowFormSignUp) {
+    
+    rowFormSignUp.addEventListener('click',()=>{
+        alert('yes')
+        formSignUp.remove();
+        displayFom(1);
+    })
+}
 
-rowFormSignIn.addEventListener('click',()=>{
-    if (formSignUp.style.display==="none") {
-        formSignUp.style.display="block"
-        formSignIn.style.display="none"
-    }
-})
-rowFormSignUp.addEventListener('click',()=>{
-    if (formSignIn.style.display==="none") {
-        formSignIn.style.display="block"
-        formSignUp.style.display="none"
-    }
-})
 
 const signUpForm=()=> {
 
@@ -53,7 +54,7 @@ const signUpForm=()=> {
             Email: email,
             Age: age,
             Gender: gender,
-            Password: password,
+            Motdepasse: password,
             ConfPassword: confPassword
         };
         console.log(data);
@@ -104,19 +105,28 @@ const  signInForm = ()=> {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+        })
+        .then(response => {
+            // Hide spinner
+            spinner.style.display = 'none';
+           
+            if(response.status===200){
+               
+             if (formSignIn) {
+                formSignIn.remove();
+            }
+            if (formSignUp) {
+                formSignUp.remove();
+            }
+            _ContentForms.remove();
+                
+              window.location.reload();
+            }
+            return  response.json();
             
         })
-        .then(response => response.json())
-
         .then(data => {
-            isSessionFound();
-            header.style.display="block"
-            // corps.style.display="block"
-             // Hide spinner
-             spinner.style.display = 'none';
-            console.log('Success:', data);
-            content.remove()
-            return
+            console.log(data);
         })
         .catch((error) => {
              // Hide spinner
