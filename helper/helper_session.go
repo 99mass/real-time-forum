@@ -90,7 +90,7 @@ func VerifySession(db *sql.DB, sessionID uuid.UUID) bool {
 	return true
 }
 
-func DeleteSession(w http.ResponseWriter, r *http.Request) {
+func DeleteSession(db *sql.DB,sessionID string, w http.ResponseWriter, r *http.Request) {
 	// Create a new cookie with the same name as the session cookie
 	cookie := http.Cookie{
 		Name:     "sessionID",
@@ -102,6 +102,8 @@ func DeleteSession(w http.ResponseWriter, r *http.Request) {
 
 	// Set the cookie in the response, effectively deleting it
 	http.SetCookie(w, &cookie)
+	id,_ := uuid.FromString(sessionID)
+	controller.DeleteSession(db,id )
 }
 
 // Example function to create and send a login session cookie

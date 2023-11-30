@@ -37,6 +37,7 @@ type AddPostRequest struct {
 	Image    string   `json:"image"`
 }
 
+
 // These models are for Database
 
 type User struct {
