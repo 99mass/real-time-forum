@@ -85,7 +85,7 @@ const  signInForm = ()=> {
 
         let data = {
             Email: email,
-            Password: password
+            Motdepasse: password
         };
         console.log(data);
         
