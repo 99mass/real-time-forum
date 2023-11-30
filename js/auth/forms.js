@@ -1,4 +1,5 @@
-import { linkApi } from "../helper/api_link.js";
+import { linkApi ,header} from "../helper/api_link.js";
+import { isSessionFound } from "../verify_sessions.js";
 
 const content=document.querySelector('.content');
 
@@ -108,9 +109,7 @@ const  signInForm = ()=> {
         .then(response => response.json())
 
         .then(data => {
-            if (data.st) {
-                
-            }
+            isSessionFound();
             header.style.display="block"
             // corps.style.display="block"
              // Hide spinner
