@@ -18,7 +18,7 @@ func Route(db *sql.DB) {
 	http.HandleFunc("/mypage", handler.GetMypage(db))
 	http.HandleFunc("/post", handler.GetOnePost(db))
 	http.HandleFunc("/profil", handler.GetProfil(db))
-	http.HandleFunc("/signout", handler.SignOutHandler(db))
+	http.HandleFunc("/signout",helper.CorsMiddleware(handler.SignOutHandler(db)))
 	http.HandleFunc("/addpost", helper.CorsMiddleware(handler.AddPostHandler(db)))
 	//http.HandleFunc("/addpostmypage", handler.AddPostHandlerForMyPage(db))
 	http.HandleFunc("/category", handler.GetPostCategory(db))
