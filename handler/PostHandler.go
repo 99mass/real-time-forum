@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -301,9 +302,17 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 				//http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
-			var post models.Post
-			image, img_header, err := r.FormFile("image_post")
+			img, err := base64.StdEncoding.DecodeString(newPost.Image)
 			if err != nil {
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "invalid base64 string of image",
+				}, http.StatusBadRequest)
+				return
+			}
+			var post models.Post
+			//image, img_header, err := r.FormFile("image_post")
+			if newPost.Image == "" {
 				post = models.Post{
 					UserID:     user.ID,
 					Title:      postTitle,
@@ -311,55 +320,66 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					Categories: _postCategories,
 				}
 			} else {
-				if !helper.VerifImage(img_header.Filename) {
-					homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+				// if !helper.VerifImage(img_header.Filename) {
+				// 	homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 
-					if err != nil {
-						helper.SendResponse(w,models.ErrorResponse{
-							Status: "error",
-							Message: err.Error(),
-						},http.StatusInternalServerError)
-						return
-					}
+				// 	if err != nil {
+				// 		helper.SendResponse(w, models.ErrorResponse{
+				// 			Status:  "error",
+				// 			Message: err.Error(),
+				// 		}, http.StatusInternalServerError)
+				// 		return
+				// 	}
 
-					if homeData.Session {
-						sessionID, _ := helper.GetSessionRequest(r)
-						helper.UpdateCookieSession(w, sessionID, db)
-					}
-					homeData.Error = "this type of file is not allowed"
+				// 	if homeData.Session {
+				// 		sessionID, _ := helper.GetSessionRequest(r)
+				// 		helper.UpdateCookieSession(w, sessionID, db)
+				// 	}
+				// 	homeData.Error = "this type of file is not allowed"
 
-					helper.SendResponse(w,models.ErrorResponse{
-						Status: "error",
-						Message: homeData.Error,
-					},http.StatusBadRequest)
-					return
-				}
-				if img_header.Size > 20971520 {
-					homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+				// 	helper.SendResponse(w, models.ErrorResponse{
+				// 		Status:  "error",
+				// 		Message: homeData.Error,
+				// 	}, http.StatusBadRequest)
+				// 	return
+				// }
+				// if img_header.Size > 20971520 {
+				// 	homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
 
-					if err != nil {
-						helper.ErrorPage(w, http.StatusInternalServerError)
-						return
-					}
+				// 	if err != nil {
+				// 		helper.ErrorPage(w, http.StatusInternalServerError)
+				// 		return
+				// 	}
 
-					if homeData.Session {
-						sessionID, _ := helper.GetSessionRequest(r)
-						helper.UpdateCookieSession(w, sessionID, db)
-					}
-					homeData.Error = "the file size can't be over than 20Mo"
+				// 	if homeData.Session {
+				// 		sessionID, _ := helper.GetSessionRequest(r)
+				// 		helper.UpdateCookieSession(w, sessionID, db)
+				// 	}
+				// 	homeData.Error = "the file size can't be over than 20Mo"
 
-					helper.RenderTemplate(w, "index", "index", homeData)
-					return
-				}
-				imageData, err := ioutil.ReadAll(image)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusInternalServerError)
+				// 	helper.RenderTemplate(w, "index", "index", homeData)
+				// 	return
+				// }
+				// imageData, err := ioutil.ReadAll(image)
+				// if err != nil {
+				// 	helper.ErrorPage(w, http.StatusInternalServerError)
+				// 	return
+				// }
+				imgSize := (float64(len(img)) / 1024.0) / 1024.0
+				if imgSize > 20 {
+					helper.SendResponse(w, models.ErrorResponse{
+						Status:  "error",
+						Message: "the size of image is bigger than 20ko",
+					}, http.StatusBadRequest)
 					return
 				}
 				name := helper.NewName()
-				err = ioutil.WriteFile("./static/image/"+name+img_header.Filename, imageData, 0644)
+				err = ioutil.WriteFile("./static/image/"+name+".png", img, 0644)
 				if err != nil {
-					helper.ErrorPage(w, http.StatusInternalServerError)
+					helper.SendResponse(w, models.ErrorResponse{
+						Status:  "error",
+						Message: err.Error(),
+					}, http.StatusBadRequest)
 					return
 				}
 
@@ -368,7 +388,7 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					Title:      postTitle,
 					Content:    postContent,
 					Categories: _postCategories,
-					Image:      name + img_header.Filename,
+					Image:      name + ".png",
 				}
 			}
 
