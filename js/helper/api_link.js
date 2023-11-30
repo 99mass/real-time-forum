@@ -1,3 +1,5 @@
 const linkApi="http://localhost:8080/";
 
-export{linkApi}
+const header=document.querySelector('.content-home');
+
+export{linkApi,header}

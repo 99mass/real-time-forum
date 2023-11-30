@@ -1,5 +1,9 @@
 import { linkApi } from "../helper/api_link.js";
 
+const content=document.querySelector('.content');
+
+const corps=document.querySelector('.corps');
+
 const formSignIn=document.querySelector('.form-1');
 const formSignUp=document.querySelector('.form-2');
 let spinner = document.querySelector('.spinner');
@@ -7,6 +11,10 @@ let rowFormSignIn=document.querySelector('.form-1 .row');
 let rowFormSignUp=document.querySelector('.form-2 .row');
 
 formSignUp.style.display="none"
+
+header.style.display="none"
+// corps.style.display="none"
+
 rowFormSignIn.addEventListener('click',()=>{
     if (formSignUp.style.display==="none") {
         formSignUp.style.display="block"
@@ -97,20 +105,20 @@ const  signInForm = ()=> {
             body: JSON.stringify(data),
             
         })
-        // .then(response => response.json())
-        .then(response => console.log(response.status))
+        .then(response => response.json())
 
-        // .then(data => {
-        //     if (data.st) {
+        .then(data => {
+            if (data.st) {
                 
-        //     }
-           
-        //      // Hide spinner
-        //      spinner.style.display = 'none';
-        //     console.log('Success:', data);
-        //     formSignIn.style.display="none"
-        //     return
-        // })
+            }
+            header.style.display="block"
+            // corps.style.display="block"
+             // Hide spinner
+             spinner.style.display = 'none';
+            console.log('Success:', data);
+            content.remove()
+            return
+        })
         .catch((error) => {
              // Hide spinner
              spinner.style.display = 'none';

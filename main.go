@@ -28,9 +28,12 @@ func main() {
 		fmt.Println(err)
 	}
 
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-
+	fs := http.FileServer(http.Dir("./css"))
+	js := http.FileServer(http.Dir("./js"))
+	assets := http.FileServer(http.Dir("./assets"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
+	http.Handle("/js/",http.StripPrefix("/js/",js))
+	http.Handle("/assets/",http.StripPrefix("/assets/",assets))
 	// Run Handlers
 	routes.Route(db)
 
