@@ -1,90 +1,185 @@
 import {  body, ContentForms } from "../helper/bigBlocContent.js";
-body.appendChild(ContentForms)
-const contentForms=document.querySelector('.content');
 
-const displayFom=(states)=>{
+const displayFom=()=>{
+
+    body.appendChild(ContentForms)
+    const contentForms=document.querySelector('.content');
 
     contentForms.innerHTML=`<div class="registre-content">
                             <div class="form">
                                 <!-- login Form -->
-                                ${form1(states)}
+                                ${form1()}
                                 <!-- Regitre Form -->
-                                ${form2(states)}
+                                ${form2()}
                             </div>
                                 <img src="assets/img/back.png" alt="">
                         </div>
-                    `
-                    
-                   
+    `;
+           
 }
 
-function form1(state) {
-    if (state===1) {        
-        return `<form class="form-1" method="post">
-                        <h1>sign in</h1>
-                        <div class="form-group">
-                        <input type="text" name="Email"  required/><label>Email or Username</label>
-                        </div>
-                        <div class="form-group">
-                        <input type="password" name="Motdepasse" required/><label>Password</label>
-                        </div>
-                        <div class="bloc-btn">
-                            <input type="submit" value="Sign In" class="submit"> 
-                            <div class="spinner" style="display: none;"></div>
-                        </div>
-                        <div class="row">
-                        <p >Not Yet Registered? <span>Sign Up</span></p>
-                        </div>
-                 </form>
-        `
-    }
-    return ``
+
+function form1() {
+
+    const form = document.createElement('form');
+    form.className = 'form-1';
+    form.method = 'post';
+
+    const h1 = document.createElement('h1');
+    h1.textContent = 'sign in';
+    form.appendChild(h1);
+
+    const err= document.createElement('p');
+    err.className="error-page";
+    err.textContent = 'mass';
+    err.style.textAlign="center";
+    err.style.margin="5px 0px";
+    err.style.color="white";
+    err.style.background="indianred";
+    err.style.padding="5px 0px";
+    err.style.fontSize="14px";
+    err.style.fontWeight="initial";
+    err.style.display="none"
+    form.appendChild(err);
+
+
+    const formElements = [
+        { type: 'text', name: 'Email', label: 'Email or Username' },
+        { type: 'password', name: 'Motdepasse', label: 'Password' }
+    ];
+
+    formElements.forEach(el => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+
+        const input = document.createElement('input');
+        input.type = el.type;
+        input.name = el.name;
+        input.required = true;
+
+        const label = document.createElement('label');
+        label.textContent = el.label;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        form.appendChild(div);
+    });
+
+    const divBtn = document.createElement('div');
+    divBtn.className = 'bloc-btn';
+
+    const inputSubmit = document.createElement('input');
+    inputSubmit.type = 'submit';
+    inputSubmit.value = 'Sign In';
+    inputSubmit.className = 'submit';
+
+    const divSpinner = document.createElement('div');
+    divSpinner.className = 'spinner';
+    divSpinner.style.display = 'none';
+
+    divBtn.appendChild(inputSubmit);
+    divBtn.appendChild(divSpinner);
+    form.appendChild(divBtn);
+
+    const divRow = document.createElement('div');
+    divRow.className = 'row';
+
+    const p = document.createElement('p');
+    p.innerHTML = 'Not Yet Registered? <span>Sign Up</span>';
+
+    divRow.appendChild(p);
+    form.appendChild(divRow);
+
+    return form.outerHTML;
 }
 
-function form2(state) {
-    if (state===2) {   
-    return `<form class="form-2" method="post">
-                <h1>sign up</h1>
-                <div class="form-group">
-                    <input type="text" name="FirstName"  required/><label>First Name</label>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="LastName"  required/><label>Last Name</label>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="Username"  required/><label>Nickname</label>
-                </div>
-                <div class="form-group">
-                <input type="email" name="Email"  required/><label>Email </label>
-                </div>
-                <div class="form-group">
-                <input type="date" name="Age"  required/> 
-                </div>
-                <select name="Gender" id="">
-                    <option value="">Select Your Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+function form2() {
+    const form = document.createElement('form');
+    form.className = 'form-2';
+    form.method = 'post';
 
-                </select>
+    const h1 = document.createElement('h1');
+    h1.textContent = 'sign up';
+    form.appendChild(h1);
 
-                <div class="form-group">
-                <input type="password" name="Motdepasse" required/><label>Password</label>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="Confpassword" required/><label>Confirme Password</label>
-                </div>
-                <div class="bloc-btn">
-                    <input type="submit" value="Sign Up" class="submit"> 
-                    <div class="spinner" style="display: none;"></div>
-                </div>
-                <div class="row">
-                <p>Already Registered? <span>Sign In</span></p>
-                </div>
-            </form>
-    `
-    }
-    return ``
-    
+    const err= document.createElement('p');
+    err.className="error-page";
+    err.textContent = 'mass';
+    err.style.textAlign="center";
+    err.style.margin="5px 0px";
+    err.style.color="white";
+    err.style.background="indianred";
+    err.style.padding="5px 0px";
+    err.style.fontSize="14px";
+    err.style.fontWeight="initial";
+    err.style.display="none"
+    form.appendChild(err);
+
+    const formElements = [
+        { type: 'text', name: 'FirstName', label: 'First Name' },
+        { type: 'text', name: 'LastName', label: 'Last Name' },
+        { type: 'text', name: 'Username', label: 'Nickname' },
+        { type: 'email', name: 'Email', label: 'Email' },
+        { type: 'text', name: 'Age', label: 'Age' },
+        { type: 'password', name: 'Motdepasse', label: 'Password' },
+        { type: 'password', name: 'Confpassword', label: 'Confirm Password' }
+    ];
+
+    formElements.forEach(el => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+
+        const input = document.createElement('input');
+        input.type = el.type;
+        input.name = el.name;
+        input.required = true;
+
+        const label = document.createElement('label');
+        label.textContent = el.label;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        form.appendChild(div);
+    });
+
+    const select = document.createElement('select');
+    select.name = 'Gender';
+    select.id = '';
+    ['Select Your Gender', 'Male', 'Female'].forEach((optionText, i) => {
+        const option = document.createElement('option');
+        option.value = i === 0 ? '' : optionText.toLowerCase();
+        option.textContent = optionText;
+        select.appendChild(option);
+    });
+    form.appendChild(select);
+
+    const divBtn = document.createElement('div');
+    divBtn.className = 'bloc-btn';
+
+    const inputSubmit = document.createElement('input');
+    inputSubmit.type = 'submit';
+    inputSubmit.value = 'Sign Up';
+    inputSubmit.className = 'submit';
+
+    const divSpinner = document.createElement('div');
+    divSpinner.className = 'spinner';
+    divSpinner.style.display = 'none';
+
+    divBtn.appendChild(inputSubmit);
+    divBtn.appendChild(divSpinner);
+    form.appendChild(divBtn);
+
+    const divRow = document.createElement('div');
+    divRow.className = 'row';
+
+    const p = document.createElement('p');
+    p.innerHTML = 'Already Registered? <span>Sign In</span>';
+
+    divRow.appendChild(p);
+    form.appendChild(divRow);
+
+    return form.outerHTML;
 }
+
 
 export {displayFom}

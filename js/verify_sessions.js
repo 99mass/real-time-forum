@@ -1,67 +1,43 @@
 import { linkApi } from "./helper/api_link.js";
-import { signUpForm, signInForm } from "./auth/forms.js";
 
-import { indexPage } from "./pages/index.js";
+// const isSessionFoundBoolean = async () => {
+//     let resp=false;
+//     let sessionId = getCookie('sessionID');
+//     if (sessionId) {
+//         const response = await fetch(`${linkApi}verifySession`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({session: sessionId}),
+//         });
 
-const _formSignIn=document.querySelector('.form-1');
-const _formSignUp=document.querySelector('.form-2');
-const _header=document.querySelector('header');
-const _corps=document.querySelector('.corps');
-const _ContentForms=document.querySelector('.content');
-
-
-const isSessionFound = () => {
-   
+//         if (response.status===200 && response.headers.get('content-type').includes('application/json')) {
+//             resp=true;
+//             console.log(response.json());
+//         }
+//     }
+//     return resp;
+// }
+const isSessionFoundBoolean = async () => {
+    let data;
     let sessionId = getCookie('sessionID');
     if (sessionId) {
-        console.log("Session found: " + sessionId);
-        fetch(`${linkApi}verifySession`, {
+        const response = await fetch(`${linkApi}verifySession`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({session: sessionId}),
-        })
-        .then(response => {
-            
-            if (response.headers.get('content-type').includes('application/json')) {
-                if (_formSignIn) {
-                    _formSignIn.remove();
-                }
-                if (_formSignUp) {
-                    _formSignUp.remove();
-                }
-                _ContentForms.remove()
-               
-
-                indexPage();
-
-                return response.json();
-            } else {
-                if (_header) _header.remove();
-                if (_corps) _corps.remove();
-
-                
-                signInForm();
-                console.log(response.status);
-                throw new Error('Received non-JSON response');
-            }
-        })
-        .then(data => console.log(data))
-        .catch((error) => {
-            if (_header) _header.remove();
-            if (_corps) _corps.remove();
-            signInForm();
-
-          console.error('Error:', error);
         });
-    } else {
-        if (_header) _header.remove();
-        if (_corps) _corps.remove();
-        signInForm();
-        console.log("No session found");
+
+        if (response.status === 200 && response.headers.get('content-type').includes('application/json')) {                       
+             data = await response.json();
+        }
     }
+    return data ;
 }
+
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
     for(let i = 0; i < cookieArr.length; i++) {
@@ -73,4 +49,4 @@ function getCookie(name) {
     return null;
 }
 
-export {isSessionFound}
+export {isSessionFoundBoolean}

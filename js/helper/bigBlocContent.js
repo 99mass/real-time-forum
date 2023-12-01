@@ -16,12 +16,8 @@ menuMilieu.className="milieu";
 const menuDroite=document.createElement('div');
 menuDroite.className="menu-droite";
 
-corpsContent.appendChild(menuGauche);
-corpsContent.appendChild(menuMilieu);
-corpsContent.appendChild(menuDroite);
-
 export{
-   body, Header,corpsContent,ContentForms
+   body, Header,corpsContent,ContentForms,menuGauche,menuMilieu,menuDroite
 }
 
 

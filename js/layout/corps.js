@@ -1,16 +1,5 @@
-import {  body, Header,corpsContent } from "../helper/bigBlocContent.js";
 
-body.appendChild(Header);
-body.appendChild(corpsContent);
-
-
-const _leftBloc=document.querySelector('.corps .menu-gauche');
-const _middleBloc=document.querySelector('.corps .milieu');
-const _rigthtBloc=document.querySelector('.corps .menu-droite');
-
-
-
-const leftBloc=()=>{
+const leftBloc=(_leftBloc)=>{
        _leftBloc.innerHTML=`<div>
                     <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories
                   </div>
@@ -22,14 +11,14 @@ const leftBloc=()=>{
        `;
 }
 
-const middleBloc=()=>{
+const middleBloc=(_middleBloc)=>{
 
     _middleBloc.appendChild(createPostMenue())
 
     _middleBloc.appendChild(contentPostBloc())
 
 }
-const rigthtBloc=()=>{
+const rigthtBloc=(_rigthtBloc)=>{
     _rigthtBloc.innerHTML=`<h2> <img src="assets/right-arrow-svgrepo-com.svg" alt=""><span>Users On line</span> </h2>
                                 <div class="bloc">
                                 <div class="user">  

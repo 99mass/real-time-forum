@@ -12,13 +12,43 @@
 
 </head>
 <body>
-
-
       <script type="module" >
-          import { isSessionFound } from "./js/verify_sessions.js";
-            window.onload=()=>{
-                isSessionFound();// verify session                
+        import { linkApi } from "./js/helper/api_link.js";        
+        import { isSessionFoundBoolean } from "./js/verify_sessions.js";
+        import { displayFom } from "./js/pages/signUpSignIn.js";
+        import { displayFormMecanisme } from "./js/helper/diplayingFormMecanisme.js";
+        import {signInForm ,signUpForm} from "./js/auth/forms.js";
+        import { indexPage } from "./js/pages/index.js";
+          
+          document.addEventListener('DOMContentLoaded', (event) => {
+
+            async function checkUserSession() {
+                const data = await isSessionFoundBoolean();
+                if (data===undefined) {
+                     displayFom();
+
+                    const formSignIn=document.querySelector('.form-1');
+                    const formSignUp=document.querySelector('.form-2');
+                    const _ContentForms=document.querySelector('.content');
+                    let spinner = document.querySelector('.spinner');
+                    let row=document.querySelectorAll('.row');
+
+                    // gerer la navigation entre les deux formulaire
+                    displayFormMecanisme(formSignUp,formSignIn,row);
+                    
+                
+                if(formSignIn) signInForm(_ContentForms,formSignIn,formSignUp,spinner,linkApi)
+                if(formSignUp) signUpForm(_ContentForms,formSignUp,formSignIn,spinner,linkApi)
+             
+                }else{
+                    indexPage(data); //afficher l'interface 
+                }
             }
+            (async () => {
+                await checkUserSession();
+            })();
+            
+        }); 
       </script>
 </body>
 </html>

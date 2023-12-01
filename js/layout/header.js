@@ -1,12 +1,5 @@
 
-import {  body, Header,corpsContent } from "../helper/bigBlocContent.js";
-
-body.appendChild(Header);
-body.appendChild(corpsContent);
-
-const _header=document.querySelector('header')
-
-const header = (state)=>{
+const header = (_header)=>{
 
      _header.innerHTML=`
         <div class="titre">
