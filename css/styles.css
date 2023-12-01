@@ -19,13 +19,11 @@ body{
 }
 
 .corps{
-  position: relative;
-  
-    height: 52rem;
-    display: flex;
-    margin: 20px 40px;
 
-    margin-top: 150px;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  margin: 10px 40px;
     
 }
 .corps .menu-gauche{
@@ -59,7 +57,7 @@ body{
 .corps .menu-gauche div{
     display: flex;
     justify-content: center;
-   width: 30%;
+   /* width: 30%; */
    padding: 10px 15px;
    color: var(--whiteffffff);
    background-color: var(--black-1e252b);
@@ -113,12 +111,9 @@ body{
 
 /* post */
  .corps .milieu .content-post-block{
- 
-  margin-top: 5px;
   overflow-y: auto;
   height: 100vh; 
 }
-
 
 
 .corps .milieu .content-post-block::-webkit-scrollbar {
@@ -155,24 +150,26 @@ body{
   }
 .milieu .one-post-block{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
-    height: 400px;
+    /* height: 400px; */
     box-sizing: border-box;
     background-color:var(--black2c353d) ;
     margin-top: 25px;
     border-radius: 10px;
     z-index: -1;
 }
+
 .milieu .one-post-block:last-of-type{
     margin-bottom: 200px;
 }
 .milieu .one-post-block .image-post{
     width: 350px;
-    height: 80%;
+    height: 250px;
+    object-fit: cover;
     margin: 25px;
     box-sizing: border-box;
-    
+  position: static;
     display: flex;
     flex-wrap: wrap;
 }
@@ -185,6 +182,7 @@ body{
    /* border: 1px solid wheat; */
    width: 100%;
    height: 80%;
+   margin-top: 25px;
    margin-right: 20px;
    color: var(--whiteffffff);
    border-radius: 20px;
@@ -192,6 +190,26 @@ body{
 .milieu .one-post-block .post-content .post-text {
   margin-top: 20px;
   font-size: 18px;
+    transition: max-height 0.7s;
+}
+.myBtn{
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: var(--orangeff6934);
+  color: var(--whiteffffff);
+  border: none;
+}
+.card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    overflow-wrap: anywhere;
+}
+.card-description.expanded {
+  -webkit-line-clamp: unset;
 }
 
 .milieu .one-post-block .post-content .categorie-post {
@@ -223,7 +241,7 @@ body{
     display: flex;
 }
 .milieu .one-post-block .post-content .content-poster-like .content-poster .poster img{
-    height: 70px;
+    height: 50px;
     border-radius: 100px;
 }
 .milieu .one-post-block .post-content .content-poster-like .content-poster .poster div{
@@ -340,3 +358,4 @@ body{
 .menu-droite .user .chat-text span{
   margin-right: 5px;
 }
+

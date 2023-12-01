@@ -8,18 +8,29 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/spinner.css">
+    <link rel="stylesheet" href="css/modal.css">
+
 
 
 </head>
 <body>
+
+    <div id="myModal" class="modal"> </div>
+
+
+
       <script type="module" >
         import { linkApi } from "./js/helper/api_link.js";        
         import { isSessionFoundBoolean } from "./js/verify_sessions.js";
         import { displayFom } from "./js/pages/signUpSignIn.js";
-        import { displayFormMecanisme } from "./js/helper/diplayingFormMecanisme.js";
         import {signInForm ,signUpForm} from "./js/auth/forms.js";
         import { indexPage } from "./js/pages/index.js";
-          
+        import { displayFormMecanisme,readMore ,displayFomPost,seeMore} from "./js/helper/diplayingMecanisme.js";
+        import { addPostFrom } from "./js/pages/addPostForm.js";
+        import { formAddPost } from "./js/post/formAddPost.js";
+
+
+
           document.addEventListener('DOMContentLoaded', (event) => {
 
             async function checkUserSession() {
@@ -42,13 +53,41 @@
              
                 }else{
                     indexPage(data); //afficher l'interface 
+
+                    // add post fom et  methode
+                    const myModal=document.querySelector('#myModal');
+                    const btn = document.querySelector(".create-post-btn");
+                    
+                    addPostFrom(myModal);
+                    const span = document.getElementsByClassName("close")[0];
+                    displayFomPost(btn,myModal,span)
+
+                   const formCreatPost= document.querySelector('.form-creat-post');
+                   formAddPost(formCreatPost);
+
+
+                    const readMoreButton=document.querySelectorAll('.myBtn');
+                    const cardDescription = document.querySelectorAll(".card-description");
+                    // const onePostBlock=document.querySelectorAll(".one-post-block");
+                    seeMore(cardDescription,readMoreButton);
+                  
+                    readMore(cardDescription,readMoreButton);
+                        
+
+
+
                 }
             }
+
             (async () => {
                 await checkUserSession();
             })();
-            
+          
+  
+  
         }); 
       </script>
+
+
 </body>
 </html>
