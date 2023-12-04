@@ -1,14 +1,14 @@
 
-const leftBloc=(_leftBloc)=>{
-       _leftBloc.innerHTML=`<div>
-                    <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories
-                  </div>
-                  <div>Sport</div>
-                  <div>Education</div>
-                  <div>Art</div>
-                  <div>Politic</div>
-                  <div>Loisir</div>
+const leftBloc=(_leftBloc,CatgoryArray)=>{
+       _leftBloc.innerHTML=`<div> <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories</div>
        `;
+       if (CatgoryArray) {
+          CatgoryArray.forEach(category => {
+            let _div=  document.createElement('div');
+            _div.textContent=category.NameCategory;
+            _leftBloc.appendChild(_div);
+          });
+       }
 }
 
 const middleBloc=(_middleBloc)=>{
@@ -127,9 +127,10 @@ function posts() {
                             </div>
                         </div>
                     </div>
+                
                 </div>
             </div> 
-
+            
   
 
     `;

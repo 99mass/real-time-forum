@@ -1,22 +1,15 @@
+const addPostFrom=(myModal,data)=>{
+   let  CatgoryArray =data["Category"];
+  
 
-
-const addPostFrom=(myModal)=>{
-    myModal.innerHTML=`
-           
+    myModal.innerHTML=`           
             <div class="modal-content">
             <span class="close">&times;</span>
             <form class="form-creat-post" method="post" enctype="multipart/form-data">
                 <div class="error-post" style="display: none;"></div>
                 <div class="categories-bolc">
                     <h3>check the Categorie(s): </h3>
-                
-                    <div>
-                    <input type="checkbox" name="categories" id="education"  value="Education" /><label for="education">Education</label>
-                    <input type="checkbox" name="categories" id="sport" value="Sport" /><label for="sport"> Sport</label>
-                    <input type="checkbox" name="categories" id="art" value="Art" /><label for="art">Art</label>
-                    <input type="checkbox" name="categories" id="culture" value="Culture"/><label for="culture">Culture</label>
-                    <input type="checkbox" name="categories" id="religion" value="Religion"/><label for="religion">Religion</label>          
-                    </div>
+                  <div class="categoryContent" > </div>              
                     <div class="form-group">
                         <input type="text" name="Title" id="Title" placeholder="Title" required>
                     </div>
@@ -38,6 +31,26 @@ const addPostFrom=(myModal)=>{
             </form>
             </div>
     `;
+
+
+    let _div=document.querySelector('.categoryContent');
+   
+    if (_div) {
+     CatgoryArray.forEach(category => {
+       let _input=  document.createElement('input');
+        _input.type="checkbox";
+       _input.id=category.NameCategory;
+       _input.value=category.ID;
+       _input.name="categories";
+     
+       let _label=  document.createElement('label');
+       _label.htmlFor=category.NameCategory;
+       _label.textContent=category.NameCategory;
+       _div.appendChild(_input);
+       _div.appendChild(_label);
+
+     });
+  }
 }
 
 export{

@@ -40,6 +40,7 @@ const signInForm = async (_ContentForms,formSignIn,formSignUp,spinner,linkApi) =
                         if (formSignUp){ formSignUp.remove();}
 
                         _ContentForms.remove();
+                        window.location.reload();
                         indexPage(data);
                     }else{
                         errorp.style.display="block";
@@ -115,8 +116,8 @@ const signUpForm= async (_ContentForms,formSignUp,formSignIn,spinner,linkApi)=> 
                             if (data!=undefined && data['Session']) {                              
                                 if (formSignUp){ formSignUp.remove();}
                                 if (formSignIn){ formSignIn.remove();}
-
                                 _ContentForms.remove();
+                                window.location.reload();
                                 indexPage(data);
                             }else{
                                 errorp.style.display="block";

@@ -1,16 +1,16 @@
 
-const header = (_header)=>{
+const header = (_header,userName)=>{
 
      _header.innerHTML=`
         <div class="titre">
         <img src="assets/forum-message-svgrepo-com.svg" alt="">
             <span>real time forum</span>
         </div>
-        <div class="content-input"><input type="search" placeholder="Type here to search..."></div>
+     
         <div class="btns">
             <div class="profile">
                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                <span>ssambadi</span>
+                <span>${userName}</span>
             </div>
             <button>
                 <span>LogOut</span>
@@ -22,3 +22,5 @@ const header = (_header)=>{
 }
 
 export {header}
+
+{/* <div class="content-input"><input type="search" placeholder="Type here to search..."></div> */}

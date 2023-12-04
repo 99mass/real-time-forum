@@ -238,7 +238,7 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 			if err != nil {
 				helper.SendResponse(w, models.ErrorResponse{
 					Status:  "error",
-					Message: "incorrect json format",
+					Message: "incorrect json format : " + err.Error(),
 				}, http.StatusBadRequest)
 				return
 			}
@@ -302,11 +302,13 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 				//http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
-			img, err := base64.StdEncoding.DecodeString(newPost.Image)
+			dataUrl := newPost.Image
+			base64Data := dataUrl[strings.IndexByte(dataUrl, ',')+1:]
+			img, err := base64.StdEncoding.DecodeString(base64Data)
 			if err != nil {
 				helper.SendResponse(w, models.ErrorResponse{
 					Status:  "error",
-					Message: "invalid base64 string of image",
+					Message: "invalid base64 string of image : " + err.Error(),
 				}, http.StatusBadRequest)
 				return
 			}

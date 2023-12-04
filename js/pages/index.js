@@ -4,6 +4,9 @@ import {  body, Header,corpsContent,menuGauche,menuMilieu,menuDroite } from "../
 
 const indexPage=(data)=>{
     console.log(data);
+    console.log(data["Category"]);
+    let CatgoryArray=data["Category"];
+    let Username=data["User"]["Username"];
     body.appendChild(Header);
     corpsContent.appendChild(menuGauche);
     corpsContent.appendChild(menuMilieu);
@@ -16,10 +19,11 @@ const indexPage=(data)=>{
     const _middleBloc=document.querySelector('.milieu');
     const _rigthtBloc=document.querySelector('.menu-droite');
 
-    header(_header)
-    leftBloc(_leftBloc);
+    header(_header,Username);
+    leftBloc(_leftBloc,CatgoryArray);
     middleBloc(_middleBloc);
     rigthtBloc(_rigthtBloc);
+    
 }
 
 export {indexPage}

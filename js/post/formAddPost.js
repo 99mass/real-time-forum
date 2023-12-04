@@ -1,25 +1,17 @@
 
 
 const formAddPost=(formCreatPost)=>{
-    const defaultCategorie=["Education", "Sport", "Art", "Culture", "Religion"];
     formCreatPost.addEventListener('submit', function(e) {
         e.preventDefault();
-        // const  errorPost=document.querySelector('.error-post');
+
         let selectedCategories = [];
         document.querySelectorAll('input[name="categories"]:checked').forEach((checkbox) => {
-            if (!defaultCategorie.includes(checkbox.value)) {
-                alert('Categorie(s) invalid');
-                // errorPost.style.diplay="block";
-                // errorPost.innerHTML='Categorie(s) invalid';
-                return;
-            }
+
             selectedCategories.push(checkbox.value);
         });
 
         if (selectedCategories.length==0) {
             alert('Categorie(s) are required');
-            // errorPost.style.diplay="block";
-            // errorPost.innerHTML='Categorie(s) are required';
                 return;
         }
 
@@ -29,20 +21,14 @@ const formAddPost=(formCreatPost)=>{
         
         if (title==="") {
             alert('Title is required');
-            // errorPost.style.diplay="block";
-            // errorPost.innerHTML='Title is required';
             return 
         }
         if (content==="") {
             alert('Content is required');
-            // errorPost.style.diplay="block";
-            // errorPost.innerHTML='Content is required';
             return 
         }
         if (title.length>100) {
             alert('Title length is over than 100 characters');
-            // errorPost.style.diplay="block";
-            // errorPost.innerHTML='Title length is over than 100 characters';
             return 
         }
 
@@ -52,12 +38,42 @@ const formAddPost=(formCreatPost)=>{
 
             if (!(['image/jpeg', 'image/svg+xml', 'image/png', 'image/gif'].includes(fileType) && fileSize <= 20)) {
              alert('File is not valid')
-                // errorPost.style.diplay="block";
-                // errorPost.innerHTML='File is not valid';
                 return;
             }
         }
-
+        console.log(selectedCategories);
+        let reader = new FileReader();
+        reader.onloadend = function() {
+            let base64File = reader.result;
+            let data = {
+                Title: title,
+                Content: content,
+                Category: selectedCategories 
+            };
+        
+            if (file) {
+                data.image = base64File;
+            }
+        
+            fetch('http://localhost:8080/addpost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            reader.onloadend();
+        }
 
         console.log('Selected Categories:', selectedCategories);
         console.log('Title:', title);
@@ -69,3 +85,9 @@ const formAddPost=(formCreatPost)=>{
 }
 
 export{formAddPost}
+
+
+
+// const  errorPost=document.querySelector('.error-post');
+// errorPost.style.diplay="block";
+// errorPost.innerHTML='Content is required';
