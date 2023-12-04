@@ -21,7 +21,7 @@ func Search(db *sql.DB) http.HandlerFunc {
 		title := r.FormValue("title")
 		title = strings.TrimSpace(title)
 		title = strings.ToLower(title)
-		Datas, err := helper.GetDataTemplate(db, r, true, false, false, false, false)
+		Datas, err := helper.GetDataTemplate("",db, r, true, false, false, false, false)
 		if err != nil {
 			helper.ErrorPage(w, http.StatusBadRequest)
 			return

@@ -18,115 +18,64 @@ import (
 
 func AddComment(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ok, pageError := middlewares.CheckRequest(r, "/post", "post")
+		ok, pageError := middlewares.CheckRequest(r, "/addcomment", "post")
 		if !ok {
-			helper.ErrorPage(w, pageError)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "Method not allowed",
+			}, pageError)
 			return
 		}
 		var comment models.Comment
+		var commentRequest models.AddCommentRequest
+		err := json.NewDecoder(r.Body).Decode(&commentRequest)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "incorrect json format",
+			}, http.StatusBadRequest)
+			return
+		}
 
-		postID, errP := helper.StringToUuid(r, "post_id")
-		userID, errU := helper.StringToUuid(r, "user_id")
-		Content := r.FormValue("content")
+		postID, errP := uuid.FromString(commentRequest.PostID)
+		userID, errU := uuid.FromString(commentRequest.UserID)
+		Content := commentRequest.Content
 		Content = strings.TrimSpace(Content)
 
 		if errP != nil || errU != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: errP.Error() + errU.Error(),
+			}, http.StatusBadRequest)
 			return
 		}
-		homeDataSess, err := helper.GetDataTemplate(db, r, true, false, false, false, false)
+		homeDataSess, err := helper.GetDataTemplate(commentRequest.PostID, db, r, true, false, false, false, false)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
+			return
 		}
 		if !homeDataSess.Session {
-			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-
-			posts = postsliked
-			for i := range posts {
-				posts[i].Route = "post"
-				for j := range posts[i].Comment {
-					posts[i].Comment[j].Route = "post"
-				}
-			}
-			category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-
-			homeData.Category = category
-			homeData.Datas = posts
-			helper.RenderTemplate(w, "post", "posts", homeData)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "session invalid or expired",
+			}, http.StatusBadRequest)
 			return
 		}
 		if Content == "" {
-			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			//Set likes and dislikes
-			postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-
-			posts = postsliked
-
-			category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			homeData.Category = category
-			homeData.Datas = posts
-			homeData.Error = "comments cannot be empty"
-			helper.RenderTemplate(w, "post", "posts", homeData)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "a comment can't be empty",
+			}, http.StatusBadRequest)
 			return
 		}
-		if Content == "@$" {
-			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			//Set likes and dislikes
-			postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-
-			posts = postsliked
-
-			category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			homeData.Category = category
-			homeData.Datas = posts
-			homeData.Error = "the number of characters must not exceed 1000"
-			helper.RenderTemplate(w, "post", "posts", homeData)
+		if len(Content) > 1000 {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "the number of characters must not exceed 1000",
+			}, http.StatusBadRequest)
 			return
 		}
 		comment.PostID = postID
@@ -135,34 +84,51 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 
 		_, erro := controller.CreateComment(db, comment)
 		if erro != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: erro.Error(),
+			}, http.StatusBadRequest)
 			return
 		}
-		homeData, err := helper.GetDataTemplate(db, r, true, true, true, false, false)
+		homeData, err := helper.GetDataTemplate(commentRequest.PostID, db, r, true, true, false, false, false)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "hello" + err.Error(),
+			}, http.StatusBadRequest)
+			return
 		}
 		posts, err := helper.GetPostsForOneUser(db, homeData.User.ID)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
 			return
 		}
 		//Set likes and dislikes
 		postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
+			return
 		}
 
 		posts = postsliked
 
 		category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
 			return
 		}
 		homeData.Category = category
 		homeData.Datas = posts
-		helper.RenderTemplate(w, "post", "posts", homeData)
+		helper.SendResponse(w, homeData.PostData, http.StatusOK)
 	}
 }
 
@@ -179,15 +145,25 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
+		var post models.OnePostRequest
+		err := json.NewDecoder(r.Body).Decode(&post)
 		if err != nil {
 			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
-				Message: "hello " + err.Error(),
+				Message: "incorrect json format",
 			}, http.StatusBadRequest)
 			return
 		}
-		postid := helper.IDunPost
+
+		homeData, err := helper.GetDataTemplate(post.PostID, db, r, true, true, false, false, false)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
+			return
+		}
+		postid := post.PostID
 		posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
 		if err != nil {
 			helper.SendResponse(w, models.ErrorResponse{
@@ -223,7 +199,7 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 		homeData.Category = category
 		homeData.Datas = posts
 		homeData.PostData.Route = "post?post_id=" + postid
-		helper.SendResponse(w, homeData, http.StatusOK)
+		helper.SendResponse(w, homeData.PostData, http.StatusOK)
 
 	}
 }
@@ -260,7 +236,7 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 
 			errForm := helper.CheckFormAddPost(newPost, db)
 			if errForm != nil {
-				homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+				homeData, err := helper.GetDataTemplate("", db, r, true, false, true, false, true)
 
 				if err != nil {
 					helper.ErrorPage(w, http.StatusInternalServerError)

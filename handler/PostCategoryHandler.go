@@ -29,7 +29,7 @@ func GetPostCategory(db *sql.DB) http.HandlerFunc {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
 			}
-			homeData, err := helper.GetDataTemplate(db, r, true, false, false, false, false)
+			homeData, err := helper.GetDataTemplate("",db, r, true, false, false, false, false)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 			}
