@@ -13,6 +13,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var IDunPost string
+
 func CreateDatabase() (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", "./database/forum.db")
 	if err != nil {
@@ -58,8 +60,10 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 	//---Get One Post-------//
 	if Post {
 
-		ID, err := StringToUuid(r, "post_id")
-
+		var post models.OnePostRequest
+		json.NewDecoder(r.Body).Decode(&post)
+		IDunPost = post.PostID
+		ID, err := uuid.FromString(post.PostID)
 		if err != nil {
 			//ErrorPage(w, http.StatusInternalServerError)
 			return datas, err
@@ -69,7 +73,7 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 			//ErrorPage(w, http.StatusInternalServerError)
 			return datas, errPD
 		}
-		postid := r.FormValue("post_id")
+		postid := post.PostID
 		for i := range postData.Comment {
 			postData.Comment[i].Route = "post?post_id=" + postid
 		}
@@ -134,7 +138,7 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 		err := json.NewDecoder(r.Body).Decode(&loginReq)
 		if err != nil {
 			datas.ErrorAuth.GeneralError = "incorrect request "
-			return datas,nil
+			return datas, nil
 		}
 		email := loginReq.Email
 		email = strings.TrimSpace(email)
@@ -151,6 +155,9 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 			return datas, nil
 			//RenderTemplate(w, "signin", "auth", datas)
 		}
+	}
+	for _, v := range datas.Datas {
+		v.CommentCount = len(v.Comment)
 	}
 
 	return datas, nil

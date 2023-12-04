@@ -139,7 +139,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 				//homeData.ErrorAuth = ErrAuth
 				helper.SendResponse(w,models.ErrorResponse{
 					Status: "error",
-					Message: "register format:"+ErrAuth.GeneralError+ErrAuth.EmailError+ErrAuth.PasswordError+ErrAuth.UserNameError,
+					Message: "register format: "+ErrAuth.GeneralError+ErrAuth.EmailError+ErrAuth.PasswordError+ErrAuth.UserNameError,
 				},http.StatusBadRequest)
 				//homeData.ErrorAuth = models.ErrorAuth{}
 				return
