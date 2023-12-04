@@ -37,6 +37,16 @@ type AddPostRequest struct {
 	Image    string   `json:"image"`
 }
 
+type OnePostRequest struct {
+	PostID string `json:"postid"`
+}
+
+type AddCommentRequest struct {
+	PostID  string `json:"postid"`
+	UserID  string `json:"userid"`
+	Content string `json:"content"`
+}
+
 // These models are for Database
 
 type User struct {
@@ -97,14 +107,15 @@ type Home struct {
 	ErrorFilter string
 }
 type HomeDataPost struct {
-	Posts       Post
-	Comment     []CommentDetails
-	PostLike    int
-	PostDislike int
-	User        User
-	Liked       bool
-	Disliked    bool
-	Route       string
+	Posts        Post
+	Comment      []CommentDetails
+	CommentCount int
+	PostLike     int
+	PostDislike  int
+	User         User
+	Liked        bool
+	Disliked     bool
+	Route        string
 }
 type Post struct {
 	ID         uuid.UUID

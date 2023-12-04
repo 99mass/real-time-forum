@@ -57,7 +57,7 @@ func GetAllUsers(db *sql.DB) ([]models.User, error) {
 // GetUserByID retrieves a user by their UUID ID from the database.
 func GetUserByID(db *sql.DB, userID uuid.UUID) (*models.User, error) {
 	query := `
-	    SELECT id, username,firstname,lastname,gender,age, email, password, created_at
+	    SELECT id, username, firstname, lastname, gender, age, email, password, created_at
 		FROM users
 		WHERE id = ?;
 	`

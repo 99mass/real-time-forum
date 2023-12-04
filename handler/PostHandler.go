@@ -16,22 +16,32 @@ import (
 	"forum/models"
 )
 
-func GetOnePost(db *sql.DB) http.HandlerFunc {
-
+func AddComment(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		ok, pageError := middlewares.CheckRequest(r, "/post", "post")
+		if !ok {
+			helper.ErrorPage(w, pageError)
+			return
+		}
+		var comment models.Comment
 
-		switch r.Method {
-		case http.MethodGet:
-			ok, pageError := middlewares.CheckRequest(r, "/post", "get")
-			if !ok {
-				helper.ErrorPage(w, pageError)
-				return
-			}
-			postid := r.FormValue("post_id")
+		postID, errP := helper.StringToUuid(r, "post_id")
+		userID, errU := helper.StringToUuid(r, "user_id")
+		Content := r.FormValue("content")
+		Content = strings.TrimSpace(Content)
+
+		if errP != nil || errU != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+			return
+		}
+		homeDataSess, err := helper.GetDataTemplate(db, r, true, false, false, false, false)
+		if err != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+		}
+		if !homeDataSess.Session {
 			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusBadRequest)
-				return
 			}
 			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
 			if err != nil {
@@ -45,9 +55,9 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 
 			posts = postsliked
 			for i := range posts {
-				posts[i].Route = "post?post_id=" + postid
+				posts[i].Route = "post"
 				for j := range posts[i].Comment {
-					posts[i].Comment[j].Route = "post?post_id=" + postid
+					posts[i].Comment[j].Route = "post"
 				}
 			}
 			category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
@@ -55,136 +65,18 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 				helper.ErrorPage(w, http.StatusBadRequest)
 				return
 			}
+
 			homeData.Category = category
 			homeData.Datas = posts
-			homeData.PostData.Route = "post?post_id=" + postid
 			helper.RenderTemplate(w, "post", "posts", homeData)
-		case http.MethodPost:
-			ok, pageError := middlewares.CheckRequest(r, "/post", "post")
-			if !ok {
-				helper.ErrorPage(w, pageError)
-				return
-			}
-			var comment models.Comment
-
-			postID, errP := helper.StringToUuid(r, "post_id")
-			userID, errU := helper.StringToUuid(r, "user_id")
-			Content := r.FormValue("content")
-			Content = strings.TrimSpace(Content)
-
-			if errP != nil || errU != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			homeDataSess, err := helper.GetDataTemplate(db, r, true, false, false, false, false)
+			return
+		}
+		if Content == "" {
+			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusBadRequest)
 			}
-			if !homeDataSess.Session {
-				homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-				posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-				postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-
-				posts = postsliked
-				for i := range posts {
-					posts[i].Route = "post"
-					for j := range posts[i].Comment {
-						posts[i].Comment[j].Route = "post"
-					}
-				}
-				category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-
-				homeData.Category = category
-				homeData.Datas = posts
-				helper.RenderTemplate(w, "post", "posts", homeData)
-				return
-			}
-			if Content == "" {
-				homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-				posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-				//Set likes and dislikes
-				postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-
-				posts = postsliked
-
-				category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-				homeData.Category = category
-				homeData.Datas = posts
-				homeData.Error = "comments cannot be empty"
-				helper.RenderTemplate(w, "post", "posts", homeData)
-				return
-			}
-			if Content == "@$" {
-				homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-				posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-				//Set likes and dislikes
-				postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-				}
-
-				posts = postsliked
-
-				category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
-				if err != nil {
-					helper.ErrorPage(w, http.StatusBadRequest)
-					return
-				}
-				homeData.Category = category
-				homeData.Datas = posts
-				homeData.Error = "the number of characters must not exceed 1000"
-				helper.RenderTemplate(w, "post", "posts", homeData)
-				return
-			}
-			comment.PostID = postID
-			comment.UserID = userID
-			comment.Content = Content
-
-			_, erro := controller.CreateComment(db, comment)
-			if erro != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-				return
-			}
-			homeData, err := helper.GetDataTemplate(db, r, true, true, true, false, false)
-			if err != nil {
-				helper.ErrorPage(w, http.StatusBadRequest)
-			}
-			posts, err := helper.GetPostsForOneUser(db, homeData.User.ID)
+			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusBadRequest)
 				return
@@ -204,11 +96,134 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 			}
 			homeData.Category = category
 			homeData.Datas = posts
+			homeData.Error = "comments cannot be empty"
 			helper.RenderTemplate(w, "post", "posts", homeData)
-		default:
-			helper.ErrorPage(w, http.StatusMethodNotAllowed)
 			return
 		}
+		if Content == "@$" {
+			homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
+			if err != nil {
+				helper.ErrorPage(w, http.StatusBadRequest)
+			}
+			posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
+			if err != nil {
+				helper.ErrorPage(w, http.StatusBadRequest)
+				return
+			}
+			//Set likes and dislikes
+			postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
+			if err != nil {
+				helper.ErrorPage(w, http.StatusBadRequest)
+			}
+
+			posts = postsliked
+
+			category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
+			if err != nil {
+				helper.ErrorPage(w, http.StatusBadRequest)
+				return
+			}
+			homeData.Category = category
+			homeData.Datas = posts
+			homeData.Error = "the number of characters must not exceed 1000"
+			helper.RenderTemplate(w, "post", "posts", homeData)
+			return
+		}
+		comment.PostID = postID
+		comment.UserID = userID
+		comment.Content = Content
+
+		_, erro := controller.CreateComment(db, comment)
+		if erro != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+			return
+		}
+		homeData, err := helper.GetDataTemplate(db, r, true, true, true, false, false)
+		if err != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+		}
+		posts, err := helper.GetPostsForOneUser(db, homeData.User.ID)
+		if err != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+			return
+		}
+		//Set likes and dislikes
+		postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
+		if err != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+		}
+
+		posts = postsliked
+
+		category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
+		if err != nil {
+			helper.ErrorPage(w, http.StatusBadRequest)
+			return
+		}
+		homeData.Category = category
+		homeData.Datas = posts
+		helper.RenderTemplate(w, "post", "posts", homeData)
+	}
+}
+
+func GetOnePost(db *sql.DB) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		ok, pageError := middlewares.CheckRequest(r, "/post", "post")
+		if !ok {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "Method not allowed",
+			}, pageError)
+			return
+		}
+
+		homeData, err := helper.GetDataTemplate(db, r, true, true, false, false, false)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "hello " + err.Error(),
+			}, http.StatusBadRequest)
+			return
+		}
+		postid := helper.IDunPost
+		posts, err := helper.GetPostsForOneUser(db, homeData.PostData.User.ID)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
+			return
+		}
+		postsliked, err := helper.SetLikesAndDislikes(homeData.User, posts, db)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: err.Error(),
+			}, http.StatusBadRequest)
+			return
+		}
+
+		posts = postsliked
+		for i := range posts {
+			posts[i].Route = "post?post_id=" + postid
+			for j := range posts[i].Comment {
+				posts[i].Comment[j].Route = "post?post_id=" + postid
+			}
+		}
+		category, err := controller.GetCategoriesByPost(db, homeData.PostData.Posts.ID)
+		if err != nil {
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error",
+				Message: "can't get categories for this post" + err.Error(),
+			}, http.StatusBadRequest)
+			return
+		}
+		homeData.Category = category
+		homeData.Datas = posts
+		homeData.PostData.Route = "post?post_id=" + postid
+		helper.SendResponse(w, homeData, http.StatusOK)
 
 	}
 }
