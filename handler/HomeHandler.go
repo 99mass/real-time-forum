@@ -38,7 +38,7 @@ func Index(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if helper.VerifySession(db, sess) {
-			homeData, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			homeData, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 
 			PostsDetails := homeData.Datas
 

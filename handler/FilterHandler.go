@@ -33,7 +33,7 @@ func FilterMyPage(db *sql.DB) http.HandlerFunc {
 		var DataMyPage models.DataMypage
 		Categorystring := r.Form["category"]
 
-		Datas, err := helper.GetDataTemplate(db, r, true, false, false, false, true)
+		Datas, err := helper.GetDataTemplate("",db, r, true, false, false, false, true)
 		if err != nil {
 			helper.ErrorPage(w, http.StatusInternalServerError)
 			return
@@ -226,7 +226,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 				var cat models.Category
 				catuuid, err := uuid.FromString(v)
 				if !helper.VerifCategory(db, catuuid) || err != nil || catuuid == uuid.Nil {
-					Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+					Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 					if err != nil {
 						helper.ErrorPage(w, http.StatusInternalServerError)
 						return
@@ -276,7 +276,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 		} else {
 			likemin, err = strconv.Atoi(likemi)
 			if err != nil {
-				Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+				Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 				if err != nil {
 					helper.ErrorPage(w, http.StatusInternalServerError)
 					return
@@ -291,7 +291,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 		} else {
 			likemax, err = strconv.Atoi(likema)
 			if err != nil {
-				Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+				Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 				if err != nil {
 					helper.ErrorPage(w, http.StatusInternalServerError)
 					return
@@ -302,7 +302,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 			}
 		}
 		if likemin > likemax {
-			Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
@@ -312,7 +312,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if likemax < 0 || likemin < 0 {
-			Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
@@ -329,7 +329,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 		}
 		date, err := CompareDate(date1, date2)
 		if err != nil {
-			Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
@@ -339,7 +339,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if !date {
-			Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
@@ -350,7 +350,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 		}
 		filterPosts, err = GetFilteredPosts(db, filterPosts, date1, date2)
 		if err != nil {
-			Datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+			Datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 			if err != nil {
 				helper.ErrorPage(w, http.StatusInternalServerError)
 				return
@@ -370,7 +370,7 @@ func Filter(db *sql.DB) http.HandlerFunc {
 				PostsFiltered = append(PostsFiltered, v)
 			}
 		}
-		Datas, err := helper.GetDataTemplate(db, r, true, false, false, false, true)
+		Datas, err := helper.GetDataTemplate("",db, r, true, false, false, false, true)
 		if err != nil {
 			helper.ErrorPage(w, http.StatusInternalServerError)
 			return

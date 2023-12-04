@@ -19,7 +19,7 @@ func GetProfil(db *sql.DB) http.HandlerFunc {
 			helper.ErrorPage(w, pageError)
 			return
 		}
-		datas, err := helper.GetDataTemplate(db, r, true, false, true, false, true)
+		datas, err := helper.GetDataTemplate("",db, r, true, false, true, false, true)
 
 		if err != nil {
 			helper.ErrorPage(w, http.StatusBadRequest)

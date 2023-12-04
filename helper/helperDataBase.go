@@ -43,7 +43,7 @@ func Comment(content string, id int) {
 }
 
 // The function give all data the the template page needs
-func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Category bool) (models.Home, error) {
+func GetDataTemplate(postID string,db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Category bool) (models.Home, error) {
 	var datas models.Home
 
 	//---Get All Posts-------//
@@ -60,10 +60,7 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 	//---Get One Post-------//
 	if Post {
 
-		var post models.OnePostRequest
-		json.NewDecoder(r.Body).Decode(&post)
-		IDunPost = post.PostID
-		ID, err := uuid.FromString(post.PostID)
+		ID, err := uuid.FromString(postID)
 		if err != nil {
 			//ErrorPage(w, http.StatusInternalServerError)
 			return datas, err
@@ -73,7 +70,7 @@ func GetDataTemplate(db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Ca
 			//ErrorPage(w, http.StatusInternalServerError)
 			return datas, errPD
 		}
-		postid := post.PostID
+		postid := postID
 		for i := range postData.Comment {
 			postData.Comment[i].Route = "post?post_id=" + postid
 		}

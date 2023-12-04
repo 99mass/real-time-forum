@@ -34,7 +34,7 @@ func SinginHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			datas, err := helper.GetDataTemplate(db, r, false, false, false, true, false)
+			datas, err := helper.GetDataTemplate("",db, r, false, false, false, true, false)
 
 			if err != nil {
 				helper.SendResponse(w, models.ErrorResponse{
