@@ -128,7 +128,7 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 		}
 		homeData.Category = category
 		homeData.Datas = posts
-		helper.SendResponse(w, homeData, http.StatusOK)
+		helper.SendResponse(w, homeData.PostData, http.StatusOK)
 	}
 }
 
@@ -199,7 +199,7 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 		homeData.Category = category
 		homeData.Datas = posts
 		homeData.PostData.Route = "post?post_id=" + postid
-		helper.SendResponse(w, homeData, http.StatusOK)
+		helper.SendResponse(w, homeData.PostData, http.StatusOK)
 
 	}
 }
