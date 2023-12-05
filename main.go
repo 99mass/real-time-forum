@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-
-	// "forum/handler"
-
 	"forum/controller"
 	"forum/helper"
 	"forum/models"

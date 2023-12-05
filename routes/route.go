@@ -9,6 +9,10 @@ import (
 )
 
 func Route(db *sql.DB) {
+	server := &handler.Server{
+		Clients: make(map[string]*handler.Client),
+	}
+	http.HandleFunc("/ws", server.HandleConnections)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./index.html")
 	})
@@ -19,7 +23,7 @@ func Route(db *sql.DB) {
 	http.HandleFunc("/post", helper.CorsMiddleware(handler.GetOnePost(db)))
 	http.HandleFunc("/addcomment", helper.CorsMiddleware(handler.AddComment(db)))
 	http.HandleFunc("/profil", handler.GetProfil(db))
-	http.HandleFunc("/signout",helper.CorsMiddleware(handler.SignOutHandler(db)))
+	http.HandleFunc("/signout", helper.CorsMiddleware(handler.SignOutHandler(db)))
 	http.HandleFunc("/addpost", helper.CorsMiddleware(handler.AddPostHandler(db)))
 	//http.HandleFunc("/addpostmypage", handler.AddPostHandlerForMyPage(db))
 	http.HandleFunc("/category", helper.CorsMiddleware(handler.GetPostCategory(db)))
