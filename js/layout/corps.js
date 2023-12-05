@@ -11,11 +11,11 @@ const leftBloc=(_leftBloc,CatgoryArray)=>{
        }
 }
 
-const middleBloc=(_middleBloc)=>{
+const middleBloc=(_middleBloc,_posts)=>{
+   
+    _middleBloc.appendChild(createPostMenue());
 
-    _middleBloc.appendChild(createPostMenue())
-
-    _middleBloc.appendChild(contentPostBloc())
+    _middleBloc.appendChild(contentPostBloc(_posts));
 
 }
 const rigthtBloc=(_rigthtBloc)=>{
@@ -87,114 +87,57 @@ function createPostMenue() {
     return _div;
 }
 
-function contentPostBloc() {
-
+function contentPostBloc(_posts) {
+  
   let _div=  document.createElement('div');
     _div.className="content-post-block";
-    _div.innerHTML=posts();
+    _div.innerHTML=posts(_posts);
     return _div;
 }
 
-// function posts() {
-//     let onePostBlock = document.createElement('div');
-//     onePostBlock.className = "one-post-block";
+function posts(_posts) {
+    var posts="";
+    for (let i = 0; i < _posts.length; i++) {
+        const post = _posts[i];
+        const title=post["Posts"]["Title"];
+        const content=post["Posts"]["Content"];
+        const Categories=post["Posts"]["Categories"];
+        const Username=post["User"]["Username"];
+        const Image=post["Posts"]["Image"];
+        const commentCount=post["CommentCount"];
+        const postLikeCount=post["PostLike"];
+        const postDislikCount=post["PostDislike"];
 
-//     let imagePost = document.createElement('div');
-//     imagePost.className = "image-post";
-
-//     let img = document.createElement('img');
-//     img.src = "assets/img/im.jpeg";
-//     img.alt = "";
-
-//     imagePost.appendChild(img);
-
-//     let postContent = document.createElement('div');
-//     postContent.className = "post-content";
-
-//     let h2 = document.createElement('h2');
-//     h2.textContent = "Blockchain developer best practices on innovationchain";
-
-//     let postText = document.createElement('div');
-//     postText.className = "post-text card-description";
-//     postText.textContent = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint est mollitia fugit cupiditate corrupti doloribus, laboriosam ad libero beatae numquam quasi saepe recusandae maxime earum, expedita eligendi eos perferendis.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quo laborum, reprehenderit expedita atque quia officiis natus voluptatum inventore unde dolor ad laboriosam illo cupiditate, ipsum, nam provident vero corporis magni!logout-svgrepo-com Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint est mollitia fugit cupiditate corrupti doloribus,";
-
-//     let myBtn = document.createElement('button');
-//     myBtn.className = "myBtn";
-//     myBtn.textContent = "Read more";
-
-//     let categoriePost = document.createElement('div');
-//     categoriePost.className = "categorie-post";
-//     categoriePost.innerHTML = "<span>Sport</span><span>Education</span><span>Politic</span>";
-
-//     let contentPosterLike = document.createElement('div');
-//     contentPosterLike.className = "content-poster-like";
-
-//     let contentPoster = document.createElement('div');
-//     contentPoster.className = "content-poster";
-
-//     let poster = document.createElement('div');
-//     poster.className = "poster";
-
-//     let posterImg = document.createElement('img');
-//     posterImg.src = "assets/user-profile-svgrepo-com.svg";
-//     posterImg.alt = "";
-
-//     let div = document.createElement('div');
-//     div.innerHTML = "<p><span>osamb</span><img  src='assets/status-active-svgrepo-com.svg' alt=''> </p><p>3 weeks ago</p>";
-
-//     poster.appendChild(posterImg);
-//     poster.appendChild(div);
-
-//     let likeCommentBlock = document.createElement('div');
-//     likeCommentBlock.className = "like-comment-block";
-//     likeCommentBlock.innerHTML = "<div>651,324 dislikes</div><div>36,6545 Likes</div><div>56 comments</div>";
-
-//     contentPoster.appendChild(poster);
-//     contentPoster.appendChild(likeCommentBlock);
-
-//     contentPosterLike.appendChild(contentPoster);
-
-//     postContent.appendChild(h2);
-//     postContent.appendChild(postText);
-//     postContent.appendChild(myBtn);
-//     postContent.appendChild(categoriePost);
-//     postContent.appendChild(contentPosterLike);
-
-//     onePostBlock.appendChild(imagePost);
-//     onePostBlock.appendChild(postContent);
-
-//     return onePostBlock;
-// }
-
-function posts() {
-    return `<div class="one-post-block">
-                <div class="image-post">
-                    <img src="assets/img/im.jpeg" alt="">
-                </div>
+        // recupere es cqtory du post
+        let NameCategories="";
+        for (let j = 0; j < Categories.length; j++) {
+            const NameCategory = Categories[j]["NameCategory"];
+            NameCategories+=`<span>${NameCategory}</span>`;
+        }
+        
+        console.log(`post ${i} : ${post}`);
+        let image=Image ? `<div class="image-post"><img src="/static/image/${Image}" alt=""></div>` : "";
+        
+     posts +=`<div class="one-post-block ">
+                ${image}
                 <div class="post-content">
-                    <h2>Blockchain developer best practices on innovationchain</h2>
-                    <div class="post-text card-description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint est mollitia fugit cupiditate corrupti doloribus, 
-                        laboriosam ad libero beatae numquam quasi saepe recusandae maxime earum, expedita eligendi eos perferendis.Lorem ipsum dolor sit, 
-                        amet consectetur adipisicing elit. Quo laborum, reprehenderit expedita atque quia officiis natus voluptatum inventore unde dolor ad laboriosam illo cupiditate, ipsum, nam provident vero corporis magni!logout-svgrepo-com
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, sint est mollitia fugit cupiditate corrupti doloribus, 
-                        
-                        </div>
+                    <h2>${title}</h2>
+                    <div class="post-text "><pre class="card-description">${content}</pre></div>
                    <button class="myBtn">Read more</button>
-                    <div class="categorie-post"><span>Sport</span><span>Education</span><span>Politic</span></div>
+                    <div class="categorie-post">${NameCategories}</div>
                     <div class="content-poster-like">
                         <div class="content-poster">
                             <div class="poster">                                  
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                 <div>
-                                    <p><span>osamb</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
+                                    <p><span>${Username}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
                                     <p>3 weeks ago</p>
                                 </div>
                             </div>
                             <div class="like-comment-block">
-                                <div>651,324 dislikes</div>
-                                <div>36,6545 Likes</div>
-                                <div>56 comments</div>
+                                <div>${postDislikCount} dislikes</div>
+                                <div>${postLikeCount} Likes</div>
+                                <div>${commentCount} comments</div>
                             </div>
                         </div>
                     </div>
@@ -202,6 +145,10 @@ function posts() {
                 </div>
             </div> 
     `;
+    NameCategories="";
+ }
+
+    return posts
 }
 
 
