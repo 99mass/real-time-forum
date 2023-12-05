@@ -16,6 +16,8 @@ const middleBloc=(_middleBloc,_posts)=>{
     _middleBloc.appendChild(createPostMenue());
 
     _middleBloc.appendChild(contentPostBloc(_posts));
+    // _middleBloc.appendChild(createComment());
+
 
 }
 const rigthtBloc=(_rigthtBloc)=>{
@@ -87,6 +89,18 @@ function createPostMenue() {
     return _div;
 }
 
+function createComment() {
+    let _div=  document.createElement('div');
+    _div.className="create-comment";
+    // _div.innerHTML=`<span>
+    //                     <img src="assets/postcard-svgrepo-com.svg" alt="">
+    //                     <span>My Posts</span>
+    //                 </span>
+    //                 <button class="create-post-btn">Create Post</button>
+    // `;
+    return _div;
+}
+
 function contentPostBloc(_posts) {
   
   let _div=  document.createElement('div');
@@ -107,7 +121,8 @@ function posts(_posts) {
         const commentCount=post["CommentCount"];
         const postLikeCount=post["PostLike"];
         const postDislikCount=post["PostDislike"];
-
+        const postId=post["Posts"]["ID"];
+console.log(postId);
         // recupere es cqtory du post
         let NameCategories="";
         for (let j = 0; j < Categories.length; j++) {
@@ -115,10 +130,10 @@ function posts(_posts) {
             NameCategories+=`<span>${NameCategory}</span>`;
         }
         
-        console.log(`post ${i} : ${post}`);
+        // console.log(`post ${i} : ${post}`);
         let image=Image ? `<div class="image-post"><img src="/static/image/${Image}" alt=""></div>` : "";
         
-     posts +=`<div class="one-post-block ">
+     posts += `<div class="one-post-block">
                 ${image}
                 <div class="post-content">
                     <h2>${title}</h2>
@@ -137,14 +152,20 @@ function posts(_posts) {
                             <div class="like-comment-block">
                                 <div>${postDislikCount} dislikes</div>
                                 <div>${postLikeCount} Likes</div>
-                                <div>${commentCount} comments</div>
+                                <div class="comment">${commentCount} comments <span class="Id-post" style="display:none">${postId}</span> </div>
                             </div>
                         </div>
                     </div>
                 
                 </div>
             </div> 
-    `;
+         <div class="create-comment">
+         <form>
+            <textarea type="text" name="Content" id="Content" placeholder="Comment here..."  ></textarea>  
+           <button type="submite"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
+         </form>
+         </div>
+    ` ;
     NameCategories="";
  }
 

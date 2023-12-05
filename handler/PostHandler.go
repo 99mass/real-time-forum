@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -154,7 +155,7 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
-
+		fmt.Println(post.PostID)
 		homeData, err := helper.GetDataTemplate(post.PostID, db, r, true, true, false, false, false)
 		if err != nil {
 			helper.SendResponse(w, models.ErrorResponse{
@@ -199,7 +200,7 @@ func GetOnePost(db *sql.DB) http.HandlerFunc {
 		homeData.Category = category
 		homeData.Datas = posts
 		homeData.PostData.Route = "post?post_id=" + postid
-		helper.SendResponse(w, homeData.PostData, http.StatusOK)
+		helper.SendResponse(w, homeData.PostData.Comment, http.StatusOK)
 
 	}
 }

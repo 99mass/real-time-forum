@@ -10,34 +10,16 @@ const formAddPost=(formCreatPost)=>{
             selectedCategories.push(checkbox.value);
         });
 
-        if (selectedCategories.length==0) {
-            alert('Categorie(s) are required');
-                return;
-        }
-
         let title = document.querySelector('input[name="Title"]').value.trim();
         let content = document.querySelector('textarea[name="Content"]').value.trim();
         let file = document.querySelector('input[type="file"]').files[0];
-        
-        if (title==="") {
-            alert('Title is required');
-            return 
-        }
-        if (content==="") {
-            alert('Content is required');
-            return 
-        }
-        if (title.length>100) {
-            alert('Title length is over than 100 characters');
-            return 
-        }
 
         if (file) {
             let fileType = file.type;
             let fileSize = file.size / (1024 * 1024); // size in MB
 
             if (!(['image/jpeg', 'image/svg+xml', 'image/png', 'image/gif'].includes(fileType) && fileSize <= 20)) {
-             alert('File is not valid')
+                alert('File is not valid')
                 return;
             }
         }
@@ -62,8 +44,19 @@ const formAddPost=(formCreatPost)=>{
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(data => console.log(data))
+            .then(response =>{ 
+                if (response.status===200) {
+                    window.location.reload();
+                }
+                return  response.json()
+            })
+            .then(data =>{ 
+                if (data["message"]) {
+                    
+                    alert(data["message"]);
+                }
+                console.log(data)
+            })
             .catch((error) => {
                 console.error('Error:', error);
             });
