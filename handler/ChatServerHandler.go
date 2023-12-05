@@ -54,7 +54,7 @@ func (s *Server) HandleConnections(w http.ResponseWriter, r *http.Request) {
         return
 	}
 	client.UserName = user.Username
-	fmt.Println(client)
+	fmt.Println(client.Conn)
 	// Add new client to the server's clients map
 	s.Clients[client.ID] = client
 
