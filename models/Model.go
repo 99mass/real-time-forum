@@ -47,6 +47,10 @@ type AddCommentRequest struct {
 	Content string `json:"content"`
 }
 
+type GetPostsByCategoryRequest struct {
+	CategoryID string `json:"categoryid"`
+}
+
 // These models are for Database
 
 type User struct {
