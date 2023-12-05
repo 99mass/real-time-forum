@@ -13,13 +13,14 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var IDunPost string
+var DB *sql.DB
 
 func CreateDatabase() (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", "./database/forum.db")
 	if err != nil {
 		return nil, err
 	}
+	DB = db
 	// defer db.Close()
 	return db, nil
 }
