@@ -35,21 +35,15 @@ const signInForm = async (_ContentForms, formSignIn, formSignUp, spinner, linkAp
                 if (response.status === 200) {
                     async function checkUserSession() {
                         const data = await isSessionFoundBoolean();
+                        
                         if (data != undefined && data['Session']) {
                             if (formSignIn) { formSignIn.remove(); }
                             if (formSignUp) { formSignUp.remove(); }
+                           
 
                             _ContentForms.remove();
                             window.location.reload();
-                            var connection = new WebSocket('ws://localhost:8080/ws?id=');
-
-                            connection.onopen = function () {
-                              console.log('Connected!');
-                            };
-
-                            connection.onerror = function (error) {
-                              console.log('WebSocket Error ' + error);
-                            };
+                            
                             indexPage(data);
                         } else {
                             errorp.style.display = "block";
