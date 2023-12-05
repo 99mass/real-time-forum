@@ -107,11 +107,13 @@ body{
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    background-color: var(--orangeff6934);
 }
 
 /* post */
  .corps .milieu .content-post-block{
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100vh; 
   padding-bottom: 50px;
 }
@@ -167,18 +169,15 @@ body{
 }
 .milieu .one-post-block .image-post{
     width: 350px;
-    height: 250px;
+    height: 350px;
     object-fit: cover;
     margin-right: 25px;
-    margin-left: 0px;
     box-sizing: border-box;
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
 }
 .milieu .one-post-block .image-post img{
     border-radius: 20px;
     width: 100%;
+    height: 100%;
 }
 
 .milieu .one-post-block .post-content{
@@ -277,6 +276,41 @@ body{
 .milieu .one-post-block .post-content .content-poster-like .content-poster .like-comment-block div {
     cursor: pointer;
 }
+
+.milieu .create-comment{
+  /* border: 2px solid var(--pinkf9dfc0); */
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  bottom: 0px;
+}
+.milieu .create-comment form{
+  width: 100%;
+  display: flex;
+ 
+}
+.milieu .create-comment form button{
+  border: none;
+  cursor: pointer;
+  width: 80px;
+}
+.milieu .create-comment textarea{
+  width: 100%;
+  height: 50px;
+  outline: none;
+  resize: none;
+  padding: 10px;
+  padding-right: 0px;
+  background: transparent;
+  color: var(--whiteffffff);
+  border: none;
+  border-bottom: 2px solid var(--whiteffffff);
+}
+.Id-post{
+
+}
+
+
 
 /* menu-droite */
 

@@ -28,6 +28,8 @@
         import { displayFormMecanisme,readMore ,displayFomPost,seeMore} from "./js/helper/diplayingMecanisme.js";
         import { addPostFrom } from "./js/pages/addPostForm.js";
         import { formAddPost } from "./js/post/formAddPost.js";
+        import { getComments } from "./js/comment/getComment.js";
+
         import {logOut} from "./js/auth/logOut.js";
 
 
@@ -71,14 +73,19 @@
 
                     const readMoreButton=document.querySelectorAll('.myBtn');
                     const cardDescription = document.querySelectorAll(".card-description");
-                    // const onePostBlock=document.querySelectorAll(".one-post-block");
+                    const onePostBlocks=document.querySelectorAll(".one-post-block");
                     seeMore(cardDescription,readMoreButton);
                   
-                    readMore(cardDescription,readMoreButton);
+                    readMore(cardDescription,readMoreButton,onePostBlocks);
                         
                     let btnLogOut=document.querySelector('.log-out');
                     logOut(btnLogOut);
 
+                    let comments = document.querySelectorAll('.comment');
+                    let IdPost = document.querySelectorAll('.Id-post');
+
+                    console.log(IdPost);
+                    getComments(comments,IdPost)
 
                 }
             }

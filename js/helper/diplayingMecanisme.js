@@ -21,19 +21,23 @@ const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
     }
 }
 
-const readMore=(cardDescription,readMoreButton)=>{
+const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
+    
     if (cardDescription) {
            for (let j = 0; j < cardDescription.length; j++) {
            const desc = cardDescription[j];
            readMoreButton[j].addEventListener("click", function () {
+            console.log(onePostBlocks[j]);
                desc.classList.toggle("expanded");
                readMoreButton[j].textContent = desc.classList.contains("expanded")
                ? "Read less"
                : "Read more";
                if (desc.classList.contains("expanded")) {
+                onePostBlocks[j].style.height="500px";
                 readMoreButton[j].textContent ="Read less";
                }else{
                 readMoreButton[j].textContent ="Read more";
+                onePostBlocks[j].style.height="400px";
 
                }
            });
