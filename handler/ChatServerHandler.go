@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"forum/controller"
 	"forum/helper"
 	"forum/models"
@@ -46,15 +45,15 @@ func (s *Server) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	var user *models.User
 	uid, _ := uuid.FromString(client.ID)
 	user, err = controller.GetUserByID(helper.DB, uid)
-	if err!= nil {
+	if err != nil {
 		helper.SendResponse(w, models.ErrorResponse{
-            Status:  "error",
-            Message: err.Error(),
-        }, http.StatusBadRequest)
-        return
+			Status:  "error",
+			Message: err.Error(),
+		}, http.StatusBadRequest)
+		return
 	}
 	client.UserName = user.Username
-	fmt.Println(client.Conn)
+	//fmt.Println(client.Conn)
 	// Add new client to the server's clients map
 	s.Clients[client.ID] = client
 

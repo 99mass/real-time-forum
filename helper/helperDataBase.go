@@ -3,6 +3,7 @@ package helper
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"forum/controller"
 	"forum/models"
 	"io/ioutil"
@@ -156,7 +157,9 @@ func GetDataTemplate(postID string,db *sql.DB, r *http.Request, User, Post, Post
 	}
 	for _, v := range datas.Datas {
 		v.CommentCount = len(v.Comment)
+		fmt.Println(v.CommentCount)
 	}
+	
 
 	return datas, nil
 }
