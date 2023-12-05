@@ -3,7 +3,6 @@ package handler
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gofrs/uuid"
@@ -18,10 +17,10 @@ func GetPostCategory(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ok, pageError := middlewares.CheckRequest(r, "/category", "post")
 		if !ok {
-			helper.SendResponse(w,models.ErrorResponse{
+			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
-                Message: "Method not allowed",
-			},pageError)
+				Message: "Method not allowed",
+			}, pageError)
 			return
 		}
 		var category models.GetPostsByCategoryRequest
@@ -78,12 +77,12 @@ func GetPostCategory(db *sql.DB) http.HandlerFunc {
 
 			homeData.Category = append(homeData.Category, category)
 
-			helper.SendResponse(w,homeData.Datas, http.StatusOK)
+			helper.SendResponse(w, homeData.Datas, http.StatusOK)
 		} else {
-			helper.SendResponse(w,models.ErrorResponse{
+			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
 				Message: "invalid category",
-			},http.StatusBadRequest)
+			}, http.StatusBadRequest)
 			return
 		}
 

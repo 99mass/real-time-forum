@@ -12,7 +12,7 @@ const header = (_header,userName)=>{
                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                 <span>${userName}</span>
             </div>
-            <button>
+            <button class="log-out">
                 <span>LogOut</span>
                 <img src="assets/logout-svgrepo-com.svg" alt="">
             </button>
