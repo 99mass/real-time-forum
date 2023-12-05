@@ -22,7 +22,7 @@ func Route(db *sql.DB) {
 	http.HandleFunc("/signout",helper.CorsMiddleware(handler.SignOutHandler(db)))
 	http.HandleFunc("/addpost", helper.CorsMiddleware(handler.AddPostHandler(db)))
 	//http.HandleFunc("/addpostmypage", handler.AddPostHandlerForMyPage(db))
-	http.HandleFunc("/category", handler.GetPostCategory(db))
+	http.HandleFunc("/category", helper.CorsMiddleware(handler.GetPostCategory(db)))
 	http.HandleFunc("/likepost", handler.LikePoste(db))
 	http.HandleFunc("/dislikepost", handler.DislikePoste(db))
 	http.HandleFunc("/likecomment", handler.LikeComment(db))
