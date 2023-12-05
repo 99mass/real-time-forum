@@ -28,6 +28,8 @@
         import { displayFormMecanisme,readMore ,displayFomPost,seeMore} from "./js/helper/diplayingMecanisme.js";
         import { addPostFrom } from "./js/pages/addPostForm.js";
         import { formAddPost } from "./js/post/formAddPost.js";
+        import {logOut} from "./js/auth/logOut.js";
+
 
 
 
@@ -74,7 +76,8 @@
                   
                     readMore(cardDescription,readMoreButton);
                         
-
+                    let btnLogOut=document.querySelector('.log-out');
+                    logOut(btnLogOut);
 
 
                 }
