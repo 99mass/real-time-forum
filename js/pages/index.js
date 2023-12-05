@@ -4,7 +4,10 @@ import {  body, Header,corpsContent,menuGauche,menuMilieu,menuDroite } from "../
 
 const indexPage=(data)=>{
     console.log(data);
-    console.log(data["Category"]);
+    // console.log("data : "+ data["Datas"][0]["Posts"]["Content"]);
+
+   let posts=data["Datas"] ?  data["Datas"] : ""; 
+
     let CatgoryArray=data["Category"];
     let Username=data["User"]["Username"];
     body.appendChild(Header);
@@ -21,7 +24,7 @@ const indexPage=(data)=>{
 
     header(_header,Username);
     leftBloc(_leftBloc,CatgoryArray);
-    middleBloc(_middleBloc);
+    middleBloc(_middleBloc,posts);
     rigthtBloc(_rigthtBloc);
     
 }
