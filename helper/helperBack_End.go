@@ -98,6 +98,7 @@ func GetPostForHome(db *sql.DB) ([]models.HomeDataPost, error) {
 		post.Categories = category
 		HomeData.Posts = post
 		HomeData.Comment = commentdetails
+		HomeData.CommentCount = len(comments)
 		HomeData.PostLike = nbrlikes
 		HomeData.PostDislike = nbrdislikes
 		HomeData.User = *user
