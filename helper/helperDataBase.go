@@ -3,7 +3,6 @@ package helper
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"forum/controller"
 	"forum/models"
 	"io/ioutil"
@@ -45,7 +44,7 @@ func Comment(content string, id int) {
 }
 
 // The function give all data the the template page needs
-func GetDataTemplate(postID string,db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Category bool) (models.Home, error) {
+func GetDataTemplate(postID string, db *sql.DB, r *http.Request, User, Post, Posts, ErrAuth, Category bool) (models.Home, error) {
 	var datas models.Home
 
 	//---Get All Posts-------//
@@ -155,11 +154,6 @@ func GetDataTemplate(postID string,db *sql.DB, r *http.Request, User, Post, Post
 			//RenderTemplate(w, "signin", "auth", datas)
 		}
 	}
-	for _, v := range datas.Datas {
-		v.CommentCount = len(v.Comment)
-		fmt.Println(v.CommentCount)
-	}
-	
 
 	return datas, nil
 }
