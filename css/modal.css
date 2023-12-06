@@ -14,6 +14,7 @@
   }
   
   .modal-content {
+    width: 30%;
     position: absolute;
     top: 15%;
     left: 50%;
@@ -23,7 +24,6 @@
     padding: 20px;
     padding-top: 10px;
     border: 1px solid #888;
-    width: fit-content;
   }
   
   .close {
@@ -40,12 +40,19 @@
     cursor: pointer;
   }
 
-
+  .modal .categoryContent{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
   label {
-    padding: 4px 2px;
+    /* padding: 4px 20px; */
     line-height: 190%;
     outline-style: none;
     transition: all .6s;
+  }
+  label:first-of-type {
+padding-left: 0px;
   }
   .categories-bolc  h3{
     margin-top: 20px ;

@@ -25,11 +25,12 @@
         import { displayFom } from "./js/pages/signUpSignIn.js";
         import {signInForm ,signUpForm} from "./js/auth/forms.js";
         import { indexPage } from "./js/pages/index.js";
-        import { displayFormMecanisme,readMore ,displayFomPost,seeMore} from "./js/helper/diplayingMecanisme.js";
+        import { displayFormMecanisme,readMore ,displayFomPost,seeMore,disPlayComment} from "./js/helper/diplayingMecanisme.js";
         import { addPostFrom } from "./js/pages/addPostForm.js";
         import { formAddPost } from "./js/post/formAddPost.js";
+        import { displayComment } from "./js/layout/corps.js";
         import { getComments } from "./js/comment/getComment.js";
-
+        import { addComment } from "./js/comment/addComment.js";
         import {logOut} from "./js/auth/logOut.js";
 
 
@@ -40,6 +41,7 @@
             async function checkUserSession() {
                 const data = await isSessionFoundBoolean();
                 if (data===undefined) {
+                    // afficher les formualire d'authentifications
                      displayFom();
 
                     const formSignIn=document.querySelector('.form-1');
@@ -51,42 +53,60 @@
                     // gerer la navigation entre les deux formulaire
                     displayFormMecanisme(formSignUp,formSignIn,row);
                     
-                
-                if(formSignIn) signInForm(_ContentForms,formSignIn,formSignUp,spinner,linkApi)
-                if(formSignUp) signUpForm(_ContentForms,formSignUp,formSignIn,spinner,linkApi)
+                    // enoyer les donnes du formulaire
+                    if(formSignIn) signInForm(_ContentForms,formSignIn,formSignUp,spinner,linkApi)
+                    if(formSignUp) signUpForm(_ContentForms,formSignUp,formSignIn,spinner,linkApi)
              
                 }else{
-                    indexPage(data); //afficher l'interface 
+                        //afficher l'interface des posts
+                    indexPage(data); 
 
                     // add post fom et  methode
                     const myModal=document.querySelector('#myModal');
                     const btn = document.querySelector(".create-post-btn");
-                    
+                    // creer le formulaire de creation de post et le cacher
                     addPostFrom(myModal,data);
                     
                     const span = document.getElementsByClassName("close")[0];
+                    // affciher le formulaire de creation de post
                     displayFomPost(btn,myModal,span)
 
                    const formCreatPost= document.querySelector('.form-creat-post');
+                    //    ajouter une post
                    formAddPost(formCreatPost);
 
 
                     const readMoreButton=document.querySelectorAll('.myBtn');
                     const cardDescription = document.querySelectorAll(".card-description");
                     const onePostBlocks=document.querySelectorAll(".one-post-block");
-                    seeMore(cardDescription,readMoreButton);
-                  
+                    // tronc long text post
+                    seeMore(cardDescription,readMoreButton);                  
                     readMore(cardDescription,readMoreButton,onePostBlocks);
                         
+                    // log out 
                     let btnLogOut=document.querySelector('.log-out');
                     logOut(btnLogOut);
 
                     let comments = document.querySelectorAll('.comment');
                     let IdPost = document.querySelectorAll('.Id-post');
+                    let createCommentForm=document.querySelectorAll('.create-comment');
+                    let blocComment=document.querySelectorAll('.bloc-comment');                
+                    let lastPost=document.querySelector('.last-post');
+                    let lastFormComment=document.querySelector('.last-form-comment');
+                    let lastBlocComment=document.querySelector('.last-bloc-comment');
+// console.log(lastBlocComment.children);
+                    // gerer l'affichage des commenataires
+                    disPlayComment(comments,createCommentForm,lastPost,lastFormComment,lastBlocComment);
 
-                    console.log(IdPost);
-                    getComments(comments,IdPost)
+                    // recuperer et affcher les  commentaires
+                    getComments(comments, IdPost,createCommentForm, function(_data) {                        
+                        displayComment(blocComment,_data,createCommentForm,lastBlocComment);                        
+                    });
 
+                    // ajouter un commentair
+                    const formComment=document.querySelectorAll('.form-comment');
+                    console.log(formComment);
+                     addComment(formComment);
                 }
             }
 

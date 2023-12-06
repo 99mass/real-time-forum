@@ -16,7 +16,6 @@ const middleBloc=(_middleBloc,_posts)=>{
     _middleBloc.appendChild(createPostMenue());
 
     _middleBloc.appendChild(contentPostBloc(_posts));
-    // _middleBloc.appendChild(createComment());
 
 
 }
@@ -89,17 +88,7 @@ function createPostMenue() {
     return _div;
 }
 
-function createComment() {
-    let _div=  document.createElement('div');
-    _div.className="create-comment";
-    // _div.innerHTML=`<span>
-    //                     <img src="assets/postcard-svgrepo-com.svg" alt="">
-    //                     <span>My Posts</span>
-    //                 </span>
-    //                 <button class="create-post-btn">Create Post</button>
-    // `;
-    return _div;
-}
+
 
 function contentPostBloc(_posts) {
   
@@ -110,7 +99,7 @@ function contentPostBloc(_posts) {
 }
 
 function posts(_posts) {
-    var posts="";
+    var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
         const title=post["Posts"]["Title"];
@@ -121,19 +110,24 @@ function posts(_posts) {
         const commentCount=post["CommentCount"];
         const postLikeCount=post["PostLike"];
         const postDislikCount=post["PostDislike"];
+        const userId=post["Posts"]["UserID"];
         const postId=post["Posts"]["ID"];
-console.log(postId);
-        // recupere es cqtory du post
+        if (i===_posts.length-1 ){
+            lastPost="last-post";
+            lastFormComment="last-form-comment";
+            lastBlocComment="last-bloc-comment";
+        }
+
+        // recupere les categorie du post
         let NameCategories="";
         for (let j = 0; j < Categories.length; j++) {
             const NameCategory = Categories[j]["NameCategory"];
             NameCategories+=`<span>${NameCategory}</span>`;
         }
         
-        // console.log(`post ${i} : ${post}`);
         let image=Image ? `<div class="image-post"><img src="/static/image/${Image}" alt=""></div>` : "";
         
-     posts += `<div class="one-post-block">
+     posts += `<div class="one-post-block ${lastPost}">
                 ${image}
                 <div class="post-content">
                     <h2>${title}</h2>
@@ -159,11 +153,17 @@ console.log(postId);
                 
                 </div>
             </div> 
-         <div class="create-comment">
-         <form>
-            <textarea type="text" name="Content" id="Content" placeholder="Comment here..."  ></textarea>  
-           <button type="submite"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
+         <div class="create-comment ${lastFormComment}"  style="display: none;">
+         <form class="form-comment" method="post">
+            <input type="hidden" name ="userId" value="${userId}" />
+            <input type="hidden" name ="postId" value="${postId}" />
+
+            <textarea type="text" name="ContentComment" id="Content" placeholder="Comment here..."  ></textarea>  
+           <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
          </form>
+         </div>
+         <div class="bloc-comment ${lastBlocComment}" style="display: none;" >
+             ${postId}
          </div>
     ` ;
     NameCategories="";
@@ -172,5 +172,65 @@ console.log(postId);
     return posts
 }
 
+function displayComment(bloComment ,comments,createCommentForm) {
+    if (comments.length>0) {
+    for (let c = 0; c < bloComment.length; c++) {
+        var _comments="";
+            const bloc=bloComment[c];
+            let idPost    
+            var  _comments="";
+           
+                
+            for (let i = 0; i < comments.length; i++) {
+                const comment = comments[i];      
+                const ComContent= comment["Comment"]["Content"];
+                const ComCreatedAt= comment["Comment"]["CreatedAt"];
+                const ComPostId= comment["Comment"]["PostID"];
+                idPost=ComPostId;
+                const ComUserId= comment["Comment"]["UserID"];
+                const ComLike=comment["CommentLike"];
+                const ComDislike=comment["CommentDislike"];
 
-export {leftBloc,middleBloc,rigthtBloc}
+
+                _comments+=`<div >
+                            <div class="comment-text "><pre class="card-description">${ComContent}</pre></div>
+                            <div class="content-comment-like">
+                            <div class="content-comment">
+                                <div class="comment">                                  
+                                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                                    <div>
+                                        <p><span>Mass</span> </p>
+                                        <p>2 weeks ago</p>
+                                    </div>
+                                </div>
+                                <div class="like-comment-block">
+                                    <div>${ComDislike} dislikes</div>
+                                    <div>${ComLike} Likes</div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        <hr>
+                `;
+            }   
+            if (idPost==bloc.textContent.trim()) {
+                if (bloc.style.display==="none") {
+                    createCommentForm[c].style.display="block";
+                    bloc.style.display="block";
+                    bloc.innerHTML=  _comments ;
+                }
+            }else{
+                if (bloc.style.display==="block") {                    
+                    bloc.textContent=  idPost ;
+                    createCommentForm[c].style.display="none";
+                    bloc.style.display="none";
+                }
+            }
+        }       
+        
+    }
+    
+}
+
+
+export {leftBloc,middleBloc,rigthtBloc,displayComment}

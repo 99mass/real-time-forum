@@ -57,8 +57,8 @@ body{
 .corps .menu-gauche div{
     display: flex;
     justify-content: center;
-   /* width: 30%; */
-   padding: 10px 15px;
+   width: 60%;
+   padding: 10px 0px;
    color: var(--whiteffffff);
    background-color: var(--black-1e252b);
    font-size: 22px;
@@ -115,7 +115,6 @@ body{
   overflow-y: auto;
   overflow-x: hidden;
   height: 100vh; 
-  padding-bottom: 50px;
 }
 
 
@@ -164,8 +163,9 @@ body{
     z-index: -1;
 }
 
-.milieu .one-post-block:last-of-type{
+.last-post{
     margin-bottom: 400px;
+
 }
 .milieu .one-post-block .image-post{
     width: 350px;
@@ -185,19 +185,23 @@ body{
    height: 80%;
    margin-top: 25px;
    margin-right: 20px;
+ 
    color: var(--whiteffffff);
    overflow-y: hidden;
    
 }
-.milieu .one-post-block .post-content pre{
+.milieu pre{
   overflow-x: scroll;
+  
 }
-.milieu .one-post-block .post-content .post-text {
+
+.milieu .post-text {
   margin-top: 20px;
   font-size: 18px;
     transition: max-height 0.7s;
 }
 .myBtn{
+  margin-top: 5px ;
   padding: 5px 10px;
   cursor: pointer;
   background-color: var(--orangeff6934);
@@ -227,13 +231,15 @@ body{
     padding: 10px;
     border-radius: 5px;
 }
-.milieu .one-post-block .post-content .content-poster-like {
+.milieu .one-post-block .post-content .content-poster-like,
+.content-comment-like {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100px;    
 }
-.milieu .one-post-block .post-content .content-poster-like .content-poster{
+.milieu .one-post-block .post-content .content-poster-like .content-poster,
+.content-comment{
     width: 100%;
     display: flex;
     align-items: center;
@@ -241,22 +247,28 @@ body{
     height: 100px;
 }
 
-.milieu .one-post-block .post-content .content-poster-like .content-poster .poster{
+.milieu .one-post-block .post-content .content-poster-like .content-poster .poster,
+.comment{
     width: 200px;
     display: flex;
 }
-.milieu .one-post-block .post-content .content-poster-like .content-poster .poster img{
-    height: 50px;
+.milieu .one-post-block .post-content .content-poster-like .content-poster .poster img,
+.comment img{
+    height: 40px;
     border-radius: 100px;
 }
-.milieu .one-post-block .post-content .content-poster-like .content-poster .poster div{
+.milieu .one-post-block .post-content .content-poster-like .content-poster .poster div,
+.comment div{
    display: flex;
    flex-direction: column;
    justify-content: space-evenly;
+  
 }
-.milieu .one-post-block .post-content .content-poster-like .content-poster .poster div p:first-of-type {
+.milieu .one-post-block .post-content .content-poster-like .content-poster .poster div p:first-of-type
+.comment div p:first-of-type {
     display: flex;
     align-items: center;
+    font-weight: bold;
 }
 .milieu .one-post-block .post-content .content-poster-like .content-poster .poster div p:first-of-type {
    font-weight: bold;
@@ -269,12 +281,15 @@ body{
 } 
 
 .milieu .one-post-block .post-content .content-poster-like .content-poster .like-comment-block{
-   display: flex;
+  padding: 0px; 
+  display: flex;
+   align-items: center;
    justify-content: space-between;
    width: 50%;
 }
 .milieu .one-post-block .post-content .content-poster-like .content-poster .like-comment-block div {
     cursor: pointer;
+    width: fit-content;
 }
 
 .milieu .create-comment{
@@ -306,9 +321,63 @@ body{
   border: none;
   border-bottom: 2px solid var(--whiteffffff);
 }
-.Id-post{
+.bloc-comment{
+color: var(--whiteffffff);
+  height: fit-content;
+  padding: 10px;
+  
+}
+
+
+.bloc-comment .comment-text{
+  padding-left: 10px;
+  margin-top: 20px;
+  font-size: 18px;
+  transition: max-height 0.7s;
+}
+.like-comment-block{
+  display: flex;
+  justify-content: space-between;
+  width: fit-content;
 
 }
+
+.like-comment-block div:first-of-type{
+  margin-right: 10px;
+}
+.bloc-comment .like-comment-block div{
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+.milieu pre::-webkit-scrollbar{
+  width: 1px;
+  height: 4px;
+}
+
+.milieu pre::-webkit-scrollbar-thumb {
+  background: var(--back262d34);
+  border: 0px none var(--black-1e252b);
+  border-radius: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
