@@ -73,7 +73,11 @@ func GetPostCategory(db *sql.DB) http.HandlerFunc {
 				}, http.StatusBadRequest)
 				return
 			}
+
 			homeData.Datas = datas
+			for i := range homeData.Datas {
+				homeData.Datas[i].CommentCount = len(homeData.Datas[i].Comment)
+			}
 
 			homeData.Category = append(homeData.Category, category)
 
