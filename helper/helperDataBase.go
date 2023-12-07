@@ -3,6 +3,7 @@ package helper
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"forum/controller"
 	"forum/models"
 	"io/ioutil"
@@ -64,7 +65,7 @@ func GetDataTemplate(postID string, db *sql.DB, r *http.Request, User, Post, Pos
 		ID, err := uuid.FromString(postID)
 		if err != nil {
 			//ErrorPage(w, http.StatusInternalServerError)
-			return datas, err
+			return datas, errors.New("incorrect request")
 		}
 		postData, errPD := GetPostDetails(db, ID)
 		if errPD != nil {
