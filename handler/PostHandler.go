@@ -29,7 +29,7 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 		var comment models.Comment
 		var commentRequest models.AddCommentRequest
 		err := json.NewDecoder(r.Body).Decode(&commentRequest)
-		if err != nil {
+		if err != nil || commentRequest.PostID == "" || commentRequest.UserID == "" {
 			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
 				Message: "incorrect json format",
@@ -41,7 +41,6 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 		userID, errU := uuid.FromString(commentRequest.UserID)
 		Content := commentRequest.Content
 		Content = strings.TrimSpace(Content)
-
 		if errP != nil || errU != nil {
 			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
@@ -49,6 +48,7 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
+
 		homeDataSess, err := helper.GetDataTemplate(commentRequest.PostID, db, r, true, false, false, false, false)
 		if err != nil {
 			helper.SendResponse(w, models.ErrorResponse{
@@ -57,6 +57,7 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
+
 		if !homeDataSess.Session {
 			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
