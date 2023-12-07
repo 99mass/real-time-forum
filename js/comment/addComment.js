@@ -9,9 +9,6 @@ const addComment=(formAddComment)=>{
             let postId = document.querySelectorAll('input[name="postId"]')[i].value.trim();
             let userId = document.querySelectorAll('input[name="userId"]')[i].value.trim();
             let content = document.querySelectorAll('textarea[name="ContentComment"]')[i].value.trim();
-            if (content==="") {
-                alert('The message is required');
-            }
             let data = {
                 PostID: postId,
                 UserID: userId,
@@ -25,11 +22,14 @@ const addComment=(formAddComment)=>{
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(data),
-    
                 });
-    
+            
                 if(response.status === 200){                   
                     window.location.reload();
+                }else{
+                    const data = await response.json();
+                    alert('Error : ' + data.message);
+                    return;
                 }
                 
             } catch (error) {

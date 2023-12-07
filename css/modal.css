@@ -10,7 +10,6 @@
     height: 100%;
     /* padding: 0px 20%; */
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
   }
   
   .modal-content {

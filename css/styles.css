@@ -1,3 +1,8 @@
+@import 'auth.css';
+@import 'header.css';
+@import 'modal.css';
+@import 'spinner.css';
+
 :root{
     --black-1e252b:#1e252b;
     --back262d34:#262d34;
@@ -366,7 +371,11 @@ color: var(--whiteffffff);
   border-radius: 50px;
 }
 
-
+.err{
+  padding-top: 200px;
+  text-align: center;
+  color: white;
+}
 
 
 
