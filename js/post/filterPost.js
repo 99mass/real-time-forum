@@ -20,7 +20,7 @@ const filterPost=(contenCatId,categoryID,callback)=>{
                     console.log('Error:' + response["message"]);
                     return;
                 }
-                return response.json()
+                return response.json();
             })
             .then(data => { 
                 callback(data);
@@ -32,6 +32,8 @@ const filterPost=(contenCatId,categoryID,callback)=>{
     }
 
 }
+
+
 
 export{
     filterPost

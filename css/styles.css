@@ -371,7 +371,7 @@ color: var(--whiteffffff);
   border-radius: 50px;
 }
 
-.err{
+#err{
   padding-top: 200px;
   text-align: center;
   color: white;

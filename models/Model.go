@@ -41,6 +41,10 @@ type OnePostRequest struct {
 	PostID string `json:"postid"`
 }
 
+type OneCommentRequest struct {
+	CommentID string `json:"commentid"`
+}
+
 type AddCommentRequest struct {
 	PostID  string `json:"postid"`
 	UserID  string `json:"userid"`

@@ -25,11 +25,11 @@
         import { addPostFrom } from "./js/pages/addPostForm.js";
         import { formAddPost } from "./js/post/formAddPost.js";
         
-        import { displayComment,postsFilter } from "./js/layout/corps.js";
+        import { filterPost } from "./js/post/filterPost.js";
         import { getComments } from "./js/comment/getComment.js";
         import { addComment } from "./js/comment/addComment.js";
         import {logOut} from "./js/auth/logOut.js";
-        import { filterPost } from "./js/post/filterPost.js";
+        import { displayComment,postsFilter,filterDisplayComment } from "./js/layout/corps.js";
 
 
 
@@ -111,20 +111,29 @@
                     const contenCatId=document.querySelectorAll('.contenCatId');
                     const categoryId=document.querySelectorAll('.categoryId');
                     const contentPostBlock=document.querySelector('.content-post-block');
-                    // console.log(contentPostBlock);
-
-                    
+                   
+                    // if (contentPostBlock.textContent==="") contentPostBlock.innerHTML="<p class='err'>NO POST FOUND </p>"
+                      
                     filterPost(contenCatId,categoryId, function(_data) { 
-                
                         console.log(_data);
-                        console.log("comment ::: "+_comments.length);
-                        console.log(comments);
                         contentPostBlock.innerHTML=""
-                        contentPostBlock.innerHTML=postsFilter(_data);
-                       
-                        disPlayComment(comments,createCommentForm,lastPost,lastFormComment,lastBlocComment);                       
-                        if (contentPostBlock.textContent==="") contentPostBlock.innerHTML="<p class='err'>NO POST FOUND </p>"
+                        let div= document.createElement('div');
+                        div.innerHTML= _data ? postsFilter(_data): contentPostBlock.innerHTML="<p id='err'>NO POST FOUND </p>"
+                      
+                        contentPostBlock.appendChild(div);
+                      
+                        let _comments=document.querySelectorAll('.one-post-block .post-content .content-poster-like .content-poster .like-comment-block .comment')
+                        let _createCommentForm=document.querySelectorAll('.create-comment');
+                        let _blocComment=document.querySelectorAll('.bloc-comment');                
+                        let _lastPost=document.querySelector('.last-post');
+                        let _lastFormComment=document.querySelector('.last-form-comment');
+                        let _lastBlocComment=document.querySelector('.last-bloc-comment');
+                     
+                        disPlayComment(_comments,_createCommentForm,_lastPost,_lastFormComment,_lastBlocComment);
+                        filterDisplayComment(_blocComment,_data,_createCommentForm,_lastBlocComment);                        
+                         
                     })
+                 
 
                 }
             }

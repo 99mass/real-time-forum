@@ -316,4 +316,69 @@ const postsFilter=(_posts) => {
     return posts
 }
 
-export {leftBloc,middleBloc,rigthtBloc,displayComment,postsFilter}
+const  filterDisplayComment=(bloComment ,comments,createCommentForm,_lastBlocComment)=> {
+    if (comments.length>0) {
+        console.log(bloComment);
+    for (let c = 0; c < bloComment.length; c++) {
+        const bloc=bloComment[c];
+            var _comments="";
+            let idPost    
+            var  _comments="";
+            
+            const comm=comments[c]["Comment"];
+                
+            for (let i = 0; i < comm.length; i++) {
+                const comment = comm[i];     
+                
+                const ComContent= comment["Comment"]["Content"];
+                const ComCreatedAt= comment["Comment"]["CreatedAt"];
+                const ComPostId= comment["Comment"]["PostID"];
+                idPost=ComPostId;
+                const ComUserId= comment["Comment"]["UserID"];
+                const ComLike=comment["CommentLike"];
+                const ComDislike=comment["CommentDislike"];
+                const ComUserName=comment["User"]["Username"];             
+               
+                _comments+=`<div >
+                            <div class="comment-text "><pre class="card-description">${ComContent}</pre></div>
+                            <div class="content-comment-like">
+                            <div class="content-comment">
+                                <div class="comment">                                  
+                                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                                    <div>
+                                        <p><span>${ComUserName}</span> </p>
+                                        <p>2 weeks ago</p>
+                                    </div>
+                                </div>
+                                <div class="like-comment-block">
+                                    <div>${ComDislike} dislikes</div>
+                                    <div>${ComLike} Likes</div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        <hr>
+                `;
+            }   
+            if (idPost==bloc.textContent.trim()) {
+                if (bloc.style.display==="none") {
+                    createCommentForm[c].style.display="block";
+                    bloc.style.display="block";
+                    bloc.innerHTML=  _comments ;
+                }
+            }else{
+                if (bloc.style.display==="block") {                    
+                    bloc.textContent=  idPost ;
+                    createCommentForm[c].style.display="none";
+                    bloc.style.display="none";
+                    
+                }
+            }
+            
+        }       
+        
+    }
+    
+}
+
+export {leftBloc,middleBloc,rigthtBloc,displayComment,postsFilter,filterDisplayComment}

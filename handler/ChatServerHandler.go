@@ -27,6 +27,7 @@ type Message struct {
 	Timestamp string `json:"timestamp"`
 }
 
+
 func (s *Server) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	// Upgrade initial GET request to a websocket
 	ws, err := websocket.Upgrade(w, r, nil, 1024, 1024)

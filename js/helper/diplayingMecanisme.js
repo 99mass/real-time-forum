@@ -79,7 +79,7 @@ const seeMore=(cardDescription,readMoreButton)=>{
 const disPlayComment=(comments,createCommentForm,lastPost,lastFormComment,lastBlocComment)=>{
     for (let k = 0; k < comments.length; k++) {
         comments[k].addEventListener("click", function () {
-            alert('yes')
+            // alert('yes')
             if (k!== comments.length-1 && createCommentForm[k].style.display==="none" ) {
                 createCommentForm[k].style.display="block";              
             }else{

@@ -581,51 +581,80 @@ func LikePoste(db *sql.DB) http.HandlerFunc {
 
 		ok, errorPage := middlewares.CheckRequest(r, "/likepost", "post")
 		if !ok {
-			helper.ErrorPage(w, errorPage)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "Method not allowed",
+			},errorPage)
 			return
 		}
 
 		//check the session and get the user
 		sessionID, errsess := helper.GetSessionRequest(r)
 		if errsess != nil {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+                Message: errsess.Error(),
+			},http.StatusBadRequest)
 			return
 		} else {
 
 			session, errgets := controller.GetSessionByID(db, sessionID)
 			if errgets != nil || &session == nil {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: errgets.Error(),
+				},http.StatusBadRequest)
 				return
 			}
 			User, errgetu := controller.GetUserBySessionId(sessionID, db)
 			if errgetu != nil {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: errgetu.Error(),
+				},http.StatusBadRequest)
 				return
 			}
 			like.UserID = User.ID
 		}
-
-		postID, err := helper.StringToUuid(r, "post_id")
+		var PostToLike models.OnePostRequest
+		err := json.NewDecoder(r.Body).Decode(&PostToLike)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "incorrect json request",
+			},http.StatusBadRequest)
+			return
+		}
+		postID, err := uuid.FromString(PostToLike.PostID)
+		if err != nil {
+			helper.SendResponse(w,models.ErrorResponse{
+			Status: "error",
+			Message: "incorrect post ID",
+			},http.StatusBadRequest)
 			return
 		}
 
 		_, err = controller.GetPostByID(db, postID)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "The post does not exist",
+			},http.StatusBadRequest)
 			return
 		}
 
 		like.PostID = postID
 		_, err = controller.CreatePostLike(db, like)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusInternalServerError)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "the server can't create the post",
+			},http.StatusInternalServerError)
 			return
 		}
-		route := r.FormValue("route")
+		//route := r.FormValue("route")
 		//fmt.Println(route)
-		http.Redirect(w, r, "/"+route, http.StatusSeeOther)
+		helper.SendResponse(w,like,http.StatusOK)
 
 	}
 }
@@ -692,52 +721,80 @@ func LikeComment(db *sql.DB) http.HandlerFunc {
 
 		ok, errorPage := middlewares.CheckRequest(r, "/likecomment", "post")
 		if !ok {
-			helper.ErrorPage(w, errorPage)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "Method not allowed",
+			},errorPage)
 			return
 		}
 
 		//check the session and get the user
 		sessionID, errsess := helper.GetSessionRequest(r)
 		if errsess != nil {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+                Message: errsess.Error(),
+			},http.StatusBadRequest)
 			return
 		} else {
 
 			session, errgets := controller.GetSessionByID(db, sessionID)
 			if errgets != nil || &session == nil {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: errgets.Error(),
+				},http.StatusBadRequest)
 				return
 			}
 			User, errgetu := controller.GetUserBySessionId(sessionID, db)
 			if errgetu != nil {
-
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				helper.SendResponse(w,models.ErrorResponse{
+					Status: "error",
+					Message: errgetu.Error(),
+				},http.StatusBadRequest)
 				return
 			}
 			like.UserID = User.ID
 		}
-
-		commentID, err := helper.StringToUuid(r, "comment_id")
+		var CommentTolike models.OneCommentRequest
+		err := json.NewDecoder(r.Body).Decode(&CommentTolike)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
-			return
+			helper.SendResponse(w,models.ErrorResponse{
+            Status: "error",
+            Message: "incorrect json request",
+            },http.StatusBadRequest)
+            return
+		}
+		commentID, err := uuid.FromString(CommentTolike.CommentID)
+		if err != nil {
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "incorrect comment ID",
+				},http.StatusBadRequest)
+				return
 		}
 
 		_, err = controller.GetCommentByID(db, commentID)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusBadRequest)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "The comment does not exist",
+			},http.StatusBadRequest)
 			return
 		}
 
 		like.CommentID = commentID
 		_, err = controller.CreateCommentLike(db, like)
 		if err != nil {
-			helper.ErrorPage(w, http.StatusInternalServerError)
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "the server can't create the comment",
+			},http.StatusInternalServerError)
 			return
 		}
-		route := r.FormValue("route")
+		//route := r.FormValue("route")
 
-		http.Redirect(w, r, "/"+route, http.StatusSeeOther)
+		helper.SendResponse(w,like,http.StatusOK)
 
 	}
 }
