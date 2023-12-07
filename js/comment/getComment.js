@@ -6,6 +6,7 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
         const comment = _comments[i];
         let postId = IdPost[i].textContent;
         comment.addEventListener("click", function () {
+            // console.log("ok");
             fetch(`${linkApi}post`, {
                 method: 'POST',
                 headers: {
@@ -14,13 +15,13 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
                 body: JSON.stringify({ PostID: postId })
             })
                 .then(response => {
-                    if (response.status === 200) {
-                        console.log('ok');
+                    if (response.status !== 200) {
+                      console.log('Error:' + response["message"]);
+                      return;
                     }
                     return response.json()
                 })
                 .then(data => {
-                    console.log(data);
                     callback(data);
                 })
                 .catch((error) => {
