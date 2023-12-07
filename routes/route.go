@@ -9,10 +9,7 @@ import (
 )
 
 func Route(db *sql.DB) {
-	server := &handler.Server{
-		Clients: make(map[string]*handler.Client),
-	}
-	http.HandleFunc("/ws", helper.CorsMiddleware(server.HandleConnections))
+	
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./index.html")
 	})

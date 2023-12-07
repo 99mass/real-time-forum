@@ -5,17 +5,6 @@ import { body, Header, corpsContent, menuGauche, menuMilieu, menuDroite } from "
 const indexPage = (data) => {
     console.log(data);
 
-    var connection = new WebSocket('ws://localhost:8080/ws?id=' + data["User"]["ID"]);
-    console.log(connection)
-    connection.onopen = function () {
-        console.log('Connected!');
-    };
-
-    connection.onerror = function (error) {
-        console.log('WebSocket Error ' + error);
-    };
-    // console.log("data : "+ data["Datas"][0]["Posts"]["Content"]);
-
     let posts = data["Datas"] ? data["Datas"] : "";
 
     let CatgoryArray = data["Category"];
