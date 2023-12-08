@@ -21,6 +21,10 @@ import { addComment } from "./comment/addComment.js";
 
 import { liskePost } from "./likeDislike/post/like.js";
 import { DisLiskePost } from "./likeDislike/post/dislike.js";
+import { liskeComment } from "./likeDislike/comment/like.js";
+import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
+
+
 
 
 
@@ -94,13 +98,24 @@ const main=()=>{
             // recuperer et affcher les  commentaires
             getComments(comments, IdPost,createCommentForm, function(_data) {                        
                 displayComment(blocComment,_data,createCommentForm,lastBlocComment);                        
+               
+                // like an dislike Comments
+                const likeComment=document.querySelectorAll('.like-comment');
+                const dislikeComment=document.querySelectorAll('.dislike-comment');
+                const likeCommentId=document.querySelectorAll('.id-comment-like');
+                const dislikeCommentId=document.querySelectorAll('.id-comment-dislike');
+                const likeCommentScore=document.querySelectorAll('.scorecommentLike');
+                const dislikeCommentScore=document.querySelectorAll('.scorecommentDisLike');
+    
+                liskeComment(likeComment,likeCommentId,likeCommentScore,dislikeCommentScore,dislikeComment);
+                DisLiskeComment(dislikeComment,dislikeCommentId,likeCommentScore,dislikeCommentScore,likeComment);
             });
 
             // ajouter un commentair
             const formComment=document.querySelectorAll('.form-comment');
             addComment(formComment);
 
-            // like an dislike
+            // like an dislike Posts
             const likePost=document.querySelectorAll('.like-post');
             const dislikePost=document.querySelectorAll('.dislike-post');
             const likePostId=document.querySelectorAll('.id-post-like');
@@ -158,8 +173,7 @@ function filterByCategory() {
                 const categoryId=document.querySelectorAll('.categoryId');
                 const contentPostBlock=document.querySelector('.content-post-block');
     
-               filterPost(contenCatId,categoryId, function(_data) { 
-                    console.log(_data);
+               filterPost(contenCatId,categoryId, function(_data) {                 
                     // nettoyer et avec les posts filtre
                     contentPostBlock.innerHTML=""
                     let div= document.createElement('div');
@@ -197,6 +211,19 @@ function filterByCategory() {
         
                     liskePost(likePost,likePostId,likePostScore,dislikePostScore,dislikePost);
                     DisLiskePost(dislikePost,dislikePostId,likePostScore,dislikePostScore,likePost);
+    
+
+
+                    // like an dislike Comments
+                    const likeComment=document.querySelectorAll('.like-comment');
+                    const dislikeComment=document.querySelectorAll('.dislike-comment');
+                    const likeCommentId=document.querySelectorAll('.id-comment-like');
+                    const dislikeCommentId=document.querySelectorAll('.id-comment-dislike');
+                    const likeCommentScore=document.querySelectorAll('.scorecommentLike');
+                    const dislikeCommentScore=document.querySelectorAll('.scorecommentDisLike');
+    
+                    liskeComment(likeComment,likeCommentId,likeCommentScore,dislikeCommentScore,dislikeComment);
+                    DisLiskeComment(dislikeComment,dislikeCommentId,likeCommentScore,dislikeCommentScore,likeComment);
     
     
                  });

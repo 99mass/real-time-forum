@@ -22,7 +22,6 @@ const formAddPost=(formCreatPost)=>{
                 return;
             }
         }
-        console.log(selectedCategories);
         let reader = new FileReader();
         reader.onloadend = function() {
             let base64File = reader.result;
@@ -53,7 +52,6 @@ const formAddPost=(formCreatPost)=>{
                 if (data["message"]) {                    
                     alert(data["message"]);
                 }
-                console.log(data)
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -71,9 +69,3 @@ const formAddPost=(formCreatPost)=>{
 }
 
 export{formAddPost}
-
-
-
-// const  errorPost=document.querySelector('.error-post');
-// errorPost.style.diplay="block";
-// errorPost.innerHTML='Content is required';

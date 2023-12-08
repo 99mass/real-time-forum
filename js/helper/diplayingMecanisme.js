@@ -32,7 +32,6 @@ const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
            for (let j = 0; j < cardDescription.length; j++) {
            const desc = cardDescription[j];
            readMoreButton[j].addEventListener("click", function () {
-            console.log(onePostBlocks[j]);
                desc.classList.toggle("expanded");
                readMoreButton[j].textContent = desc.classList.contains("expanded")
                ? "Read less"

@@ -1,11 +1,14 @@
+import { timeAgo } from "../helper/utils.js";
+
 
 const postsFilter=(_posts) => {
-    console.log(_posts);
     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
         const title=post["Posts"]["Title"];
         const content=post["Posts"]["Content"];
+        const CreatedAtPost=timeAgo(post["Posts"]["CreatedAt"]);
+      
         const Categories=post["Posts"]["Categories"];
         const Username=post["User"]["Username"];
         const Image=post["Posts"]["Image"];
@@ -43,12 +46,18 @@ const postsFilter=(_posts) => {
             const spComment = specifiqueComment[k];  
             
             const ComContent= spComment["Comment"]["Content"];
-            const ComCreatedAt= spComment["Comment"]["CreatedAt"];
+            const ComCreatedAt=timeAgo(spComment["Comment"]["CreatedAt"]);
             const ComPostId= spComment["Comment"]["PostID"];
             const ComUserId= spComment["Comment"]["UserID"];
             const ComLike=spComment["CommentLike"];
+            const ComId= spComment["Comment"]["ID"];
             const ComDislike=spComment["CommentDislike"];
-            const ComUserName=spComment["User"]["Username"];             
+            const ComUserName=spComment["User"]["Username"];    
+            const stateLikedCom=spComment["Liked"];
+            const stateDisLikedCom=spComment["Disliked"];
+            let classColorLiked=stateLikedCom ? "like-post-color" : "";
+            let classColorDisliked=stateDisLikedCom  ? "dislike-post-color" : "";
+            
             _comme+=`<div >
                         <div class="comment-text "><pre class="card-description">${ComContent}</pre></div>
                         <div class="content-comment-like">
@@ -57,12 +66,12 @@ const postsFilter=(_posts) => {
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                 <div>
                                     <p><span>${ComUserName}</span> </p>
-                                    <p>2 weeks ago</p>
+                                    <p>${ComCreatedAt}</p>
                                 </div>
                             </div>
                             <div class="like-comment-block">
-                                <div>${ComDislike} dislikes</div>
-                                <div>${ComLike} Likes</div>
+                            <div class=" ${classColorDisliked} dislike-comment"> <span class="scorecommentDisLike">${ComDislike}</span> dislikes <span class="id-comment-dislike" style="display: none;"> ${ComId}</span></div>
+                            <div class=" ${classColorLiked } like-comment"><span class="scorecommentLike">${ComLike}</span> likes<span class="id-comment-like"  style="display: none;"> ${ComId}</span></div>
                             </div>
                         </div>
                     </div>
@@ -86,7 +95,7 @@ const postsFilter=(_posts) => {
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                 <div>
                                     <p><span>${Username}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
-                                    <p>3 weeks ago</p>
+                                    <p>${CreatedAtPost}</p>
                                 </div>
                             </div>
                             <div class="like-comment-block">

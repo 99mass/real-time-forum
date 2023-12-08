@@ -4,42 +4,41 @@ import { isGoodNumber } from "../../helper/utils.js";
 
 
 
-const liskePost=(likePost,likePostId,likePostScore,dislikePostScore,dislikePost)=>{
+const liskeComment=(likeComment,likeCommentId,likeCommentScore,dislikeCommentScore,dislikeComment)=>{
    
-    for (let i = 0; i < likePost.length; i++) {
-        const btnLikePost = likePost[i];
+    for (let i = 0; i < likeComment.length; i++) {
+        const btnlikeComment = likeComment[i];
 
         const handleClick = async function() {
-            alert('ok')
-            let postID=likePostId[i].textContent.trim();
+            let commentID=likeCommentId[i].textContent.trim();
             try {
-                const response = await fetch(`${linkApi}likepost`, {
+                const response = await fetch(`${linkApi}likecomment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({PostID: postID}),
+                    body: JSON.stringify({CommentID: commentID}),
 
                 });
 
                 if(response.status === 200){
 
-                   let countLike=isGoodNumber(likePostScore[i].textContent.trim());
-                   let countDisLike=isGoodNumber(dislikePostScore[i].textContent.trim());
+                   let countLike=isGoodNumber(likeCommentScore[i].textContent.trim());
+                   let countDisLike=isGoodNumber(dislikeCommentScore[i].textContent.trim());
                     if (countDisLike>0) countDisLike-=1;
                    if (countLike===null) return ;
                    
-                    if (!btnLikePost.className.includes('like-post-color')) {                    
-                        likePostScore[i].textContent=countLike+1;
-                        btnLikePost.style.color="darkgoldenrod";
-                        likePostScore[i].style.color="darkgoldenrod";
+                    if (!btnlikeComment.className.includes('like-post-color')) {                    
+                        likeCommentScore[i].textContent=countLike+1;
+                        btnlikeComment.style.color="darkgoldenrod";
+                        likeCommentScore[i].style.color="darkgoldenrod";
 
-                        dislikePostScore[i].textContent=countDisLike;
-                        dislikePost[i].style.color="#ffffff";
-                        dislikePostScore[i].style.color="#ffffff";
+                        dislikeCommentScore[i].textContent=countDisLike;
+                        dislikeComment[i].style.color="#ffffff";
+                        dislikeCommentScore[i].style.color="#ffffff";
 
-                        btnLikePost.classList.add('like-post-color');
-                        dislikePost[i].classList.remove('dislike-post-color');
+                        btnlikeComment.classList.add('like-post-color');
+                        dislikeComment[i].classList.remove('dislike-post-color');
                     }
 
                 }else{
@@ -54,12 +53,12 @@ const liskePost=(likePost,likePostId,likePostScore,dislikePostScore,dislikePost)
             }
         };
 
-        btnLikePost.addEventListener('click', handleClick);
+        btnlikeComment.addEventListener('click', handleClick);
         
     }
 }
 
 
 export{
-    liskePost
+    liskeComment
 }

@@ -2,41 +2,41 @@ import { linkApi } from "../../helper/api_link.js";
 import { isGoodNumber } from "../../helper/utils.js";
 
 
-const DisLiskePost=(dislikePost,dislikePostId,likePostScore,dislikePostScore,likePost)=>{
+const DisLiskeComment=(dislikeComment,dislikeCommentId,likeCommentScore,dislikeCommentScore,likeComment)=>{
    
-    for (let i = 0; i < dislikePost.length; i++) {
-        const btnDisLikePost = dislikePost[i];
+    for (let i = 0; i < dislikeComment.length; i++) {
+        const btnDislikeComment = dislikeComment[i];
 
         const handleClick = async function() {
-          alert('ok ok')
-            let postID=dislikePostId[i].textContent.trim();
+
+            let commentID=dislikeCommentId[i].textContent.trim();
             try {
-                const response = await fetch(`${linkApi}dislikepost`, {
+                const response = await fetch(`${linkApi}dislikecomment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({PostID: postID}),
+                    body: JSON.stringify({CommentID: commentID}),
 
                 });
 
                 if(response.status === 200){
 
-                   let countDisLike =isGoodNumber( dislikePostScore[i].textContent.trim());
-                   let countLike =isGoodNumber(likePostScore[i].textContent.trim());
+                   let countDisLike =isGoodNumber( dislikeCommentScore[i].textContent.trim());
+                   let countLike =isGoodNumber(likeCommentScore[i].textContent.trim());
                     if (countLike>0) countLike-=1;
                    if (countDisLike===null) return ;
                    
-                    if (!btnDisLikePost.className.includes('dislike-post-color')) {                    
-                        dislikePostScore[i].textContent=countDisLike+1;
-                        btnDisLikePost.style.color="gray";
-                        dislikePostScore[i].style.color="gray";
+                    if (!btnDislikeComment.className.includes('dislike-post-color')) {                    
+                        dislikeCommentScore[i].textContent=countDisLike+1;
+                        btnDislikeComment.style.color="gray";
+                        dislikeCommentScore[i].style.color="gray";
 
-                        likePostScore[i].textContent=countLike;
-                        likePostScore[i].style.color="#ffffff";
-                        likePost[i].style.color="#ffffff";
-                        btnDisLikePost.classList.add('dislike-post-color');
-                        likePost[i].classList.remove('like-post-color');
+                        likeCommentScore[i].textContent=countLike;
+                        likeCommentScore[i].style.color="#ffffff";
+                        likeComment[i].style.color="#ffffff";
+                        btnDislikeComment.classList.add('dislike-post-color');
+                        likeComment[i].classList.remove('like-post-color');
                     }
 
                     return
@@ -52,10 +52,10 @@ const DisLiskePost=(dislikePost,dislikePostId,likePostScore,dislikePostScore,lik
             }
         };
 
-        btnDisLikePost.addEventListener('click', handleClick);
+        btnDislikeComment.addEventListener('click', handleClick);
         
     }
 }
 
-  export{DisLiskePost
+  export{DisLiskeComment
   }

@@ -1,3 +1,5 @@
+import { timeAgo } from "../helper/utils.js";
+
 
 const leftBloc=(_leftBloc,CatgoryArray)=>{
        _leftBloc.innerHTML=`<div> <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories</div>
@@ -111,6 +113,7 @@ function posts(_posts) {
         const post = _posts[i];
         const title=post["Posts"]["Title"];
         const content=post["Posts"]["Content"];
+        const CreatedAtPost=timeAgo(post["Posts"]["CreatedAt"]);
         const Categories=post["Posts"]["Categories"];
         const Username=post["User"]["Username"];
         const Image=post["Posts"]["Image"];
@@ -154,7 +157,7 @@ function posts(_posts) {
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                 <div>
                                     <p><span>${Username}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
-                                    <p>3 weeks ago</p>
+                                    <p>${CreatedAtPost}</p>
                                 </div>
                             </div>
                             <div class="like-comment-block">
@@ -196,14 +199,19 @@ function displayComment(bloComment ,comments,createCommentForm) {
             for (let i = 0; i < comments.length; i++) {
                 const comment = comments[i];      
                 const ComContent= comment["Comment"]["Content"];
-                const ComCreatedAt= comment["Comment"]["CreatedAt"];
+                const ComCreatedAt=timeAgo(comment["Comment"]["CreatedAt"]);
                 const ComPostId= comment["Comment"]["PostID"];
+                const ComId= comment["Comment"]["ID"];
+
                 idPost=ComPostId;
                 const ComUserId= comment["Comment"]["UserID"];
                 const ComLike=comment["CommentLike"];
                 const ComDislike=comment["CommentDislike"];
                 const ComUserName=comment["User"]["Username"];             
-
+                const stateLiked=comment["Liked"];
+                const stateDisLiked=comment["Disliked"];
+                let classColorLiked=stateLiked ? "like-post-color" : "";
+                let classColorDisliked=stateDisLiked  ? "dislike-post-color" : "";
 
                 _comments+=`<div >
                             <div class="comment-text "><pre class="card-description">${ComContent}</pre></div>
@@ -213,12 +221,12 @@ function displayComment(bloComment ,comments,createCommentForm) {
                                     <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                     <div>
                                         <p><span>${ComUserName}</span> </p>
-                                        <p>2 weeks ago</p>
+                                        <p>${ComCreatedAt}</p>
                                     </div>
                                 </div>
                                 <div class="like-comment-block">
-                                    <div>${ComDislike} dislikes</div>
-                                    <div>${ComLike} Likes</div>
+                                    <div class=" ${classColorDisliked} dislike-comment"> <span class="scorecommentDisLike">${ComDislike}</span> dislikes <span class="id-comment-dislike" style="display: none;"> ${ComId}</span></div>
+                                     <div class=" ${classColorLiked } like-comment"><span class="scorecommentLike">${ComLike}</span> likes<span class="id-comment-like"  style="display: none;"> ${ComId}</span></div>
                                 </div>
                             </div>
                         </div>

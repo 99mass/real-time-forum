@@ -14,7 +14,6 @@ const addComment=(formAddComment)=>{
                 UserID: userId,
                 Content: content 
             };
-            console.log(data);
             try {
                 const response = await fetch(`${linkApi}addcomment`, {
                     method: 'POST',
