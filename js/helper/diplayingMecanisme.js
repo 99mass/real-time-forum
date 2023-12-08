@@ -64,7 +64,8 @@ const displayFomPost=(btn,modal,span)=>{
 }
 
 const seeMore=(cardDescription,readMoreButton)=>{
-    if (cardDescription) {
+  
+    if (cardDescription && readMoreButton) {
         for (let j = 0; j < cardDescription.length; j++) {
             const desc = cardDescription[j];
             if (cardDescription[j].textContent.trim().length<100) {
@@ -113,4 +114,36 @@ const disPlayComment=(comments,createCommentForm,lastPost,lastFormComment,lastBl
     }
 }
 
-export{displayFormMecanisme,readMore,displayFomPost,seeMore,disPlayComment}
+const disPlayCommentFilter=(comments,createCommentForm,blocComment,lastPost,lastFormComment,lastBlocComment)=>{
+    for (let k = 0; k < comments.length; k++) {
+        comments[k].addEventListener("click", function () {
+            if (k!== comments.length-1 && createCommentForm[k].style.display==="none" && blocComment[k].style.display==="none"  ) {
+                createCommentForm[k].style.display="block";    
+                blocComment[k].style.display="block";            
+            }else{
+                if (k!== comments.length-1){
+                     createCommentForm[k].style.display="none" ;  
+                     blocComment[k].style.display="none" ;   
+                }            
+            }
+            if (k===comments.length-1 && createCommentForm[k].style.display==="none" && blocComment[k].style.display==="none" ) {
+                createCommentForm[k].style.display="block";
+                blocComment[k].style.display="block"; 
+                lastPost.style.marginBottom="0px";
+                lastBlocComment.style.marginBottom="400px";
+               
+            }else{
+                if (k===comments.length-1) {
+                    createCommentForm[k].style.display="none";
+                    blocComment[k].style.display="none"; 
+                    lastPost.style.marginBottom="400px";
+                    lastBlocComment.style.marginBottom="0px";
+                }
+
+            }
+
+        });
+    }
+}
+
+export{displayFormMecanisme,readMore,displayFomPost,seeMore,disPlayComment,disPlayCommentFilter}
