@@ -122,6 +122,8 @@ const main=()=>{
                 // tronc long text post
                 seeMore(_cardDescription,_readMoreButton);                  
                 readMore(_cardDescription,_readMoreButton,_onePostBlocks);
+                const _formComment=document.querySelectorAll('.create-comment .form-comment');
+                addComment(_formComment);
 
                 if (contentPostBlock.textContent==="") contentPostBlock.innerHTML="<p id='err'>NO POST FOUND </p>"
             })

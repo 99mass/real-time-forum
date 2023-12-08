@@ -23,7 +23,7 @@ const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
 
 const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
     
-    if (cardDescription) {
+    if (cardDescription && readMoreButton) {
            for (let j = 0; j < cardDescription.length; j++) {
            const desc = cardDescription[j];
            readMoreButton[j].addEventListener("click", function () {

@@ -25,7 +25,7 @@ const addComment=(formAddComment)=>{
                 });
             
                 if(response.status === 200){                   
-                    window.location.reload();
+                    // window.location.reload();
                 }else{
                     const data = await response.json();
                     alert('Error : ' + data.message);
