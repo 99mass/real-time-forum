@@ -2,13 +2,13 @@ import { linkApi } from "../../helper/api_link.js";
 import { isGoodNumber } from "../../helper/utils.js";
 
 
-
 const DisLiskePost=(dislikePost,dislikePostId,likePostScore,dislikePostScore,likePost)=>{
    
     for (let i = 0; i < dislikePost.length; i++) {
         const btnDisLikePost = dislikePost[i];
 
         const handleClick = async function() {
+          alert('ok ok')
             let postID=dislikePostId[i].textContent.trim();
             try {
                 const response = await fetch(`${linkApi}dislikepost`, {

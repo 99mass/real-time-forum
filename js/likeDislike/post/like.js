@@ -8,7 +8,7 @@ const liskePost=(likePost,likePostId,likePostScore,dislikePostScore,dislikePost)
         const btnLikePost = likePost[i];
 
         const handleClick = async function() {
-            alert('ok')
+         
             let postID=likePostId[i].textContent.trim();
             try {
                 const response = await fetch(`${linkApi}likepost`, {
