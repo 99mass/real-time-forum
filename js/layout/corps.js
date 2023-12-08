@@ -119,6 +119,13 @@ function posts(_posts) {
         const postDislikCount=post["PostDislike"];
         const userId=post["Posts"]["UserID"];
         const postId=post["Posts"]["ID"];
+        const stateLiked=post["Liked"];
+        const stateDisLiked=post["Disliked"];
+        let classColorLiked=stateLiked ? "like-post-color" : "";
+        let classColorDisliked=stateDisLiked  ? "dislike-post-color" : "";
+
+
+
         if (i===_posts.length-1 ){
             lastPost="last-post";
             lastFormComment="last-form-comment";
@@ -151,8 +158,8 @@ function posts(_posts) {
                                 </div>
                             </div>
                             <div class="like-comment-block">
-                                <div>${postDislikCount} dislikes</div>
-                                <div>${postLikeCount} Likes</div>
+                                <div class=" ${classColorDisliked} dislike-post"> <span class="scoreDisLike">${postDislikCount}</span> dislikes <span class="id-post-dislike" style="display: none;"> ${postId}</span></div>
+                                <div class=" ${classColorLiked } like-post"><span class="scoreLike">${postLikeCount}</span> likes<span class="id-post-like"  style="display: none;"> ${postId}</span></div>
                                 <div class="comment">${commentCount} comments <span class="Id-post" style="display:none">${postId}</span> </div>
                             </div>
                         </div>
@@ -169,9 +176,7 @@ function posts(_posts) {
            <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
          </form>
          </div>
-         <div class="bloc-comment ${lastBlocComment}" style="display: none;" >
-             ${postId}
-         </div>
+         <div class="bloc-comment ${lastBlocComment}" style="display: none;" > ${postId}</div>
     ` ;
     NameCategories="";
  }

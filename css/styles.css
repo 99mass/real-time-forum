@@ -383,9 +383,15 @@ color: var(--whiteffffff);
 
 
 
+/* like dislike */
 
+.like-post-color{
+   color: darkgoldenrod;
+}
 
-
+.dislike-post-color{
+  color: rgb(143, 138, 138);
+}
 
 
 
