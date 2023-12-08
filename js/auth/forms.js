@@ -18,8 +18,7 @@ const signInForm = async (_ContentForms, formSignIn, formSignUp, spinner, linkAp
             let data = {
                 Email: email,
                 Motdepasse: password
-            };
-            console.log(data);
+            };          
             const errorp = document.querySelector('.error-page');//pour afficher les erreurs
             try {
                 const response = await fetch(`${linkApi}signin`, {
@@ -100,7 +99,6 @@ const signUpForm = async (_ContentForms, formSignUp, formSignIn, spinner, linkAp
                 password: _password,
                 confpassword: _confPassword
             };
-            console.log(data);
 
             const errorp = document.querySelectorAll('.error-page')[1];//pour afficher les erreurs
             try {

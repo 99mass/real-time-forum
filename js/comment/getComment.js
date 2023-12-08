@@ -5,8 +5,7 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
     for (let i = 0; i < _comments.length; i++) {
         const comment = _comments[i];
         let postId = IdPost[i].textContent;
-        comment.addEventListener("click", function () {
-            // console.log("ok");
+        comment.addEventListener("click", function () {        
             fetch(`${linkApi}post`, {
                 method: 'POST',
                 headers: {
@@ -25,7 +24,7 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
                     callback(data);
                 })
                 .catch((error) => {
-                    console.error('Error: no comment found');
+                    console.error('Error: '+error);
                 });
         });
     }

@@ -1,4 +1,6 @@
 import {  body, ContentForms } from "../helper/bigBlocContent.js";
+import {  routes,addRouter,replaceRouter,currentPath } from "../router/route.js";
+
 
 const displayFom=()=>{
 
@@ -20,7 +22,8 @@ const displayFom=()=>{
 
 
 function form1() {
-
+    let r=routes["/Login"]['name'];
+    replaceRouter(r);
     const form = document.createElement('form');
     form.className = 'form-1';
     form.method = 'post';
@@ -94,6 +97,7 @@ function form1() {
 }
 
 function form2() {
+    
     const form = document.createElement('form');
     form.className = 'form-2';
     form.method = 'post';

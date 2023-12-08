@@ -1,8 +1,10 @@
+
+
 @import 'auth.css';
 @import 'header.css';
 @import 'modal.css';
 @import 'spinner.css';
-
+@import 'page404.css';
 :root{
     --black-1e252b:#1e252b;
     --back262d34:#262d34;
@@ -213,6 +215,8 @@ body{
   color: var(--whiteffffff);
   border: none;
 }
+
+
 .card-description {
   display: -webkit-box;
   -webkit-line-clamp: 3;

@@ -16,7 +16,6 @@ const indexPage = (data) => {
     body.appendChild(corpsContent);
 
     const _header = document.querySelector('header');
-    // const _corpsContent=document.querySelector('.corps');
     const _leftBloc = document.querySelector('.menu-gauche');
     const _middleBloc = document.querySelector('.milieu');
     const _rigthtBloc = document.querySelector('.menu-droite');

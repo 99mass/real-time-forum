@@ -6,7 +6,6 @@ const formAddPost=(formCreatPost)=>{
 
         let selectedCategories = [];
         document.querySelectorAll('input[name="categories"]:checked').forEach((checkbox) => {
-
             selectedCategories.push(checkbox.value);
         });
 
@@ -51,8 +50,7 @@ const formAddPost=(formCreatPost)=>{
                 return  response.json()
             })
             .then(data =>{ 
-                if (data["message"]) {
-                    
+                if (data["message"]) {                    
                     alert(data["message"]);
                 }
                 console.log(data)
@@ -67,11 +65,6 @@ const formAddPost=(formCreatPost)=>{
         } else {
             reader.onloadend();
         }
-
-        console.log('Selected Categories:', selectedCategories);
-        console.log('Title:', title);
-        console.log('Content:', content);
-        console.log('File:', file);
     });
 
 

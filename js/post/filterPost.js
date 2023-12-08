@@ -26,12 +26,14 @@ const filterPost=(contenCatId,categoryID,callback)=>{
                 callback(data);
             })
             .catch((error) => {
-                console.error('Error   : no comment found');
+                console.error('Error   : '+error);
             });
         });
     }
 
 }
+
+
 
 
 

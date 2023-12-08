@@ -1,7 +1,6 @@
 const addPostFrom=(myModal,data)=>{
    let  CatgoryArray =data["Category"];
   
-
     myModal.innerHTML=`           
             <div class="modal-content">
             <span class="close">&times;</span>
