@@ -1,8 +1,13 @@
+import {  routes,addRouter,replaceRouter,currentPath ,titlePage} from "./router/route.js";
+
+
 import { linkApi } from "./helper/api_link.js";        
 import { isSessionFoundBoolean } from "./verify_sessions.js";
 import { displayFom } from "./pages/signUpSignIn.js";
 import {signInForm ,signUpForm} from "./auth/forms.js";
 import { indexPage } from "./pages/index.js";
+import { page404 } from "./pages/page404.js";
+
 import { filterPost } from "./post/filterPost.js";
 import { postsFilter } from "./post/postsFiltered.js";
 import { displayFormMecanisme,readMore ,displayFomPost,seeMore,disPlayComment,disPlayCommentFilter} from "./helper/diplayingMecanisme.js";
@@ -20,10 +25,22 @@ import {logOut} from "./auth/logOut.js";
 const main=()=>{ 
     
     document.addEventListener('DOMContentLoaded', (event) => {
-
+        // 404 page if route is note correcte
+     let rd=routes[currentPath];       
+      if (!rd) {
+        document.querySelector('body').innerHTML=page404();
+        console.error("404 Page not found");
+        return
+      }
     async function checkUserSession() {
         const data = await isSessionFoundBoolean();
         if (data===undefined) {
+           
+            // make route
+            titlePage("Authentification");
+            let r=routes["/Login"]['name'];
+            replaceRouter(r);
+            
             // afficher les formualire d'authentifications
              displayFom();
 
@@ -41,6 +58,10 @@ const main=()=>{
             if(formSignUp) signUpForm(_ContentForms,formSignUp,formSignIn,spinner,linkApi)
      
         }else{
+            titlePage("Home");
+            let r=routes["/Home"]['name'];
+            replaceRouter(r);
+
             //afficher l'interface des posts
             indexPage(data); 
 
@@ -98,7 +119,7 @@ const main=()=>{
             const categoryId=document.querySelectorAll('.categoryId');
             const contentPostBlock=document.querySelector('.content-post-block');
 
-            filterPost(contenCatId,categoryId, function(_data) { 
+           filterPost(contenCatId,categoryId, function(_data) { 
                 console.log(_data);
                 // nettoyer et avec les posts filtre
                 contentPostBlock.innerHTML=""
@@ -124,7 +145,7 @@ const main=()=>{
                 readMore(_cardDescription,_readMoreButton,_onePostBlocks);
                 const _formComment=document.querySelectorAll('.create-comment .form-comment');
                 addComment(_formComment);
-
+              
                 if (contentPostBlock.textContent==="") contentPostBlock.innerHTML="<p id='err'>NO POST FOUND </p>"
             })
          

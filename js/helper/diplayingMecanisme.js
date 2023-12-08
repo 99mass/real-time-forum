@@ -1,3 +1,4 @@
+import {  routes,addRouter,replaceRouter,currentPath } from "../router/route.js";
 
 
 const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
@@ -8,6 +9,8 @@ const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
             if (formSignIn) {
                 formSignIn.style.display="none";                            
                 formSignUp.style.display="block";
+                let r=routes["/Registre"]['name'];
+                replaceRouter(r);
             }
         })
     }
@@ -16,6 +19,8 @@ const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
             if (formSignUp) {
                 formSignUp.style.display="none";
                 formSignIn.style.display="block";  
+                let r=routes["/Login"]['name'];
+                replaceRouter(r);
             }
         })
     }
@@ -46,19 +51,30 @@ const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
 }
 
 const displayFomPost=(btn,modal,span)=>{
-
+    let r1=routes["/Home"]['name'];
+    let r2=routes["/AddPost"]['name'];
+    
+   if (currentPath==="/AddPost") {
+      modal.style.display = "block";
+      addRouter(r2);      
+   }
+   
     btn.onclick = function() {
         modal.style.display = "block";
+        replaceRouter(r2);
         }
     if (span) {           
         span.onclick = function() {
         modal.style.display = "none";
+        replaceRouter(r1);
+
         }
     }
     
         window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
+            replaceRouter(r1);
         }
         }
 }
