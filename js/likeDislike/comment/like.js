@@ -2,6 +2,8 @@ import { linkApi } from "../../helper/api_link.js";
 import { isGoodNumber } from "../../helper/utils.js";
 
 
+
+
 const liskePost=(likePost,likePostId,likePostScore,dislikePostScore,dislikePost)=>{
    
     for (let i = 0; i < likePost.length; i++) {
