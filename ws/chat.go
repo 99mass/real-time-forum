@@ -1,7 +1,6 @@
 package ws
 
 import (
-	"encoding/json"
 	"fmt"
 	"forum/models"
 	"log"
@@ -49,37 +48,27 @@ func readUsername(conn *websocket.Conn) (string, error) {
 	return msg.Username, nil
 }
 
-func parseMessage(message string) (string, string) {
-	var msg map[string]interface{}
-	err := json.Unmarshal([]byte(message), &msg)
-	if err != nil {
-		// Handle error
-		return "", ""
-	}
+type Message struct {
+	Recipient string `json:"recipient"`
+	Message   string `json:"message"`
+}
 
-	recipient, ok := msg["recipient"].(string)
-	if !ok {
-		recipient = ""
-	}
-
-	messageContent, ok := msg["message"].(string)
-	if !ok {
-		messageContent = ""
-	}
-
+func parseMessage(msg Message) (string, string) {
+	recipient := msg.Recipient
+	messageContent := msg.Message
 	return recipient, messageContent
 }
 
 func handleMessages(conn *websocket.Conn, username string) {
 	for {
-		var message string
-		err := conn.ReadJSON(&message)
+		var msg Message
+		err := conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("Error reading message:", err)
 			break
 		}
 
-		recipient, message := parseMessage(message)
+		recipient, message := parseMessage(msg)
 
 		if recipient != "" {
 			sendMessage(recipient, fmt.Sprintf("%s: %s", username, message))
