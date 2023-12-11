@@ -32,7 +32,7 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(users)
 	go handleMessages(conn, username)
 
-	broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
+	//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 }
 
 type UsernameMessage struct {
@@ -70,10 +70,14 @@ func handleMessages(conn *websocket.Conn, username string) {
 
 		recipient, message := parseMessage(msg)
 
-		if recipient != "" {
+		if recipient != "" && message != ""{
 			sendMessage(recipient, fmt.Sprintf("%s: %s", username, message))
 		} else {
-			broadcastMessage(fmt.Sprintf("%s: %s", username, message))
+			errMessage := map[string]string{
+                "error": "Message cannot be empty",
+            }
+            conn.WriteJSON(errMessage)
+        
 		}
 	}
 }
