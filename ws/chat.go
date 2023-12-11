@@ -11,28 +11,30 @@ import (
 
 var users map[string]*models.User = make(map[string]*models.User)
 
-func WSHandler(w http.ResponseWriter, r *http.Request) {
-	upgrader := websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true },
-	}
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	//defer conn.Close()
+func WSHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		upgrader := websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool { return true },
+		}
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		//defer conn.Close()
 
-	username, err := readUsername(conn)
-	if err != nil {
-		fmt.Println(err)
-		return
+		username, err := readUsername(conn)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		users[username] = &models.User{Conn: conn, Username: username}
+		fmt.Println(users)
+		go handleMessages(conn, username)
+
+		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 	}
-
-	users[username] = &models.User{Conn: conn, Username: username}
-	fmt.Println(users)
-	go handleMessages(conn, username)
-
-	//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 }
 
 type UsernameMessage struct {
@@ -70,14 +72,14 @@ func handleMessages(conn *websocket.Conn, username string) {
 
 		recipient, message := parseMessage(msg)
 
-		if recipient != "" && message != ""{
+		if recipient != "" && message != "" {
 			sendMessage(recipient, fmt.Sprintf("%s: %s", username, message))
 		} else {
 			errMessage := map[string]string{
-                "error": "Message cannot be empty",
-            }
-            conn.WriteJSON(errMessage)
-        
+				"error": "Message cannot be empty",
+			}
+			conn.WriteJSON(errMessage)
+
 		}
 	}
 }
