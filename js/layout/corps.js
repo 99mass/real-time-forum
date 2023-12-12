@@ -56,8 +56,10 @@ const rigthtBloc=(_rigthtBloc,userOnline)=>{
 function displayUsrOnLine(users) {
 
     var users="";
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i];    
+    for (let i = 0; i < users["Users"].length; i++) {
+        
+        console.log(users[i]);
+        const user = users[i]["Users"];    
         if (user=="there's no user online") {
         users=`<div class="user">  
                 <div class="user-infos">                               
