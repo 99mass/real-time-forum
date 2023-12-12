@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/websocket"
 )
-
+var usersConnected []string
 var users map[string]*models.User = make(map[string]*models.User)
 
 func WSHandler() http.HandlerFunc {
@@ -38,6 +38,9 @@ func WSHandler() http.HandlerFunc {
 
 		users[username] = &models.User{Conn: conn, Username: username}
 		fmt.Println(users)
+		for username := range users {
+			usersConnected = append(usersConnected, username)
+		}
 		go handleMessages(conn, username)
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
@@ -106,9 +109,19 @@ func CloseConnection(username string) {
             log.Printf("Error closing connection for user %s: %v", username, err)
         }
         delete(users, username)
+		usersConnected = removeUser(usersConnected,username)
     } else {
         log.Printf("User %s not found", username)
     }
+}
+
+func removeUser(slice []string, user string) []string {
+    for i, val := range slice {
+        if val == user {
+            return append(slice[:i], slice[i+1:]...)
+        }
+    }
+    return slice
 }
 
 func BroadcastMessage(message string) {
