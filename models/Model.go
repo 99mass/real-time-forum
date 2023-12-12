@@ -61,7 +61,7 @@ type GetPostsByCategoryRequest struct {
 type User struct {
 	Conn      *websocket.Conn
 	ID        uuid.UUID
-	Username  string `json:"username"`
+	Username  string `json:"Username"`
 	FirstName string
 	LastName  string
 	Gender    string

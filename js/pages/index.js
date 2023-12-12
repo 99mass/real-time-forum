@@ -8,16 +8,16 @@ const indexPage = (data) => {
         var socket = new WebSocket("ws://localhost:8080/ws");
         socket.onopen = () => {
             socket.send(JSON.stringify({
-                Username: data["User"]["username"]
+                Username: data["User"]["Username"]
             }));
-            console.log("socket: "+data["User"]["username"]);
+            console.log("socket: "+data["User"]["Username"]);
         }
     
 
     let posts = data["Datas"] ? data["Datas"] : "";
 
     let CatgoryArray = data["Category"];
-    let Username = data["User"]["username"];
+    let Username = data["User"]["Username"];
     body.appendChild(Header);
     corpsContent.appendChild(menuGauche);
     corpsContent.appendChild(menuMilieu);

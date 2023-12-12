@@ -48,7 +48,7 @@ func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
 			},http.StatusBadRequest)
 			return
 		}
-		
+
 		username := user.Username
 
 		usersConn := removeUser(usersConnected, username)
@@ -104,7 +104,7 @@ func WSHandler() http.HandlerFunc {
 }
 
 type UsernameMessage struct {
-	Username string `json:"username"`
+	Username string `json:"Username"`
 }
 
 func readUsername(conn *websocket.Conn) (string, error) {
