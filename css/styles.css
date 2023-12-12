@@ -336,7 +336,9 @@ color: var(--whiteffffff);
   padding: 10px;
   
 }
-
+.commentCount{
+  margin-right: 5px;
+}
 
 .bloc-comment .comment-text{
   padding-left: 10px;
@@ -410,9 +412,9 @@ color: var(--whiteffffff);
     
 }
 .menu-droite .bloc{
-    height: 300px;
+    height: 250px;
     padding-right: 10px;
-    border-bottom: 1px solid var(--whiteffffff);
+    /* border-bottom: 1px solid var(--whiteffffff); */
     /* border: 2px solid rebeccapurple; */
     box-sizing: border-box;
     /* overflow: hidden; */
@@ -487,3 +489,42 @@ color: var(--whiteffffff);
   margin-right: 5px;
 }
 
+.menu-droite .chat-container{
+  position: relative;
+  width: 140%;
+  height: 500px;
+  margin-left: -40%;
+background-color:#3d464e; 
+   /* border-radius: 150px 0px 0px 0px; */
+}
+
+.chat-container .btn-group-chat{
+  position: absolute;
+  bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    background-color: var(--whiteffffff);
+}
+.chat-container .btn-group-chat textarea{
+  resize: none;
+  outline: none;
+  background: transparent;
+  width: 85%;
+  height: 100%;
+  padding: 3px;
+}
+.menu-droite .chat-container .btn-group-chat button{
+  width: 15%;
+  height: 100%;
+  border: none;
+  background: var(--orangeff6934);
+  background-image: url("../assets/send-alt-1-svgrepo-com.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+
+}

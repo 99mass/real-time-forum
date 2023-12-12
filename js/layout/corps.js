@@ -79,8 +79,14 @@ const rigthtBloc=(_rigthtBloc)=>{
                                         <img src="assets/chat-dots-svgrepo-com.svg" alt="">
                                     </div>
                                 </div>
-                                
-                            </div>    
+                               
+                            </div>  
+                            <div class="chat-container">
+                            <div class="btn-group-chat">
+                                <textarea class="chat-text" placeholder="chat here..." ></textarea>
+                                <button type="button" class="btn-chat"> </button>
+                            </div>
+                            </div>  
     `;
 }
 
@@ -90,7 +96,7 @@ function createPostMenue() {
     _div.className="create-post-menue";
     _div.innerHTML=`<span>
                         <img src="assets/postcard-svgrepo-com.svg" alt="">
-                        <span>My Posts</span>
+                        <span></span>
                     </span>
                     <button class="create-post-btn">Create Post</button>
     `;
@@ -111,6 +117,7 @@ function posts(_posts) {
     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
+
         const title=post["Posts"]["Title"];
         const content=post["Posts"]["Content"];
         const CreatedAtPost=timeAgo(post["Posts"]["CreatedAt"]);
@@ -163,7 +170,7 @@ function posts(_posts) {
                             <div class="like-comment-block">
                                 <div class=" ${classColorDisliked} dislike-post"> <span class="scoreDisLike">${postDislikCount}</span> dislikes <span class="id-post-dislike" style="display: none;"> ${postId}</span></div>
                                 <div class=" ${classColorLiked } like-post"><span class="scoreLike">${postLikeCount}</span> likes<span class="id-post-like"  style="display: none;"> ${postId}</span></div>
-                                <div class="comment">${commentCount} comments <span class="Id-post" style="display:none">${postId}</span> </div>
+                                <div class="comment"><span class="commentCount">${commentCount} </span> comments <span class="Id-post" style="display:none">${postId}</span> </div>
                             </div>
                         </div>
                     </div>
@@ -174,9 +181,10 @@ function posts(_posts) {
          <form class="form-comment" method="post">
             <input type="hidden" name ="userId" value="${userId}" />
             <input type="hidden" name ="postId" value="${postId}" />
-
             <textarea type="text" name="ContentComment" id="Content" placeholder="Comment here..."  ></textarea>  
-           <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
+            <input type="hidden" name="userName" value="${Username}" />
+
+            <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
          </form>
          </div>
          <div class="bloc-comment ${lastBlocComment}" style="display: none;" > ${postId}</div>
