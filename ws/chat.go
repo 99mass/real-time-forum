@@ -57,6 +57,7 @@ func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
 			connected.Users = usersConn
 
 			helper.SendResponse(w, connected, http.StatusOK)
+			connected = ConnectedUser{}
 		} else {
 			noUser := map[string]string{
 				"message": "there's no user online",
