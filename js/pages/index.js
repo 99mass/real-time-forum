@@ -2,7 +2,7 @@ import { header } from "../layout/header.js";
 import { leftBloc, middleBloc, rigthtBloc } from "../layout/corps.js";
 import { body, Header, corpsContent, menuGauche, menuMilieu, menuDroite } from "../helper/bigBlocContent.js";
 
-import { userOnline } from "../helper/getUserOnLine.js";
+// import { userOnline } from "../helper/getUserOnLine.js";
 
 const indexPage = (data) => {
     console.log(data);
@@ -27,11 +27,11 @@ const indexPage = (data) => {
     leftBloc(_leftBloc, CatgoryArray);
     middleBloc(_middleBloc, posts);
     rigthtBloc(_rigthtBloc);
-    async function someFunction() {
-        const onlineUsers = await userOnline();
-        console.log(onlineUsers);
-    }
-        someFunction();
+    // async function someFunction() {
+    //     const onlineUsers = userOnline();
+    //     console.log(onlineUsers);
+    // }
+    // someFunction();
     
 
 }

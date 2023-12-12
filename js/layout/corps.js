@@ -28,58 +28,34 @@ const middleBloc=(_middleBloc,_posts)=>{
 
 
 }
-const rigthtBloc=(_rigthtBloc,userOnline)=>{
-    console.log(userOnline);
+const rigthtBloc=(_rigthtBloc)=>{
+
     _rigthtBloc.innerHTML=`<h2> <img src="assets/right-arrow-svgrepo-com.svg" alt=""><span>Users On line</span> </h2>
-                            <div class="bloc bloc-users-on-line">
-                            </div>  
-
-
+                            <div class="bloc bloc-users-on-line"> </div>  
                             <div class="chat-container">
                             <div class="chat-header">
-                                <div>aaa</div>
-                                <div class="midlle-header">
-                                aaaa
+                                <div></div>
+                                <div class="midle-header">
+                                    <div></div>
+                                    <div>Omzo Carter</div>
                                 </div>
                                 <div class="right-header"><img src="../assets/menu-dots-svgrepo-com.svg"></div>
+                            </div>
 
+                            <div class="chat-body">
 
                             </div>
+
                             <div class="btn-group-chat">
                                 <textarea class="chat-text" placeholder="chat here..." ></textarea>
                                 <button type="button" class="btn-chat"> </button>
                             </div>
+
                             </div>  
     `;
 }
 
-function displayUsrOnLine(users) {
 
-    var users="";
-    for (let i = 0; i < users["Users"].length; i++) {
-        
-        console.log(users[i]);
-        const user = users[i]["Users"];    
-        if (user=="there's no user online") {
-        users=`<div class="user">  
-                <div class="user-infos">                               
-                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                    <div>
-                        <p><span>${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                    </div>
-                </div> 
-                <div class="chat-text">
-                    <span>chat</span>
-                    <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                </div>
-            </div>
-        `;
-    };
-        
-    }
-    return users;
-    
-}
 
 function createPostMenue() {
 
@@ -257,4 +233,4 @@ function displayComment(bloComment ,comments,createCommentForm) {
 
 
 
-export {leftBloc,middleBloc,rigthtBloc,displayComment,displayUsrOnLine}
+export {leftBloc,middleBloc,rigthtBloc,displayComment}
