@@ -82,6 +82,15 @@ const rigthtBloc=(_rigthtBloc)=>{
                                
                             </div>  
                             <div class="chat-container">
+                            <div class="chat-header">
+                                <div>aaa</div>
+                                <div class="midlle-header">
+                                aaaa
+                                </div>
+                                <div class="right-header"><img src="../assets/menu-dots-svgrepo-com.svg"></div>
+
+
+                            </div>
                             <div class="btn-group-chat">
                                 <textarea class="chat-text" placeholder="chat here..." ></textarea>
                                 <button type="button" class="btn-chat"> </button>

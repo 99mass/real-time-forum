@@ -30,8 +30,6 @@ import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import {logOut} from "./auth/logOut.js";
 
-
-
 const main=()=>{ 
     
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -58,6 +56,17 @@ const main=()=>{
             //afficher l'interface des posts
             indexPage(data); 
 
+            // Créez la connexion WebSocket 
+            var socket = new WebSocket("ws://localhost:8080/ws");
+
+            // send user connected
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    Username: data["User"]["username"]
+                }));
+                console.log("socket: "+data["User"]["username"]);
+            }
+              
 
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
