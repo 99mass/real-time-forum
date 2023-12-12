@@ -127,6 +127,16 @@ func CloseConnection(username string) {
 		delete(users, username)
 		usersConnected = removeUser(usersConnected, username)
 		fmt.Println(usersConnected)
+		if len(usersConnected) != 1 {
+			BroadcastMessage(usersConnected)
+		} else {
+			noUser := map[string]string{
+				"message": "there's no user online",
+			}
+			for _, us := range users {
+				us.Conn.WriteJSON(noUser)
+			}
+		}
 	} else {
 		log.Printf("User %s not found", username)
 	}
