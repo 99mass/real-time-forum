@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
+	"github.com/gorilla/websocket"
 )
 
 // these models are for the different post request
@@ -58,8 +59,9 @@ type GetPostsByCategoryRequest struct {
 // These models are for Database
 
 type User struct {
+	Conn      *websocket.Conn
 	ID        uuid.UUID
-	Username  string
+	Username  string `json:"username"`
 	FirstName string
 	LastName  string
 	Gender    string
