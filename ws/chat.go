@@ -88,7 +88,7 @@ func WSHandler() http.HandlerFunc {
 		_, ok := users[username]
 		if ok {
 			log.Println("user is already connected")
-			conn.Close()
+			//conn.Close()
 			return
 		}
 
