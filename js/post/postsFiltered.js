@@ -8,7 +8,6 @@ const postsFilter=(_posts) => {
         const title=post["Posts"]["Title"];
         const content=post["Posts"]["Content"];
         const CreatedAtPost=timeAgo(post["Posts"]["CreatedAt"]);
-      
         const Categories=post["Posts"]["Categories"];
         const Username=post["User"]["Username"];
         const Image=post["Posts"]["Image"];
@@ -101,7 +100,7 @@ const postsFilter=(_posts) => {
                             <div class="like-comment-block">
                             <div class=" ${classColorDisliked} dislike-post"> <span class="scoreDisLike">${postDislikCount}</span> dislikes <span class="id-post-dislike" style="display: none;"> ${postId}</span></div>
                             <div class=" ${classColorLiked } like-post"><span class="scoreLike">${postLikeCount}</span> likes<span class="id-post-like"  style="display: none;"> ${postId}</span></div>
-                                <div class="comment">${commentCount} comments <span class="Id-post" style="display:none">${postId}</span> </div>
+                                <div class="comment"><span class="commentCount">${commentCount} </span> comments <span class="Id-post" style="display:none">${postId}</span> </div>
                             </div>
                         </div>
                     </div>
@@ -112,7 +111,7 @@ const postsFilter=(_posts) => {
          <form class="form-comment" method="post">
             <input type="hidden" name ="userId" value="${userId}" />
             <input type="hidden" name ="postId" value="${postId}" />
-
+            <input type="hidden" name="userName" value="${Username}" />
             <textarea type="text" name="ContentComment" id="Content" placeholder="Comment here..."  ></textarea>  
            <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
          </form>

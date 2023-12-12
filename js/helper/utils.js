@@ -44,5 +44,35 @@ function timeAgo(dateString) {
   }
 }
 
+const commentTemporel=(ComContent,ComUserName)=>{
+    let currentDate = new Date();
+    let formattedDate = currentDate.getFullYear() + '-' + 
+        String(currentDate.getMonth() + 1).padStart(2, '0') + '-' + 
+        String(currentDate.getDate()).padStart(2, '0') + ' ' + 
+        String(currentDate.getHours()).padStart(2, '0') + ':' + 
+        String(currentDate.getMinutes()).padStart(2, '0') + ':' + 
+        String(currentDate.getSeconds()).padStart(2, '0');
+    let date=timeAgo(formattedDate);
+    return `<div >
+            <div class="comment-text "><pre class="card-description">${ComContent}</pre></div>
+            <div class="content-comment-like">
+            <div class="content-comment">
+                <div class="comment">                                  
+                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                    <div>
+                        <p><span>${ComUserName}</span> </p>
+                        <p>${date}</p>
+                    </div>
+                </div>
+                <div class="like-comment-block">
+                    <div class=" dislike-comment"> <span class="scorecommentDisLike">${0}</span> dislikes <span class="id-comment-dislike" style="display: none;"> ${0}</span></div>
+                    <div class=" like-comment"><span class="scorecommentLike">${0}</span> likes<span class="id-comment-like"  style="display: none;"> ${0}</span></div>
+                </div>
+            </div>
+        </div>
+            </div>
+        <hr>
+    `;
 
-export{isGoodNumber,timeAgo}
+};
+export{isGoodNumber,timeAgo,commentTemporel}

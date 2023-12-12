@@ -45,6 +45,7 @@ const main=()=>{
 
     async function checkUserSession() {
         const data = await isSessionFoundBoolean();
+
         if (data===undefined) {           
             Authentification() ;     
         }else{
@@ -113,7 +114,7 @@ const main=()=>{
 
             // ajouter un commentair
             const formComment=document.querySelectorAll('.form-comment');
-            addComment(formComment);
+            addComment(formComment,blocComment);
 
             // like an dislike Posts
             const likePost=document.querySelectorAll('.like-post');
@@ -197,7 +198,7 @@ function filterByCategory() {
                     seeMore(_cardDescription,_readMoreButton);                  
                     readMore(_cardDescription,_readMoreButton,_onePostBlocks);
                     const _formComment=document.querySelectorAll('.create-comment .form-comment');
-                    addComment(_formComment);
+                    addComment(_formComment,_blocComment);
                   
                     if (contentPostBlock.textContent==="") contentPostBlock.innerHTML="<p id='err'>NO POST FOUND </p>"
     
