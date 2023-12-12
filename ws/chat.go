@@ -165,6 +165,7 @@ func CloseConnection(username string) {
 		}
 		delete(users, username)
 		usersConnected = removeUser(usersConnected, username)
+		fmt.Println(usersConnected)
 	} else {
 		log.Printf("User %s not found", username)
 	}

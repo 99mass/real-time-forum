@@ -27,7 +27,11 @@ const indexPage = (data) => {
     leftBloc(_leftBloc, CatgoryArray);
     middleBloc(_middleBloc, posts);
     rigthtBloc(_rigthtBloc);
-  
+    async function someFunction() {
+        const onlineUsers = await userOnline();
+        console.log(onlineUsers);
+    }
+        someFunction();
     
 
 }
