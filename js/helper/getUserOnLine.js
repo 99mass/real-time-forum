@@ -48,49 +48,49 @@ let isThrottled = false;
     
 // }
 
-const userOnline = () => {
-    const containUsers=document.querySelector('.bloc-users-on-line');
-    fetch(`${linkApi}connectedUsers`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => {
-        if (response.status === 200 && response.headers.get('content-type').includes('application/json')) {                       
-            return response.json();
-        }
-    })
-    .then(data => {
+// const userOnline = () => {
+//     const containUsers=document.querySelector('.bloc-users-on-line');
+//     fetch(`${linkApi}connectedUsers`, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     })
+//     .then(response => {
+//         if (response.status === 200 && response.headers.get('content-type').includes('application/json')) {                       
+//             return response.json();
+//         }
+//     })
+//     .then(data => {
        
-        var users="";
-        if (data["Users"]) {                
-            for (let i = 0; i < data["Users"].length; i++) {
+//         var users="";
+//         if (data["Users"]) {                
+//             for (let i = 0; i < data["Users"].length; i++) {
             
-                console.log(data["Users"][i]);
-                const user = data["Users"][i];   
-                users+=`<div class="user">  
-                        <div class="user-infos">                               
-                            <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                            <div>
-                                <p><span>${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                            </div>
-                        </div> 
-                        <div class="chat-text">
-                            <span>chat</span>
-                            <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                        </div>
-                    </div>
-                `;                
-            }
-        }else{
-            users=`<div class="no-user">  ${data["message"]}</div>`;
-        }
-        containUsers.innerHTML=users;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
+//                 console.log(data["Users"][i]);
+//                 const user = data["Users"][i];   
+//                 users+=`<div class="user">  
+//                         <div class="user-infos">                               
+//                             <img src="assets/user-profile-svgrepo-com.svg" alt="">
+//                             <div>
+//                                 <p><span>${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
+//                             </div>
+//                         </div> 
+//                         <div class="chat-text">
+//                             <span>chat</span>
+//                             <img src="assets/chat-dots-svgrepo-com.svg" alt="">
+//                         </div>
+//                     </div>
+//                 `;                
+//             }
+//         }else{
+//             users=`<div class="no-user">  ${data["message"]}</div>`;
+//         }
+//         containUsers.innerHTML=users;
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
+// }
 
-export { userOnline }
+// export { userOnline }

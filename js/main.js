@@ -7,7 +7,7 @@ import { displayFom } from "./pages/signUpSignIn.js";
 import {signInForm ,signUpForm} from "./auth/forms.js";
 import { indexPage } from "./pages/index.js";
 import { page404 } from "./pages/page404.js";
-import { userOnline } from "./helper/getUserOnLine.js";
+// import { userOnline } from "./helper/getUserOnLine.js";
 
 import { filterPost } from "./post/filterPost.js";
 import { postsFilter } from "./post/postsFiltered.js";
@@ -30,6 +30,9 @@ import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 
 import {logOut} from "./auth/logOut.js";
+
+ // Créez la connexion WebSocket 
+
 
 const main=()=>{ 
     
@@ -60,18 +63,31 @@ const main=()=>{
             //afficher l'interface des posts
             indexPage(data); 
 
-            // Créez la connexion WebSocket 
-            var socket = new WebSocket("ws://localhost:8080/ws");
+           
+            var socket ;
+            
+            // Check if the code has already been executed
+            if (!localStorage.getItem('alreadyExecuted')) {
 
-            // send user connected
-            socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    Username: data["User"]["Username"]
-                }));
-                console.log("socket: "+data["User"]["Username"]);
+                socket = new WebSocket("ws://localhost:8080/ws");
+
+                // send user connected
+                socket.onopen = () => {
+                    socket.send(JSON.stringify({
+                        Username: data["User"]["Username"]
+                    }));
+                    console.log("socket: "+data["User"]["Username"]);
+
+                    // Set the flag in local storage to prevent this code from running again
+                    localStorage.setItem('alreadyExecuted', 'true');
+                }
+
             }
-            // userOnline();
 
+            socket.onmessage = (message) => {
+                console.log("a");
+                console.log(message.data);
+            };
           
 
             // add post fom et  methode
