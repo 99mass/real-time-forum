@@ -5,9 +5,13 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"forum/controller"
 	"forum/helper"
 	"forum/middlewares"
 	"forum/models"
+	"forum/ws"
+
+	"github.com/gofrs/uuid"
 )
 
 func SignOutHandler(db *sql.DB) http.HandlerFunc {
@@ -29,8 +33,11 @@ func SignOutHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		sessionID := SessionReq.Session
+		IDsess, _ := uuid.FromString(sessionID)
+		user, _ := controller.GetUserBySessionId(IDsess, db)
+		ws.CloseConnection(user.Username)
 		helper.DeleteSession(db, sessionID, w, r)
 
-		helper.SendResponse(w,models.ErrorResponse{},http.StatusOK)
+		helper.SendResponse(w, models.ErrorResponse{}, http.StatusOK)
 	}
 }

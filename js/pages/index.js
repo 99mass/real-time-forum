@@ -4,13 +4,15 @@ import { body, Header, corpsContent, menuGauche, menuMilieu, menuDroite } from "
 
 const indexPage = (data) => {
     console.log(data);
-    var socket = new WebSocket("ws://localhost:8080/ws");
-    socket.onopen = () => {
-        socket.send(JSON.stringify({
-            Username: data["User"]["username"]
-        }));
-        console.log("socket: "+data["User"]["username"]);
-    }
+  
+        var socket = new WebSocket("ws://localhost:8080/ws");
+        socket.onopen = () => {
+            socket.send(JSON.stringify({
+                Username: data["User"]["username"]
+            }));
+            console.log("socket: "+data["User"]["username"]);
+        }
+    
 
     let posts = data["Datas"] ? data["Datas"] : "";
 

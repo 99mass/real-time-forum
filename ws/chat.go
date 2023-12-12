@@ -29,6 +29,13 @@ func WSHandler() http.HandlerFunc {
 			return
 		}
 
+		_, ok := users[username]
+		if ok {
+			log.Println("user is already connected")
+			conn.Close()
+			return
+		}
+
 		users[username] = &models.User{Conn: conn, Username: username}
 		fmt.Println(users)
 		go handleMessages(conn, username)
@@ -90,7 +97,21 @@ func sendMessage(recipient string, message string) {
 	}
 }
 
-func broadcastMessage(message string) {
+
+func CloseConnection(username string) {
+    user, ok := users[username]
+    if ok {
+        err := user.Conn.Close()
+        if err != nil {
+            log.Printf("Error closing connection for user %s: %v", username, err)
+        }
+        delete(users, username)
+    } else {
+        log.Printf("User %s not found", username)
+    }
+}
+
+func BroadcastMessage(message string) {
 	for _, user := range users {
 		user.Conn.WriteJSON(message)
 	}
