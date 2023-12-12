@@ -178,16 +178,20 @@ func CloseConnection(username string) {
 }
 
 func removeUser(slice []string, user string) []string {
-	for i, val := range slice {
-		if val == user {
-			return append(slice[:i], slice[i+1:]...)
+	var tab []string
+	for _, val := range slice {
+		if val != user {
+			tab = append(tab, val)
 		}
 	}
-	return slice
+	return tab
 }
 
 func BroadcastMessage(message []string) {
 	for _, user := range users {
-		user.Conn.WriteJSON(message)
+		usersConn := removeUser(message, user.Username)
+
+		user.Conn.WriteJSON(usersConn)
+
 	}
 }
