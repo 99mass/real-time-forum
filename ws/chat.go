@@ -16,53 +16,6 @@ type ConnectedUser struct {
 	Users []string
 }
 
-// func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-
-// 		ok, pageError := middlewares.CheckRequest(r, "/connectedUsers", "get")
-// 		if !ok {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "Method not Allowed",
-// 			}, pageError)
-// 			return
-// 		}
-
-// 		sessionID, err := helper.GetSessionRequest(r)
-// 		if err != nil {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "there's no session",
-// 			}, http.StatusBadRequest)
-// 			return
-// 		}
-// 		user, err := controller.GetUserBySessionId(sessionID, db)
-// 		if err != nil {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "session is not valid",
-// 			}, http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		username := user.Username
-
-// 		usersConn := removeUser(usersConnected, username)
-// 		if len(usersConn) != 0 {
-// 			var connected ConnectedUser
-// 			connected.Users = usersConn
-
-// 			helper.SendResponse(w, connected, http.StatusOK)
-// 		} else {
-// 			noUser := map[string]string{
-// 				"message": "there's no user online",
-// 			}
-// 			helper.SendResponse(w, noUser, http.StatusOK)
-// 		}
-
-// 	}
-// }
-
 func WSHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
@@ -81,16 +34,18 @@ func WSHandler() http.HandlerFunc {
 			return
 		}
 
-		_, ok := users[username]
-		if ok {
-			log.Println("user is already connected")
-			conn.Close()
-			return
+		if user, ok := users[username]; ok {
+			// Si l'utilisateur existe déjà, mettez à jour la connexion
+			user.Conn = conn
+		} else {
+			// Sinon, créez un nouvel utilisateur
+			users[username] = &models.User{Conn: conn, Username: username}
+			usersConnected = append(usersConnected, username)
 		}
 
-		users[username] = &models.User{Conn: conn, Username: username}
 		fmt.Println(users)
-		usersConnected = append(usersConnected, username)
+		// users[username] = &models.User{Conn: conn, Username: username}
+		// usersConnected = append(usersConnected, username)
 
 		fmt.Println(usersConnected)
 
@@ -195,3 +150,57 @@ func BroadcastMessage(message []string) {
 
 	}
 }
+
+// _, ok := users[username]
+// if ok {
+// 	log.Println("user is already connected")
+// 	conn.Close()
+// 	return
+// }
+
+// func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+
+// 		ok, pageError := middlewares.CheckRequest(r, "/connectedUsers", "get")
+// 		if !ok {
+// 			helper.SendResponse(w, models.ErrorResponse{
+// 				Status:  "error",
+// 				Message: "Method not Allowed",
+// 			}, pageError)
+// 			return
+// 		}
+
+// 		sessionID, err := helper.GetSessionRequest(r)
+// 		if err != nil {
+// 			helper.SendResponse(w, models.ErrorResponse{
+// 				Status:  "error",
+// 				Message: "there's no session",
+// 			}, http.StatusBadRequest)
+// 			return
+// 		}
+// 		user, err := controller.GetUserBySessionId(sessionID, db)
+// 		if err != nil {
+// 			helper.SendResponse(w, models.ErrorResponse{
+// 				Status:  "error",
+// 				Message: "session is not valid",
+// 			}, http.StatusBadRequest)
+// 			return
+// 		}
+
+// 		username := user.Username
+
+// 		usersConn := removeUser(usersConnected, username)
+// 		if len(usersConn) != 0 {
+// 			var connected ConnectedUser
+// 			connected.Users = usersConn
+
+// 			helper.SendResponse(w, connected, http.StatusOK)
+// 		} else {
+// 			noUser := map[string]string{
+// 				"message": "there's no user online",
+// 			}
+// 			helper.SendResponse(w, noUser, http.StatusOK)
+// 		}
+
+// 	}
+// }
