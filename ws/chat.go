@@ -18,7 +18,6 @@ type ConnectedUser struct {
 
 // func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
 // 	return func(w http.ResponseWriter, r *http.Request) {
-
 // 		ok, pageError := middlewares.CheckRequest(r, "/connectedUsers", "get")
 // 		if !ok {
 // 			helper.SendResponse(w, models.ErrorResponse{
@@ -27,7 +26,6 @@ type ConnectedUser struct {
 // 			}, pageError)
 // 			return
 // 		}
-
 // 		sessionID, err := helper.GetSessionRequest(r)
 // 		if err != nil {
 // 			helper.SendResponse(w, models.ErrorResponse{
@@ -44,14 +42,11 @@ type ConnectedUser struct {
 // 			}, http.StatusBadRequest)
 // 			return
 // 		}
-
 // 		username := user.Username
-
 // 		usersConn := removeUser(usersConnected, username)
 // 		if len(usersConn) != 0 {
 // 			var connected ConnectedUser
 // 			connected.Users = usersConn
-
 // 			helper.SendResponse(w, connected, http.StatusOK)
 // 		} else {
 // 			noUser := map[string]string{
@@ -59,7 +54,6 @@ type ConnectedUser struct {
 // 			}
 // 			helper.SendResponse(w, noUser, http.StatusOK)
 // 		}
-
 // 	}
 // }
 
