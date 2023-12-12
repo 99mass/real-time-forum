@@ -53,7 +53,7 @@ const rigthtBloc=(_rigthtBloc,userOnline)=>{
     `;
 }
 
-function usrOnLine(users) {
+function displayUsrOnLine(users) {
 
     var users="";
     for (let i = 0; i < users.length; i++) {
@@ -255,4 +255,4 @@ function displayComment(bloComment ,comments,createCommentForm) {
 
 
 
-export {leftBloc,middleBloc,rigthtBloc,displayComment}
+export {leftBloc,middleBloc,rigthtBloc,displayComment,displayUsrOnLine}

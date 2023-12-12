@@ -1,4 +1,5 @@
 import { linkApi } from "../helper/api_link.js";
+import { displayUsrOnLine } from "../layout/corps.js";
 
 let isThrottled = false;
 
@@ -17,6 +18,7 @@ const userOnline = () => {
     })
     .then(data => {
         console.log(data);
+        // containUserOnLine.innerHTML=displayUsrOnLine()
     })
     .catch(error => {
         console.error('Error:', error);

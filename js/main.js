@@ -61,15 +61,15 @@ const main=()=>{
             indexPage(data); 
 
             // Créez la connexion WebSocket 
-            // var socket = new WebSocket("ws://localhost:8080/ws");
+            var socket = new WebSocket("ws://localhost:8080/ws");
 
-            // // send user connected
-            // socket.onopen = () => {
-            //     socket.send(JSON.stringify({
-            //         Username: data["User"]["Username"]
-            //     }));
-            //     console.log("socket: "+data["User"]["Username"]);
-            // }
+            // send user connected
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    Username: data["User"]["Username"]
+                }));
+                console.log("socket: "+data["User"]["Username"]);
+            }
             userOnline();
 
           

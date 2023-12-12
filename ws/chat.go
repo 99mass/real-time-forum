@@ -52,7 +52,7 @@ func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
 		username := user.Username
 
 		usersConn := removeUser(usersConnected, username)
-		if usersConn != nil {
+		if len(usersConn) != 0 {
 			var connected ConnectedUser
 			connected.Users = usersConn
 
