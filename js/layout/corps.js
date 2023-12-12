@@ -28,59 +28,13 @@ const middleBloc=(_middleBloc,_posts)=>{
 
 
 }
-const rigthtBloc=(_rigthtBloc)=>{
+const rigthtBloc=(_rigthtBloc,userOnline)=>{
+    console.log(userOnline);
     _rigthtBloc.innerHTML=`<h2> <img src="assets/right-arrow-svgrepo-com.svg" alt=""><span>Users On line</span> </h2>
-                                <div class="bloc">
-                                <div class="user">  
-                                    <div class="user-infos">                               
-                                        <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                        <div>
-                                            <p><span>mass</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                                        </div>
-                                    </div> 
-                                    <div class="chat-text">
-                                        <span>chat</span>
-                                        <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                                    </div>
-                                </div>
-                                <div class="user">  
-                                    <div class="user-infos">                               
-                                        <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                        <div>
-                                            <p><span>abdou</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                                        </div>
-                                    </div> 
-                                    <div class="chat-text">
-                                        <span>chat</span>
-                                        <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                                    </div>
-                                </div>
-                                <div class="user">  
-                                    <div class="user-infos">                               
-                                        <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                        <div>
-                                            <p><span>adama</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                                        </div>
-                                    </div> 
-                                    <div class="chat-text">
-                                        <span>chat</span>
-                                        <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                                    </div>
-                                </div>
-                                <div class="user">  
-                                    <div class="user-infos">                               
-                                        <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                        <div>
-                                            <p><span>yassine</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                                        </div>
-                                    </div> 
-                                    <div class="chat-text">
-                                        <span>chat</span>
-                                        <img src="assets/chat-dots-svgrepo-com.svg" alt="">
-                                    </div>
-                                </div>
-                               
+                            <div class="bloc bloc-users-on-line">
                             </div>  
+
+
                             <div class="chat-container">
                             <div class="chat-header">
                                 <div>aaa</div>
@@ -97,6 +51,32 @@ const rigthtBloc=(_rigthtBloc)=>{
                             </div>
                             </div>  
     `;
+}
+
+function usrOnLine(users) {
+
+    var users="";
+    for (let i = 0; i < users.length; i++) {
+        const user = users[i];    
+        if (user=="there's no user online") {
+        users=`<div class="user">  
+                <div class="user-infos">                               
+                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                    <div>
+                        <p><span>${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
+                    </div>
+                </div> 
+                <div class="chat-text">
+                    <span>chat</span>
+                    <img src="assets/chat-dots-svgrepo-com.svg" alt="">
+                </div>
+            </div>
+        `;
+    };
+        
+    }
+    return users;
+    
 }
 
 function createPostMenue() {

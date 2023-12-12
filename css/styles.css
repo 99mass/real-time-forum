@@ -490,7 +490,7 @@ color: var(--whiteffffff);
 }
 
 .menu-droite .chat-container{
-  /* display: none; */
+  display: none;
   position: relative;
   width: 140%;
   height: 500px;

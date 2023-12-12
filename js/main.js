@@ -7,6 +7,7 @@ import { displayFom } from "./pages/signUpSignIn.js";
 import {signInForm ,signUpForm} from "./auth/forms.js";
 import { indexPage } from "./pages/index.js";
 import { page404 } from "./pages/page404.js";
+import { userOnline } from "./helper/getUserOnLine.js";
 
 import { filterPost } from "./post/filterPost.js";
 import { postsFilter } from "./post/postsFiltered.js";
@@ -33,6 +34,7 @@ import {logOut} from "./auth/logOut.js";
 const main=()=>{ 
     
     document.addEventListener('DOMContentLoaded', (event) => {
+      
         // 404 page if route is note correcte
      let rd=routes[currentPath];       
       if (!rd) {
@@ -48,6 +50,8 @@ const main=()=>{
             Authentification() ;     
         }else{
 
+            
+
              // make route
             titlePage("Home");
             let r=routes["/Home"]['name'];
@@ -57,16 +61,18 @@ const main=()=>{
             indexPage(data); 
 
             // Créez la connexion WebSocket 
-            var socket = new WebSocket("ws://localhost:8080/ws");
+            // var socket = new WebSocket("ws://localhost:8080/ws");
 
-            // send user connected
-            socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    Username: data["User"]["username"]
-                }));
-                console.log("socket: "+data["User"]["username"]);
-            }
-              
+            // // send user connected
+            // socket.onopen = () => {
+            //     socket.send(JSON.stringify({
+            //         Username: data["User"]["Username"]
+            //     }));
+            //     console.log("socket: "+data["User"]["Username"]);
+            // }
+            userOnline();
+
+          
 
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
