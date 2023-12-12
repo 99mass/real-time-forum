@@ -29,6 +29,13 @@ func WSHandler() http.HandlerFunc {
 			return
 		}
 
+		_, ok := users[username]
+		if ok {
+			log.Println("user is already connected")
+			conn.Close()
+			return
+		}
+
 		users[username] = &models.User{Conn: conn, Username: username}
 		fmt.Println(users)
 		go handleMessages(conn, username)
