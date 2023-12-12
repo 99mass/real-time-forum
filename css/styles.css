@@ -496,7 +496,7 @@ color: var(--whiteffffff);
   height: 500px;
   margin-left: -40%;
 background-color:#3d464e; 
-   /* border-radius: 150px 0px 0px 0px; */
+   border-radius: 20px ;
 }
 
 .chat-container .btn-group-chat{
@@ -528,4 +528,15 @@ background-color:#3d464e;
   background-size: contain;
   cursor: pointer;
 
+}
+
+.menu-droite .chat-header{
+  display: flex;
+  justify-content: space-between;
+ 
+  height: 60px;
+  padding: 10px;
+}
+ .right-header img{
+ cursor: pointer;
 }
