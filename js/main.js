@@ -7,7 +7,7 @@ import { displayFom } from "./pages/signUpSignIn.js";
 import {signInForm ,signUpForm} from "./auth/forms.js";
 import { indexPage } from "./pages/index.js";
 import { page404 } from "./pages/page404.js";
-// import { userOnline } from "./helper/getUserOnLine.js";
+import { userOnline } from "./helper/getUserOnLine.js";
 
 import { filterPost } from "./post/filterPost.js";
 import { postsFilter } from "./post/postsFiltered.js";
@@ -70,12 +70,13 @@ const main=()=>{
                 socket.send(JSON.stringify({
                     Username: data["User"]["Username"]
                 }));
-                console.log("socket: "+data["User"]["Username"]);
+                // console.log("socket: "+data["User"]["Username"]);
 
             }
-
+            // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
-                console.log(message.data);
+                var data = JSON.parse(message.data);
+                userOnline(data);
             };
           
 
