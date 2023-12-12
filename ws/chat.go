@@ -1,15 +1,71 @@
 package ws
 
 import (
+	"database/sql"
 	"fmt"
+	"forum/controller"
+	"forum/helper"
+	"forum/middlewares"
 	"forum/models"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/websocket"
 )
+
 var usersConnected []string
 var users map[string]*models.User = make(map[string]*models.User)
+
+type ConnectedUser struct {
+	Users []string
+}
+
+func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		ok, pageError := middlewares.CheckRequest(r, "/connectedUsers", "get")
+		if !ok {
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "Method not Allowed",
+			},pageError)
+			return
+		}
+
+		sessionID, err := helper.GetSessionRequest(r)
+		if err != nil {
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "there's no session",
+			},http.StatusBadRequest)
+			return
+		}
+		user, err := controller.GetUserBySessionId(sessionID, db)
+		if err != nil {
+			helper.SendResponse(w,models.ErrorResponse{
+				Status: "error",
+				Message: "session is not valid",
+			},http.StatusBadRequest)
+			return
+		}
+		
+		username := user.Username
+
+		usersConn := removeUser(usersConnected, username)
+		if usersConn != nil {
+			var connected ConnectedUser
+			connected.Users = usersConn
+
+			helper.SendResponse(w, connected, http.StatusOK)
+		} else {
+			noUser := map[string]string{
+				"message": "there's no user online",
+			}
+			helper.SendResponse(w, noUser, http.StatusOK)
+		}
+
+	}
+}
 
 func WSHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -38,9 +94,9 @@ func WSHandler() http.HandlerFunc {
 
 		users[username] = &models.User{Conn: conn, Username: username}
 		fmt.Println(users)
-		for username := range users {
-			usersConnected = append(usersConnected, username)
-		}
+		usersConnected = append(usersConnected, username)
+
+		fmt.Println(usersConnected)
 		go handleMessages(conn, username)
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
@@ -100,28 +156,27 @@ func sendMessage(recipient string, message string) {
 	}
 }
 
-
 func CloseConnection(username string) {
-    user, ok := users[username]
-    if ok {
-        err := user.Conn.Close()
-        if err != nil {
-            log.Printf("Error closing connection for user %s: %v", username, err)
-        }
-        delete(users, username)
-		usersConnected = removeUser(usersConnected,username)
-    } else {
-        log.Printf("User %s not found", username)
-    }
+	user, ok := users[username]
+	if ok {
+		err := user.Conn.Close()
+		if err != nil {
+			log.Printf("Error closing connection for user %s: %v", username, err)
+		}
+		delete(users, username)
+		usersConnected = removeUser(usersConnected, username)
+	} else {
+		log.Printf("User %s not found", username)
+	}
 }
 
 func removeUser(slice []string, user string) []string {
-    for i, val := range slice {
-        if val == user {
-            return append(slice[:i], slice[i+1:]...)
-        }
-    }
-    return slice
+	for i, val := range slice {
+		if val == user {
+			return append(slice[:i], slice[i+1:]...)
+		}
+	}
+	return slice
 }
 
 func BroadcastMessage(message string) {
