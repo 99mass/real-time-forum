@@ -15,6 +15,7 @@ const logOut=(_btn)=>{
             });
 
             if(response.status === 200){
+            
                 window.location.reload();
             }else{
                 alert("a mistake is trying again");

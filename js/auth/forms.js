@@ -42,7 +42,7 @@ const signInForm = async (_ContentForms, formSignIn, formSignUp, spinner, linkAp
 
                             _ContentForms.remove();
                             window.location.reload();
-                            
+
                             indexPage(data);
                         } else {
                             errorp.style.display = "block";
