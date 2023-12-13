@@ -50,7 +50,7 @@ func WSHandler() http.HandlerFunc {
 		fmt.Println(usersConnected)
 
 		if len(usersConnected) != 1 {
-			BroadcastMessage(usersConnected)
+			BroadcastUsers(usersConnected)
 		} else {
 			noUser := map[string]string{
 				"message": "there's no user online",
@@ -128,7 +128,7 @@ func CloseConnection(username string) {
 		usersConnected = removeUser(usersConnected, username)
 		fmt.Println(usersConnected)
 		if len(usersConnected) != 1 {
-			BroadcastMessage(usersConnected)
+			BroadcastUsers(usersConnected)
 		} else {
 			noUser := map[string]string{
 				"message": "there's no user online",
@@ -152,7 +152,7 @@ func removeUser(slice []string, user string) []string {
 	return tab
 }
 
-func BroadcastMessage(message []string) {
+func BroadcastUsers(message []string) {
 	for _, user := range users {
 		usersConn := removeUser(message, user.Username)
 
@@ -161,56 +161,3 @@ func BroadcastMessage(message []string) {
 	}
 }
 
-// _, ok := users[username]
-// if ok {
-// 	log.Println("user is already connected")
-// 	conn.Close()
-// 	return
-// }
-
-// func EndPointConnectedUser(db *sql.DB) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-
-// 		ok, pageError := middlewares.CheckRequest(r, "/connectedUsers", "get")
-// 		if !ok {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "Method not Allowed",
-// 			}, pageError)
-// 			return
-// 		}
-
-// 		sessionID, err := helper.GetSessionRequest(r)
-// 		if err != nil {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "there's no session",
-// 			}, http.StatusBadRequest)
-// 			return
-// 		}
-// 		user, err := controller.GetUserBySessionId(sessionID, db)
-// 		if err != nil {
-// 			helper.SendResponse(w, models.ErrorResponse{
-// 				Status:  "error",
-// 				Message: "session is not valid",
-// 			}, http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		username := user.Username
-
-// 		usersConn := removeUser(usersConnected, username)
-// 		if len(usersConn) != 0 {
-// 			var connected ConnectedUser
-// 			connected.Users = usersConn
-
-// 			helper.SendResponse(w, connected, http.StatusOK)
-// 		} else {
-// 			noUser := map[string]string{
-// 				"message": "there's no user online",
-// 			}
-// 			helper.SendResponse(w, noUser, http.StatusOK)
-// 		}
-
-// 	}
-// }
