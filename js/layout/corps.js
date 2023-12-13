@@ -37,17 +37,37 @@ const rigthtBloc=(_rigthtBloc)=>{
                                 <div></div>
                                 <div class="midle-header">
                                     <div></div>
-                                    <div>Omzo Carter</div>
+                                    <div>Breukh</div>
                                 </div>
-                                <div class="right-header"><img src="../assets/menu-dots-svgrepo-com.svg"></div>
+                                <div class="right-header"><img class="menu-dots" src="../assets/menu-dots-svgrepo-com.svg"></div>
                             </div>
 
                             <div class="chat-body">
-
+                                <div class="sender-bloc">
+                                <div class="user-sender-bloc">
+                                     <img src="../assets/user-profile-svgrepo-com.svg"/>
+                                     <p>breukh</p>
+                                </div>
+                                    <div class="message-date">
+                                        <p>Nice too meet you</p>
+                                        <p>12:15</p>
+                                    </div>
+                                </div>
+                                <div class="receiver-bloc">
+                                <div class="message-date-2">
+                                    <p>Nice too meet you too</p>
+                                    <p>16:30</p>
+                                </div>
+                                <div class="user-receiver-bloc">
+                                    <img src="../assets/user-profile-svgrepo-com-2.svg"/>
+                                    <p>samba</p>
+                                </div>
+                                </div>
                             </div>
 
                             <div class="btn-group-chat">
-                                <textarea class="chat-text" placeholder="chat here..." ></textarea>
+                                <input type="hidden" name="Username" class="Username-input-chat" />
+                                <textarea name="message" class="chat-text" placeholder="chat here..." ></textarea>
                                 <button type="button" class="btn-chat"> </button>
                             </div>
 

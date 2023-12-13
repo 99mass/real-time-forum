@@ -25,7 +25,7 @@ import { DisLiskePost } from "./likeDislike/post/dislike.js";
 import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
-
+import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";  
 
 
 
@@ -76,7 +76,16 @@ const main=()=>{
             // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
+                // 
                 userOnline(data);
+
+                 // chat Mecanisme
+                const chatText=document.querySelectorAll('.user-on-line .btn-chat');  
+                const userNameOnline=document.querySelector('.user-name-online');             
+                const menuDots=document.querySelector('.menu-dots');
+                const  chatContainer=document.querySelector('.menu-droite .chat-container');
+                const UsernameinputChat=document.querySelector('.Username-input-chat');
+                chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
             };
           
 
@@ -151,6 +160,9 @@ const main=()=>{
             // filter category diplaying
             filterByCategory();
          
+
+           
+
 
         }
     }

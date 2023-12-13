@@ -9,14 +9,14 @@ const userOnline = (data) => {
             }else{
                 for (let i = 0; i < data.length; i++) {
                     const user = data[i];   
-                    users+=`<div class="user">  
-                            <div class="user-infos">                               
-                                <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                <div>
-                                    <p><span>${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
-                                </div>
-                            </div> 
-                            <div class="chat-text">
+                    users+=`<div class="user user-on-line ">  
+                                <div class="user-infos">                               
+                                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                                    <div>
+                                        <p><span class="user-name-online">${user}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>                            
+                                    </div>
+                                </div> 
+                            <div class="chat-text btn-chat">
                                 <span>chat</span>
                                 <img src="assets/chat-dots-svgrepo-com.svg" alt="">
                             </div>
