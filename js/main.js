@@ -76,8 +76,7 @@ const main=()=>{
             // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
-                //
-                //let dataSorted = sortUsers(data);
+                let dataSorted = sortUsers(data);
                 // console.log(dataSorted);
                 userOnline(data);
 
@@ -89,7 +88,7 @@ const main=()=>{
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
                
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
-                //statusPostUser(dataSorted);
+                statusPostUser(dataSorted);
             };
 
             var socketMessage = new WebSocket("ws://localhost:8080/message");
