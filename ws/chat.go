@@ -2,6 +2,7 @@ package ws
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"forum/controller"
 	"forum/models"
@@ -64,9 +65,29 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 
 		BroadcastUsers(userList)
 
-		go handleMessages(conn, username)
-
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
+	}
+}
+
+func HandleMessages(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		upgrader := websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool { return true },
+		}
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		//defer conn.Close()
+
+		username, err := readUsername(conn)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		go handleMessages(db, conn, username)
 	}
 }
 
@@ -83,24 +104,23 @@ func readUsername(conn *websocket.Conn) (string, error) {
 	return msg.Username, nil
 }
 
-type Message struct {
-	ID        uuid.UUID
+type GetMessage struct {
 	Sender    string    `json:"sender"`
 	Recipient string    `json:"recipient"`
 	Message   string    `json:"message"`
 	Created   time.Time `json:"created"`
 }
 
-func parseMessage(msg Message) (string, string, string) {
+func parseMessage(msg GetMessage) (string, string, string) {
 	sender := msg.Sender
 	recipient := msg.Recipient
 	messageContent := msg.Message
 	return sender, recipient, messageContent
 }
 
-func handleMessages(conn *websocket.Conn, username string) {
+func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 	for {
-		var msg Message
+		var msg GetMessage
 		err := conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("Error reading message:", err)
@@ -113,6 +133,7 @@ func handleMessages(conn *websocket.Conn, username string) {
 			msg.Created = time.Now()
 			sendMessage(recipient, msg)
 			sendMessage(sender, msg)
+			SaveMessage(db, sender, recipient, message)
 		} else {
 			errMessage := map[string]string{
 				"error": "Message cannot be empty",
@@ -123,10 +144,32 @@ func handleMessages(conn *websocket.Conn, username string) {
 	}
 }
 
-func sendMessage(recipient string, message Message) {
+func SaveMessage(db *sql.DB, sender string, recipient string, message string) error {
+	senderID := GetUserIDByUserName(db, sender)
+	recipientID := GetUserIDByUserName(db, recipient)
+	var Mes Message
+	Mes.Sender = senderID
+	Mes.Recipient = recipientID
+	Mes.Message = message
+	_, err := CreateMessage(db, Mes)
+	if err != nil {
+		return errors.New("can't create message")
+	}
+	return nil
+}
+
+func sendMessage(recipient string, message GetMessage) {
 	if user, ok := users[recipient]; ok {
 		user.Conn.WriteJSON(message)
 	}
+}
+
+func GetUserIDByUserName(db *sql.DB, userName string) uuid.UUID {
+	user, err := controller.GetUserByUsername(db, userName)
+	if err != nil {
+		return uuid.Nil
+	}
+	return user.ID
 }
 
 func removeElement(slice []string, el string) []string {

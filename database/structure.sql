@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS comment_dislikes (
 
 CREATE TABLE messages (
     id INT PRIMARY KEY,
-    sender_id INT,
-    recipient_id INT,
-    message_text TEXT,
+    sender_id TEXT NOT NULL,
+    recipient_id TEXT NOT NULL,
+    message_text TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(id),
     FOREIGN KEY (recipient_id) REFERENCES users(id)

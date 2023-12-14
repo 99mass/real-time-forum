@@ -15,6 +15,7 @@ func Route(db *sql.DB) {
 		http.ServeFile(w, r, "./index.html")
 	})
 	http.HandleFunc("/ws", ws.WSHandler(db))
+	http.HandleFunc("/message", ws.HandleMessages(db))
 	//http.HandleFunc("/connectedUsers",helper.CorsMiddleware(ws.EndPointConnectedUser(db)))
 	http.HandleFunc("/verifySession", helper.CorsMiddleware(handler.Index(db)))
 	http.HandleFunc("/signin", helper.CorsMiddleware(handler.SinginHandler(db)))
