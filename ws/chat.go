@@ -14,6 +14,7 @@ import (
 var usersConnected []string
 var users map[string]*models.User = make(map[string]*models.User)
 var userList []UserToShow
+
 type ConnectedUser struct {
 	Users []string
 }
@@ -59,14 +60,7 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 
 		fmt.Println(usersConnected)
 
-		if len(usersConnected) != 1 {
-			BroadcastUsers(userList)
-		} else {
-			noUser := map[string]string{
-				"message": "there's no user online",
-			}
-			conn.WriteJSON(noUser)
-		}
+		BroadcastUsers(userList)
 
 		go handleMessages(conn, username)
 
@@ -127,6 +121,15 @@ func sendMessage(recipient string, message string) {
 	}
 }
 
+func removeElement(slice []string, el string) []string {
+    for i, a := range slice {
+        if a == el {
+            return append(slice[:i], slice[i+1:]...)
+        }
+    }
+    return slice
+}
+
 func CloseConnection(username string) {
 	user, ok := users[username]
 	if ok {
@@ -135,22 +138,15 @@ func CloseConnection(username string) {
 			log.Printf("Error closing connection for user %s: %v", username, err)
 		}
 		delete(users, username)
-		for i,us := range userList{
+		usersConnected = removeElement(usersConnected, username)
+		for i, us := range userList {
 			if us.Username == username {
 				userList[i].Status = "offline"
 			}
 		}
 		fmt.Println(userList)
-		if len(usersConnected) != 1 {
-			BroadcastUsers(userList)
-		} else {
-			noUser := map[string]string{
-				"message": "there's no user online",
-			}
-			for _, us := range users {
-				us.Conn.WriteJSON(noUser)
-			}
-		}
+		BroadcastUsers(userList)
+
 	} else {
 		log.Printf("User %s not found", username)
 	}
