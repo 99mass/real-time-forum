@@ -4,8 +4,8 @@ const chatContainerDisplaying=(chatText,userNameOnline,menuDots,chatContainer,Us
         const btnChat = chatText[i];
         btnChat.addEventListener('click',()=>{         
             chatContainer.style.display="block";
-            UsernameinputChat.value=userNameOnline.textContent.trim();
-            console.log(userNameOnline.textContent.trim());
+            UsernameinputChat.value=userNameOnline[i].textContent.trim();
+            console.log(userNameOnline[i].textContent.trim());
             return;        
         });        
      }
