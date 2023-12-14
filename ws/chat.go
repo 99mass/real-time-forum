@@ -131,6 +131,14 @@ func parseMessage(msg GetMessage) (string, string, string) {
 
 func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 	for {
+		if user, ok := usersMessage[username]; ok {
+			// Si l'utilisateur existe déjà, mettez à jour la connexion
+			user.Conn = conn
+		} else {
+			// Sinon, créez un nouvel utilisateur
+			usersMessage[username] = &models.User{Conn: conn, Username: username}
+		}
+		fmt.Println("list 2: ", usersMessage)
 		var msg GetMessage
 		err := conn.ReadJSON(&msg)
 		if err != nil {
@@ -142,17 +150,11 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 
 		sender, recipient, message := parseMessage(msg)
 
-		if recipient != "" && message != "" {
-			msg.Created = time.Now()
-			sendMessage(recipient, msg)
-			SaveMessage(db, sender, recipient, message)
-		} else {
-			errMessage := map[string]string{
-				"error": "Message cannot be empty",
-			}
-			conn.WriteJSON(errMessage)
+		msg.Created = time.Now()
+		sendMessage(recipient, msg)
+		sendMessage(sender, msg)
+		SaveMessage(db, sender, recipient, message)
 
-		}
 	}
 }
 
@@ -171,7 +173,7 @@ func SaveMessage(db *sql.DB, sender string, recipient string, message string) er
 }
 
 func sendMessage(recipient string, message GetMessage) {
-	if user, ok := users[recipient]; ok {
+	if user, ok := usersMessage[recipient]; ok {
 		user.Conn.WriteJSON(message)
 	}
 }
