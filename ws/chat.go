@@ -87,6 +87,7 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
+		fmt.Println("user : ", username)
 
 		if user, ok := usersMessage[username]; ok {
 			// Si l'utilisateur existe déjà, mettez à jour la connexion
@@ -95,6 +96,7 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 			// Sinon, créez un nouvel utilisateur
 			usersMessage[username] = &models.User{Conn: conn, Username: username}
 		}
+		fmt.Println("list : ", usersMessage)
 
 		go handleMessages(db, conn, username)
 	}
@@ -135,6 +137,8 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			log.Println("Error reading message:", err)
 			break
 		}
+
+		fmt.Println("modele : ", msg)
 
 		sender, recipient, message := parseMessage(msg)
 

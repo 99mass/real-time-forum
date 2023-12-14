@@ -21,17 +21,21 @@ const sendMessage=(socketMessage)=>{
             Recipient: _Recipient,
             Message: _Message
         };  
-        // console.log(data); 
+        console.log(data); 
         // Créez la connexion WebSocket 
-        var socketMessage = new WebSocket("ws://localhost:8080/message");
-
+        var socket = new WebSocket("ws://localhost:8080/message");
+        socket.onopen = () => {
+            socket.send(JSON.stringify({ Username: _Sender}));
+            socket.send(JSON.stringify(data));
+            console.log("ok");
+        }
         // send user connected
-        socketMessage.onopen = () => {
-            socketMessage.send(JSON.stringify(data));
+        socket.onopen = () => {
+            socket.send(JSON.stringify(data));
             console.log("ok");
         }
      
-        socketMessage.onmessage = (message) => {
+        socket.onmessage = (message) => {
             var _data = JSON.parse(message.data);
             console.log(_data);
         }
