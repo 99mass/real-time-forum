@@ -10,12 +10,6 @@ const sendMessage=(socketMessage)=>{
         let _Recipient = document.querySelector('input[name="Recipient"]').value.trim();
         let _Message = document.querySelector('textarea[name="Message"]').value.trim();
 
-        // if (_Message.lenght>2) {
-        //     alert("message must not exceed 200 characters");
-        //     return;
-        // }
-        // alert(_Message)
-
         let data = {
             Sender: _Sender,
             Recipient: _Recipient,
@@ -27,7 +21,7 @@ const sendMessage=(socketMessage)=>{
         socket.onopen = () => {
             socket.send(JSON.stringify({ Username: _Sender}));
             socket.send(JSON.stringify(data));
-            console.log("ok");
+            console.log("_Sender: "+_Sender);
         }
         // send user connected
         socket.onopen = () => {
