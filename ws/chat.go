@@ -17,6 +17,7 @@ import (
 var usersConnected []string
 var users map[string]*models.User = make(map[string]*models.User)
 var userList []UserToShow
+var usersMessage map[string]*models.User = make(map[string]*models.User)
 
 type ConnectedUser struct {
 	Users []string
@@ -69,7 +70,7 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func HandleMessages(db *sql.DB) http.HandlerFunc {
+func HandlerMessages(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool { return true },
@@ -85,6 +86,14 @@ func HandleMessages(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 			return
+		}
+
+		if user, ok := usersMessage[username]; ok {
+			// Si l'utilisateur existe déjà, mettez à jour la connexion
+			user.Conn = conn
+		} else {
+			// Sinon, créez un nouvel utilisateur
+			usersMessage[username] = &models.User{Conn: conn, Username: username}
 		}
 
 		go handleMessages(db, conn, username)
