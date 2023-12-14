@@ -26,7 +26,7 @@ import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";  
-
+import { sortUsers } from "./helper/utils.js";
 
 
 import {logOut} from "./auth/logOut.js";
@@ -77,16 +77,18 @@ const main=()=>{
             // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
-                // 
-                console.log(data);
-                userOnline(data);
+                let dataSorted = sortUsers(data);
+       
+                console.log(dataSorted);
+                userOnline(dataSorted);
 
-                 // chat Mecanisme
+                 // chat Mecanism
                 const chatText=document.querySelectorAll('.user-on-line .btn-chat');  
-                const userNameOnline=document.querySelector('.user-name-online');             
+                const userNameOnline=document.querySelectorAll('.user-name-online');             
                 const menuDots=document.querySelector('.menu-dots');
                 const  chatContainer=document.querySelector('.menu-droite .chat-container');
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
+                // const _userName=data["User"]["Username"];
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
             };
 
