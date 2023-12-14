@@ -1,7 +1,9 @@
 package ws
 
 import (
+	"database/sql"
 	"fmt"
+	"forum/controller"
 	"forum/models"
 	"log"
 	"net/http"
@@ -11,12 +13,12 @@ import (
 
 var usersConnected []string
 var users map[string]*models.User = make(map[string]*models.User)
-
+var userList []UserToShow
 type ConnectedUser struct {
 	Users []string
 }
 
-func WSHandler() http.HandlerFunc {
+func WSHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool { return true },
@@ -34,6 +36,12 @@ func WSHandler() http.HandlerFunc {
 			return
 		}
 
+		userList, err = GetAllUserNames(db)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
 		if user, ok := users[username]; ok {
 			// Si l'utilisateur existe déjà, mettez à jour la connexion
 			user.Conn = conn
@@ -43,14 +51,16 @@ func WSHandler() http.HandlerFunc {
 			usersConnected = append(usersConnected, username)
 		}
 
+		changeElementStatus(userList, usersConnected)
+
+		fmt.Println(userList)
+
 		fmt.Println(users)
-		// users[username] = &models.User{Conn: conn, Username: username}
-		// usersConnected = append(usersConnected, username)
 
 		fmt.Println(usersConnected)
 
 		if len(usersConnected) != 1 {
-			BroadcastUsers(usersConnected)
+			BroadcastUsers(userList)
 		} else {
 			noUser := map[string]string{
 				"message": "there's no user online",
@@ -125,10 +135,14 @@ func CloseConnection(username string) {
 			log.Printf("Error closing connection for user %s: %v", username, err)
 		}
 		delete(users, username)
-		usersConnected = removeUser(usersConnected, username)
-		fmt.Println(usersConnected)
+		for i,us := range userList{
+			if us.Username == username {
+				userList[i].Status = "offline"
+			}
+		}
+		fmt.Println(userList)
 		if len(usersConnected) != 1 {
-			BroadcastUsers(usersConnected)
+			BroadcastUsers(userList)
 		} else {
 			noUser := map[string]string{
 				"message": "there's no user online",
@@ -142,22 +156,60 @@ func CloseConnection(username string) {
 	}
 }
 
-func removeUser(slice []string, user string) []string {
-	var tab []string
+func removeUser(slice []UserToShow, user string) []UserToShow {
+	var tab []UserToShow
 	for _, val := range slice {
-		if val != user {
+		if val.Username != user {
 			tab = append(tab, val)
 		}
 	}
 	return tab
 }
 
-func BroadcastUsers(message []string) {
+func BroadcastUsers(userList []UserToShow) {
 	for _, user := range users {
-		usersConn := removeUser(message, user.Username)
+		usersConn := removeUser(userList, user.Username)
 
 		user.Conn.WriteJSON(usersConn)
 
 	}
 }
 
+type UserToShow struct {
+	Username string `json:"Username"`
+	Status   string `json:"Status"`
+}
+
+func GetAllUserNames(db *sql.DB) ([]UserToShow, error) {
+	var userList []UserToShow
+	users, err := controller.GetAllUsers(db)
+	if err != nil {
+		return nil, err
+	}
+	for _, user := range users {
+		var us UserToShow
+		us.Username = user.Username
+		us.Status = "offline"
+		userList = append(userList, us)
+	}
+	return userList, nil
+}
+
+func changeElementStatus(slice1 []UserToShow, slice2 []string) {
+
+	for i, el := range slice1 {
+		if contains(slice2, el.Username) {
+			slice1[i].Status = "online"
+		}
+	}
+
+}
+
+func contains(slice []string, el string) bool {
+	for _, a := range slice {
+		if a == el {
+			return true
+		}
+	}
+	return false
+}

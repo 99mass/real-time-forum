@@ -77,6 +77,7 @@ const main=()=>{
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 // 
+                console.log(data);
                 userOnline(data);
 
                  // chat Mecanisme
@@ -87,7 +88,6 @@ const main=()=>{
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
             };
-          
 
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
