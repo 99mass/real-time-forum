@@ -145,7 +145,6 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 		if recipient != "" && message != "" {
 			msg.Created = time.Now()
 			sendMessage(recipient, msg)
-			sendMessage(sender, msg)
 			SaveMessage(db, sender, recipient, message)
 		} else {
 			errMessage := map[string]string{
