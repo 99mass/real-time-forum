@@ -233,7 +233,7 @@ function posts(_posts) {
                             <div class="poster">                                  
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                 <div>
-                                    <p><span>${Username}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
+                                    <p><span class="post-username">${Username}</span><img class="post-username-img"  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
                                     <p>${CreatedAtPost}</p>
                                 </div>
                             </div>

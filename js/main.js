@@ -26,11 +26,10 @@ import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";  
-import { sortUsers } from "./helper/utils.js";
+import { sortUsers,statusPostUser ,statusPostFilteredUser} from "./helper/utils.js";
 
 
 import {logOut} from "./auth/logOut.js";
-
 
 
 const main=()=>{ 
@@ -73,12 +72,11 @@ const main=()=>{
                 // console.log("socket: "+data["User"]["Username"]);
 
             }
-            
+           
             // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 let dataSorted = sortUsers(data);
-       
                 console.log(dataSorted);
                 userOnline(dataSorted);
 
@@ -88,10 +86,10 @@ const main=()=>{
                 const menuDots=document.querySelector('.menu-dots');
                 const  chatContainer=document.querySelector('.menu-droite .chat-container');
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
-                // const _userName=data["User"]["Username"];
+               
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
+                statusPostUser(dataSorted);
             };
-
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
             const btn = document.querySelector(".create-post-btn");
@@ -261,9 +259,10 @@ function filterByCategory() {
     
                     liskeComment(likeComment,likeCommentId,likeCommentScore,dislikeCommentScore,dislikeComment);
                     DisLiskeComment(dislikeComment,dislikeCommentId,likeCommentScore,dislikeCommentScore,likeComment);
-    
-    
+
+                    statusPostFilteredUser();
                  });
+  
 }
 
 export{

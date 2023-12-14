@@ -108,6 +108,44 @@ const throttle = (callback, delay)=> {
         }
     };
 }
+const statusPostUser=(dataSorted)=>{
+    
+    const postUsername=document.querySelectorAll('.post-username');
+    const postUsernameImg=document.querySelectorAll('.post-username-img');
+    for (let i = 0; i < postUsername.length; i++) {
+            for (let j = 0; j < dataSorted.length; j++) {
+                let name=dataSorted[j]["Username"];
+                let status=dataSorted[j]["Status"];
+                if (name===postUsername[i].textContent.trim() && status=='offline') {
+                    postUsernameImg[i].src="assets/status-no-active-svgrepo-com.svg";
+                }
+                if (name===postUsername[i].textContent.trim() && status=='online') {
+                    postUsernameImg[i].src="assets/status-active-svgrepo-com.svg";
+                }
+            }
+    }
+
+}
+const statusPostFilteredUser=()=>{
+    const userNameOnline=document.querySelectorAll('.user-infos div .user-name-online'); 
+    const _userNameOnlineImg=document.querySelectorAll('.user-infos div .user-name-online-img'); 
+    const postUsername=document.querySelectorAll('.content-poster-like .content-poster .poster div p span');
+    const postUsernameImg=document.querySelectorAll('.content-poster-like .content-poster .poster div p img');
+    console.log(_userNameOnlineImg[2].src);
+    for (let i = 0; i < postUsername.length; i++) {
+            for (let j = 0; j < userNameOnline.length; j++) {
+                let name=userNameOnline[j].textContent.trim();
+                let srcValue=_userNameOnlineImg[j].src;
+                if (name==postUsername[i].textContent.trim() && srcValue.includes("no-active") ) {
+                    postUsernameImg[i].src="assets/status-no-active-svgrepo-com.svg";
+                }
+                if (name==postUsername[i].textContent.trim() && !srcValue.includes("no-active") ) {
+                    postUsernameImg[i].src="assets/status-active-svgrepo-com.svg";
+                }
+            }
+    }
+}
+
 
 const sortUsers = (users) => {
     return users.sort((a, b) => {
@@ -128,4 +166,4 @@ const sortUsers = (users) => {
     });
 }
 
-export{isGoodNumber,timeAgo,commentTemporel,sortUsers,throttle}
+export{isGoodNumber,timeAgo,commentTemporel,sortUsers,statusPostUser,statusPostFilteredUser,throttle}
