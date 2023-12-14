@@ -1,6 +1,6 @@
 import { linkApi } from "../helper/api_link.js";
 
-const sendMessage=()=>{
+const sendMessage=(socketMessage)=>{
     const formChat=document.querySelector('.form-chat');
     formChat.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -21,16 +21,17 @@ const sendMessage=()=>{
             Recipient: _Recipient,
             Message: _Message
         };  
-        console.log(data); 
+        // console.log(data); 
         // Créez la connexion WebSocket 
-        var socket = new WebSocket("ws://localhost:8080/ws");
+        var socketMessage = new WebSocket("ws://localhost:8080/message");
 
         // send user connected
-        socket.onopen = () => {
-            socket.send(JSON.stringify(data));
+        socketMessage.onopen = () => {
+            socketMessage.send(JSON.stringify(data));
             console.log("ok");
         }
-        socket.onmessage = (message) => {
+     
+        socketMessage.onmessage = (message) => {
             var _data = JSON.parse(message.data);
             console.log(_data);
         }

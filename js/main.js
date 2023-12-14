@@ -91,7 +91,15 @@ const main=()=>{
                 statusPostUser(dataSorted);
             };
 
-            sendMessage();
+            var socketMessage = new WebSocket("ws://localhost:8080/message");
+
+            // send user connected
+            socketMessage.onopen = () => {
+                socketMessage.send(JSON.stringify({ Username: data["User"]["Username"]}));
+                console.log("main");
+            }
+
+            sendMessage(socketMessage);
 
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
