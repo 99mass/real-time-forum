@@ -27,7 +27,7 @@ import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";  
 import { sortUsers,statusPostUser ,statusPostFilteredUser} from "./helper/utils.js";
-
+import { sendMessage  } from "./chat/chatForm.js";
 
 import {logOut} from "./auth/logOut.js";
 
@@ -77,7 +77,7 @@ const main=()=>{
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 let dataSorted = sortUsers(data);
-                console.log(dataSorted);
+                // console.log(dataSorted);
                 userOnline(dataSorted);
 
                  // chat Mecanism
@@ -90,6 +90,9 @@ const main=()=>{
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
                 statusPostUser(dataSorted);
             };
+
+            sendMessage();
+
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
             const btn = document.querySelector(".create-post-btn");

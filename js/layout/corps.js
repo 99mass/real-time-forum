@@ -39,38 +39,46 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                                     <div></div>
                                     <div>${userName}</div>
                                 </div>
-                                <div class="right-header"><img class="menu-dots" src="../assets/menu-dots-svgrepo-com.svg"></div>
+                                <div class="right-header"><img class="menu-dots" src="../assets/close-circle-svgrepo-com.svg"></div>
                             </div>
 
                             <div class="chat-body">
+
                                 <div class="sender-bloc">
-                                <div class="user-sender-bloc">
-                                     <img src="../assets/user-profile-svgrepo-com.svg"/>
-                                     <p>breukh</p>
-                                </div>
+                                    <div class="user-sender-bloc">
+                                        <img src="../assets/user-profile-svgrepo-com.svg"/>
+                                        <p>breukh</p>
+                                    </div>
                                     <div class="message-date">
                                         <p>Nice too meet you</p>
                                         <p>12:15</p>
                                     </div>
                                 </div>
+
                                 <div class="receiver-bloc">
-                                <div class="message-date-2">
-                                    <p>Nice too meet you too</p>
-                                    <p>16:30</p>
+                                    <div class="message-date-2">
+                                        <p>Nice too meet you too</p>
+                                        <p>16:30</p>
+                                    </div>
+                                    <div class="user-receiver-bloc">
+                                        <img src="../assets/user-profile-svgrepo-com-2.svg"/>
+                                        <p>samba</p>
+                                    </div>
                                 </div>
-                                <div class="user-receiver-bloc">
-                                    <img src="../assets/user-profile-svgrepo-com-2.svg"/>
-                                    <p>samba</p>
-                                </div>
-                                </div>
+
+
+
+                                
                             </div>
 
-                            <div class="btn-group-chat">
-                                <input type="hidden" name="Username" class="Username-input-chat" />
-                                <textarea name="message" class="chat-text" placeholder="chat here..." ></textarea>
-                                <button type="button" class="btn-chat"> </button>
-                            </div>
-
+                            <form class="form-chat" method="post">
+                                <div class="btn-group-chat">
+                                        <input type="hidden" name="Sender"  value="${userName}" />
+                                        <input type="hidden" name="Recipient" class="Username-input-chat" />
+                                        <textarea name="Message" class="chat-text" placeholder="chat here..." ></textarea>
+                                        <button type="submit" class="btn-chat"> </button>
+                                </div>
+                            </form>
                             </div>  
     `;
 }
