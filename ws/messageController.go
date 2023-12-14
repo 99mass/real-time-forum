@@ -27,23 +27,6 @@ func CreateMessage(db *sql.DB, message Message) (uuid.UUID, error) {
 	return newUUID, nil
 }
 
-// GetMessage retrieves a message from the database by its ID.
-func GetMessage(db *sql.DB, id uuid.UUID) (Message, error) {
-	query := `
-        SELECT id, sender, recipient, message, created_at
-        FROM messages
-        WHERE id = ?;
-    `
-
-	var message Message
-	err := db.QueryRow(query, id.String()).Scan(&message.ID, &message.Sender, &message.Recipient, &message.Message, &message.Created)
-	if err != nil {
-		return Message{}, err
-	}
-
-	return message, nil
-}
-
 func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
 	var messages []Message
 
@@ -95,4 +78,21 @@ func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	}
 
 	return messages
+}
+
+// GetMessage retrieves a message from the database by its ID.
+func GetMessage(db *sql.DB, id uuid.UUID) (Message, error) {
+	query := `
+        SELECT id, sender, recipient, message, created_at
+        FROM messages
+        WHERE id = ?;
+    `
+
+	var message Message
+	err := db.QueryRow(query, id.String()).Scan(&message.ID, &message.Sender, &message.Recipient, &message.Message, &message.Created)
+	if err != nil {
+		return Message{}, err
+	}
+
+	return message, nil
 }
