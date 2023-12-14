@@ -25,7 +25,7 @@ const indexPage = (data) => {
     header(_header, Username);
     leftBloc(_leftBloc, CatgoryArray);
     middleBloc(_middleBloc, posts);
-    rigthtBloc(_rigthtBloc);
+    rigthtBloc(_rigthtBloc,Username);
  
 }
 

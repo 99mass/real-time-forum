@@ -109,14 +109,21 @@ const throttle = (callback, delay)=> {
     };
 }
 
-const sortUsers = (users)=> {
+const sortUsers = (users) => {
     return users.sort((a, b) => {
         if (a.Status === 'online' && b.Status === 'offline') {
             return -1;
         } else if (a.Status === 'offline' && b.Status === 'online') {
             return 1;
         } else {
-            return 0;
+            // Si les deux utilisateurs sont en online ou offline, trier par nom d'utilisateur.
+            if (a.Username < b.Username) {
+                return -1;
+            } else if (a.Username > b.Username) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
     });
 }

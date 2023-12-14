@@ -28,7 +28,7 @@ const middleBloc=(_middleBloc,_posts)=>{
 
 
 }
-const rigthtBloc=(_rigthtBloc)=>{
+const rigthtBloc=(_rigthtBloc,userName)=>{
 
     _rigthtBloc.innerHTML=`<h2> <img src="assets/right-arrow-svgrepo-com.svg" alt=""><span>Users On line</span> </h2>
                             <div class="bloc bloc-users-on-line"> </div>  
@@ -37,7 +37,7 @@ const rigthtBloc=(_rigthtBloc)=>{
                                 <div></div>
                                 <div class="midle-header">
                                     <div></div>
-                                    <div>Breukh</div>
+                                    <div>${userName}</div>
                                 </div>
                                 <div class="right-header"><img class="menu-dots" src="../assets/menu-dots-svgrepo-com.svg"></div>
                             </div>

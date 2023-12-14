@@ -77,7 +77,7 @@ const main=()=>{
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 let dataSorted = sortUsers(data);
-                // 
+       
                 console.log(dataSorted);
                 userOnline(dataSorted);
 
@@ -87,6 +87,7 @@ const main=()=>{
                 const menuDots=document.querySelector('.menu-dots');
                 const  chatContainer=document.querySelector('.menu-droite .chat-container');
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
+                // const _userName=data["User"]["Username"];
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
             };
 
