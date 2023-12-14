@@ -92,13 +92,13 @@ const main=()=>{
                 //statusPostUser(dataSorted);
             };
 
-            // var socketMessage = new WebSocket("ws://localhost:8080/message");
+            var socketMessage = new WebSocket("ws://localhost:8080/message");
 
-            // // send user connected
-            // socketMessage.onopen = () => {
-            //     socketMessage.send(JSON.stringify({ Username: data["User"]["Username"]}));
-            //     console.log("main");
-            // }
+            // send user connected
+            socketMessage.onopen = () => {
+                socketMessage.send(JSON.stringify({ Username: data["User"]["Username"]}));
+                console.log("main");
+            }
 
             sendMessage();
 
