@@ -15,7 +15,7 @@ const userOnline = (data) => {
                                 <div class="user-infos">                               
                                     <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                     <div>
-                                        <p><span class="user-name-online">${user['Username']}</span><img  src="assets/${status}" alt=""> </p>                            
+                                        <p><span class="user-name-online">${user['Username']}</span><img class="user-name-online-img"  src="assets/${status}" alt=""> </p>                            
                                     </div>
                                 </div> 
                             <div class="chat-text btn-chat">
