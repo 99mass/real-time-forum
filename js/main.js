@@ -77,7 +77,7 @@ const main=()=>{
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 let dataSorted = sortUsers(data);
-                // console.log(dataSorted);
+                console.log(dataSorted);
                 userOnline(dataSorted);
 
                  // chat Mecanism

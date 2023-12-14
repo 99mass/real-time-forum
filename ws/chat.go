@@ -7,7 +7,9 @@ import (
 	"forum/models"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/gorilla/websocket"
 )
 
@@ -82,14 +84,18 @@ func readUsername(conn *websocket.Conn) (string, error) {
 }
 
 type Message struct {
-	Recipient string `json:"recipient"`
-	Message   string `json:"message"`
+	ID        uuid.UUID
+	Sender    string    `json:"sender"`
+	Recipient string    `json:"recipient"`
+	Message   string    `json:"message"`
+	Created   time.Time `json:"created"`
 }
 
-func parseMessage(msg Message) (string, string) {
+func parseMessage(msg Message) (string, string, string) {
+	sender := msg.Sender
 	recipient := msg.Recipient
 	messageContent := msg.Message
-	return recipient, messageContent
+	return sender, recipient, messageContent
 }
 
 func handleMessages(conn *websocket.Conn, username string) {
@@ -101,10 +107,12 @@ func handleMessages(conn *websocket.Conn, username string) {
 			break
 		}
 
-		recipient, message := parseMessage(msg)
+		sender, recipient, message := parseMessage(msg)
 
 		if recipient != "" && message != "" {
-			sendMessage(recipient, fmt.Sprintf("%s: %s", username, message))
+			msg.Created = time.Now()
+			sendMessage(recipient, msg)
+			sendMessage(sender, msg)
 		} else {
 			errMessage := map[string]string{
 				"error": "Message cannot be empty",
@@ -115,19 +123,19 @@ func handleMessages(conn *websocket.Conn, username string) {
 	}
 }
 
-func sendMessage(recipient string, message string) {
+func sendMessage(recipient string, message Message) {
 	if user, ok := users[recipient]; ok {
 		user.Conn.WriteJSON(message)
 	}
 }
 
 func removeElement(slice []string, el string) []string {
-    for i, a := range slice {
-        if a == el {
-            return append(slice[:i], slice[i+1:]...)
-        }
-    }
-    return slice
+	for i, a := range slice {
+		if a == el {
+			return append(slice[:i], slice[i+1:]...)
+		}
+	}
+	return slice
 }
 
 func CloseConnection(username string) {

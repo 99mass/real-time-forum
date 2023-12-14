@@ -95,3 +95,13 @@ CREATE TABLE IF NOT EXISTS comment_dislikes (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (comment_id) REFERENCES comments(id)
 );
+
+CREATE TABLE messages (
+    id INT PRIMARY KEY,
+    sender_id INT,
+    recipient_id INT,
+    message_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (recipient_id) REFERENCES users(id)
+);
