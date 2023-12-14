@@ -23,18 +23,18 @@ const sendMessage=(socketMessage)=>{
         };  
         console.log(data); 
         // Créez la connexion WebSocket 
-        var socketMessage = new WebSocket("ws://localhost:8080/message");
-        socketMessage.onopen = () => {
-            socketMessage.send(JSON.stringify({ Username: _Sender}));
+        var socket = new WebSocket("ws://localhost:8080/message");
+        socket.onopen = () => {
+            socket.send(JSON.stringify({ Username: _Sender}));
             console.log("ok");
-            socketMessage.send(JSON.stringify(data));
+            socket.send(JSON.stringify(data));
             console.log("okurrrrrrrrrrrrrrrrrrrrrrrrr");
         }
         // send user connected
             // socket.send(JSON.stringify(data));
             // console.log("okurrrrrrrrrrrrrrrrrrrrrrrrr");
      
-        socketMessage.onmessage = (message) => {
+        socket.onmessage = (message) => {
             var _data = JSON.parse(message.data);
             console.log(_data);
         }

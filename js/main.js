@@ -77,9 +77,9 @@ const main=()=>{
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 //
-                //let dataSorted = sortUsers(data);
+                let dataSorted = sortUsers(data);
                 // console.log(dataSorted);
-                userOnline(data);
+                userOnline(dataSorted);
 
                  // chat Mecanism
                 const chatText=document.querySelectorAll('.user-on-line .btn-chat');  
@@ -89,18 +89,18 @@ const main=()=>{
                 const UsernameinputChat=document.querySelector('.Username-input-chat');
                
                 chatContainerDisplaying(chatText,userNameOnline,menuDots,chatContainer,UsernameinputChat);
-                //statusPostUser(dataSorted);
+                statusPostUser(dataSorted);
             };
 
-            // var socketMessage = new WebSocket("ws://localhost:8080/message");
+            var socketMessage = new WebSocket("ws://localhost:8080/message");
 
-            // // send user connected
-            // socketMessage.onopen = () => {
-            //     socketMessage.send(JSON.stringify({ Username: data["User"]["Username"]}));
-            //     console.log("main");
-            // }
+            // send user connected
+            socketMessage.onopen = () => {
+                socketMessage.send(JSON.stringify({ Username: data["User"]["Username"]}));
+                console.log("main");
+            }
 
-            sendMessage();
+            sendMessage(socketMessage);
 
             // add post fom et  methode
             const myModal=document.querySelector('#myModal');
