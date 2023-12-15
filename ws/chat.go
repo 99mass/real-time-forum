@@ -102,6 +102,40 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func CommunicationHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		upgrader := websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool { return true },
+		}
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		type requestUSer struct {
+			User1    string	`json:"User1"`
+			User2 string	`json:"User2"`
+		}
+		var request requestUSer
+		err = conn.ReadJSON(&request)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(request.User1)
+		fmt.Println(request.User2)
+		// val1,_ := uuid.FromString("83a723ca-4d38-4af1-bd0d-1404adff7a7f")
+		// val2,_ := uuid.FromString("b595fade-d0d2-463b-8396-f4cf6ea8661e")
+		// dis := GetDiscussion(db,val1,val2)
+		// fmt.Println(dis)
+
+		discuss := GetCommunication(db, request.User1, request.User2)
+		fmt.Println(discuss)
+		conn.WriteJSON(discuss)
+
+	}
+}
+
 type UsernameMessage struct {
 	Username string `json:"Username"`
 }
@@ -148,13 +182,17 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 		err := conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("Error reading message:", err)
-			break
+			continue
 		}
 
 		//fmt.Println("modele : ", msg)
 
 		sender, recipient, message, err := parseMessage(msg)
 		if err == nil {
+			if len(message) > 100 {
+				conn.WriteJSON("message is too long")
+				continue
+			}
 			err = SaveMessage(db, sender, recipient, message)
 			if err != nil {
 				fmt.Println(err)
