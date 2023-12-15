@@ -126,31 +126,32 @@ func CommunicationHandler(db *sql.DB) http.HandlerFunc {
 		fmt.Println(request.User2)
 		discuss := GetCommunication(db, request.User1, request.User2)
 		goodDiscuss := GoodToSend(db, discuss)
-		fmt.Println(discuss)
+		fmt.Println(goodDiscuss)
 		conn.WriteJSON(goodDiscuss)
 
 	}
 }
 
 type messageToSend struct {
-	sender         string
-	recipient      string
-	messageContent string
-	created        string
+	Sender    string
+	Recipient string
+	Message   string
+	Created   string
 }
 
 func GoodToSend(db *sql.DB, discuss []Message) []messageToSend {
 
 	var messToSend []messageToSend
 	for _, m := range discuss {
+		//fmt.Println(m.Message)
 		var mes messageToSend
-		mes.sender = GetUsername(db, m.Sender)
-		mes.recipient = GetUsername(db, m.Recipient)
-		mes.messageContent = m.Message
-		mes.created = m.Created.Format("2006-01-02 15:04:05")
+		mes.Sender = GetUsername(db, m.Sender)
+		mes.Recipient = GetUsername(db, m.Recipient)
+		mes.Message = m.Message
+		mes.Created = m.Created.Format("2006-01-02 15:04:05")
 		messToSend = append(messToSend, mes)
 	}
-
+	//fmt.Println(messToSend)
 	return messToSend
 }
 
