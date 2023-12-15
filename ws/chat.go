@@ -113,8 +113,8 @@ func CommunicationHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		type requestUSer struct {
-			User1    string	`json:"User1"`
-			User2 string	`json:"User2"`
+			User1 string `json:"User1"`
+			User2 string `json:"User2"`
 		}
 		var request requestUSer
 		err = conn.ReadJSON(&request)
@@ -124,16 +124,39 @@ func CommunicationHandler(db *sql.DB) http.HandlerFunc {
 		}
 		fmt.Println(request.User1)
 		fmt.Println(request.User2)
-		// val1,_ := uuid.FromString("83a723ca-4d38-4af1-bd0d-1404adff7a7f")
-		// val2,_ := uuid.FromString("b595fade-d0d2-463b-8396-f4cf6ea8661e")
-		// dis := GetDiscussion(db,val1,val2)
-		// fmt.Println(dis)
-
 		discuss := GetCommunication(db, request.User1, request.User2)
+		goodDiscuss := GoodToSend(db, discuss)
 		fmt.Println(discuss)
-		conn.WriteJSON(discuss)
+		conn.WriteJSON(goodDiscuss)
 
 	}
+}
+
+type messageToSend struct {
+	sender         string
+	recipient      string
+	messageContent string
+	created        string
+}
+
+func GoodToSend(db *sql.DB, discuss []Message) []messageToSend {
+
+	var messToSend []messageToSend
+	for _, m := range discuss {
+		var mes messageToSend
+		mes.sender = GetUsername(db, m.Sender)
+		mes.recipient = GetUsername(db, m.Recipient)
+		mes.messageContent = m.Message
+		mes.created = m.Created.Format("2006-01-02 15:04:05")
+		messToSend = append(messToSend, mes)
+	}
+
+	return messToSend
+}
+
+func GetUsername(db *sql.DB, user uuid.UUID) string {
+	us, _ := controller.GetUserByID(db, user)
+	return us.Username
 }
 
 type UsernameMessage struct {
