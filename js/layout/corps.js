@@ -42,34 +42,7 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                                 <div class="right-header"><img class="menu-dots" src="../assets/close-circle-svgrepo-com.svg"></div>
                             </div>
 
-                            <div class="chat-body">
-
-                                <div class="sender-bloc">
-                                    <div class="user-sender-bloc">
-                                        <img src="../assets/user-profile-svgrepo-com.svg"/>
-                                        <p>breukh</p>
-                                    </div>
-                                    <div class="message-date">
-                                        <p>Nice too meet you</p>
-                                        <p>12:15</p>
-                                    </div>
-                                </div>
-
-                                <div class="receiver-bloc">
-                                    <div class="message-date-2">
-                                        <p>Nice too meet you too</p>
-                                        <p>16:30</p>
-                                    </div>
-                                    <div class="user-receiver-bloc">
-                                        <img src="../assets/user-profile-svgrepo-com-2.svg"/>
-                                        <p>samba</p>
-                                    </div>
-                                </div>
-
-
-
-                                
-                            </div>
+                            <div class="chat-body"></div>
 
                             <form class="form-chat" method="post">
                                 <div class="btn-group-chat">
@@ -83,6 +56,75 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
     `;
 }
 
+const sendMessages = (senderName, messageSender, dateMessage) => {
+    let mainDiv = document.createElement('div');
+    mainDiv.className = "sender-bloc";
+
+    let userSenderBloc = document.createElement('div');
+    userSenderBloc.className = "user-sender-bloc";
+
+    let img = document.createElement('img');
+    img.src = "../assets/user-profile-svgrepo-com.svg";
+
+    let pSenderName = document.createElement('p');
+    pSenderName.textContent = senderName;
+
+    // Append img and p to user sender bloc
+    userSenderBloc.appendChild(img);
+    userSenderBloc.appendChild(pSenderName);
+
+    let messageDateDiv = document.createElement('div');
+    messageDateDiv.className = "message-date";
+
+    let pMessage = document.createElement('p');
+    pMessage.textContent = messageSender;
+
+    let pDate = document.createElement('p');
+    pDate.textContent = "12:15"; 
+
+    messageDateDiv.appendChild(pMessage);
+    messageDateDiv.appendChild(pDate);
+
+    mainDiv.appendChild(userSenderBloc);
+    mainDiv.appendChild(messageDateDiv);
+
+    return mainDiv;
+}
+
+const recipientMessages = (recipName, messageRecip, dateMessage) => {
+ 
+    let mainDiv = document.createElement('div');
+    mainDiv.className = "receiver-bloc";
+
+    let messageDateDiv = document.createElement('div');
+    messageDateDiv.className = "message-date-2";
+
+    let pMessage = document.createElement('p');
+    pMessage.textContent = messageRecip;
+
+    let pDate = document.createElement('p');
+    pDate.textContent = "16:30"; 
+
+    messageDateDiv.appendChild(pMessage);
+    messageDateDiv.appendChild(pDate);
+
+    let userReceiverBloc = document.createElement('div');
+    userReceiverBloc.className = "user-receiver-bloc";
+
+    let img = document.createElement('img');
+    img.src = "../assets/user-profile-svgrepo-com-2.svg";
+
+    let pRecipName = document.createElement('p');
+    pRecipName.textContent = recipName;
+
+    userReceiverBloc.appendChild(img);
+    userReceiverBloc.appendChild(pRecipName);
+
+    mainDiv.appendChild(messageDateDiv);
+    mainDiv.appendChild(userReceiverBloc);
+
+    return mainDiv;
+}
 
 
 function createPostMenue() {
@@ -108,87 +150,6 @@ function contentPostBloc(_posts) {
     return _div;
 }
 
-// function posts(_posts, start, end) {
-//     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
-//     for (let i = start; i < end; i++) {
-//         const post = _posts[i];
-
-//         const title=post["Posts"]["Title"];
-//         const content=post["Posts"]["Content"];
-//         const CreatedAtPost=timeAgo(post["Posts"]["CreatedAt"]);
-//         const Categories=post["Posts"]["Categories"];
-//         const Username=post["User"]["Username"];
-//         const Image=post["Posts"]["Image"];
-//         const commentCount=post["CommentCount"];
-//         const postLikeCount=post["PostLike"];
-//         const postDislikCount=post["PostDislike"];
-//         const userId=post["Posts"]["UserID"];
-//         const postId=post["Posts"]["ID"];
-//         const stateLiked=post["Liked"];
-//         const stateDisLiked=post["Disliked"];
-//         let classColorLiked=stateLiked ? "like-post-color" : "";
-//         let classColorDisliked=stateDisLiked  ? "dislike-post-color" : "";
-
-
-
-//         if (i===_posts.length-1 ){
-//             lastPost="last-post";
-//             lastFormComment="last-form-comment";
-//             lastBlocComment="last-bloc-comment";
-//         }
-
-//         // recupere les categorie du post
-//         let NameCategories="";
-//         for (let j = 0; j < Categories.length; j++) {
-//             const NameCategory = Categories[j]["NameCategory"];
-//             NameCategories+=`<span>${NameCategory}</span>`;
-//         }
-        
-//         let image=Image ? `<div class="image-post"><img src="/static/image/${Image}" alt=""></div>` : "";
-        
-//      posts += `<div class="one-post-block ${lastPost}">
-//                 ${image}
-//                 <div class="post-content">
-//                     <h2>${title}</h2>
-//                     <div class="post-text "><pre class="card-description">${content}</pre></div>
-//                    <button class="myBtn">Read more</button>
-//                     <div class="categorie-post">${NameCategories}</div>
-//                     <div class="content-poster-like">
-//                         <div class="content-poster">
-//                             <div class="poster">                                  
-//                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
-//                                 <div>
-//                                     <p><span>${Username}</span><img  src="assets/status-active-svgrepo-com.svg" alt=""> </p>
-//                                     <p>${CreatedAtPost}</p>
-//                                 </div>
-//                             </div>
-//                             <div class="like-comment-block">
-//                                 <div class=" ${classColorDisliked} dislike-post"> <span class="scoreDisLike">${postDislikCount}</span> dislikes <span class="id-post-dislike" style="display: none;"> ${postId}</span></div>
-//                                 <div class=" ${classColorLiked } like-post"><span class="scoreLike">${postLikeCount}</span> likes<span class="id-post-like"  style="display: none;"> ${postId}</span></div>
-//                                 <div class="comment"><span class="commentCount">${commentCount} </span> comments <span class="Id-post" style="display:none">${postId}</span> </div>
-//                             </div>
-//                         </div>
-//                     </div>
-                
-//                 </div>
-//             </div> 
-//          <div class="create-comment ${lastFormComment}"  style="display: none;">
-//          <form class="form-comment" method="post">
-//             <input type="hidden" name ="userId" value="${userId}" />
-//             <input type="hidden" name ="postId" value="${postId}" />
-//             <textarea type="text" name="ContentComment" id="Content" placeholder="Comment here..."  ></textarea>  
-//             <input type="hidden" name="userName" value="${Username}" />
-
-//             <button type="submit"> <img src="assets/send-svgrepo-com.svg" alt=""> </button>
-//          </form>
-//          </div>
-//          <div class="bloc-comment ${lastBlocComment}" style="display: none;" > ${postId}</div>
-//     ` ;
-//     NameCategories="";
-//  }
-
-//     return posts
-// }
 
 
 function posts(_posts) {
@@ -344,4 +305,4 @@ function displayComment(bloComment ,comments,createCommentForm) {
 
 
 
-export {leftBloc,middleBloc,rigthtBloc,displayComment,createPostMenue,posts}
+export {leftBloc,middleBloc,rigthtBloc,displayComment,createPostMenue,posts,sendMessages,recipientMessages}
