@@ -1,7 +1,6 @@
 import { sendMessages,recipientMessages } from "../layout/corps.js";
 
 
-
 const sendMessage = (userName_) => {
     // Create WebSocket connection
     const socket = new WebSocket("ws://localhost:8080/message");
@@ -10,8 +9,10 @@ const sendMessage = (userName_) => {
     socket.onopen = () => {
         socket.send(JSON.stringify({ Username: userName_ }));
         console.log("WebSocket message on.");
+      
     };
 
+   
     // Handle form submission
     const formChat = document.querySelector('.form-chat');
     formChat.addEventListener('submit', async function (event) {
@@ -29,29 +30,35 @@ const sendMessage = (userName_) => {
 
         // Send message when connection is open
         if (socket.readyState === WebSocket.OPEN) {
-            // socket.send(JSON.stringify({ Username: _Sender}));
             socket.send(JSON.stringify(messageData));
             document.querySelector('textarea[name="Message"]').value = "";
             console.log("message send.");
         }
     });
-
     // Handle incoming messages
     socket.onmessage = (message) => {
-        const chatBody = document.querySelector('.chat-body');
+        const chatBody = document.querySelectorAll('.chat-body');
         var _data = JSON.parse(message.data);
         console.log(_data);
+
         if (_data["sender"] == userName_) {
+            console.log(userName_);
+            const _recipient=document.querySelector(`.chat-body-container .${_data["recipient"]}`); 
             let send = sendMessages(_data["sender"], _data["message"], null);
+            _recipient.appendChild(send);
+
             console.log("send: " + send);
-            chatBody.appendChild(send);
+      
         }
         if (_data["recipient"] == userName_) {
-            let recip = recipientMessages(_data["recipient"], _data["message"], null);
+          
+            var _sender=document.querySelector(`.chat-body-container .${_data["sender"]}`); 
+            let recip = recipientMessages(_data["sender"], _data["message"], null);
+            _sender.appendChild(recip);
+            console.log(userName_);
             console.log("recip: " + recip);
-            chatBody.appendChild(recip);
-
-        }
+         }        
+      
     };
 
     // Handle errors

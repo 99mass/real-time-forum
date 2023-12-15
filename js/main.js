@@ -16,7 +16,7 @@ import { addPostFrom } from "./pages/addPostForm.js";
 import { formAddPost } from "./post/formAddPost.js";
 
 
-import { displayComment } from "./layout/corps.js";
+import { displayComment,createBodyChat } from "./layout/corps.js";
 import { getComments } from "./comment/getComment.js";
 import { addComment } from "./comment/addComment.js";
 
@@ -70,15 +70,17 @@ const main=()=>{
                     Username: data["User"]["Username"]
                 }));
                 // console.log("socket: "+data["User"]["Username"]);
-
             }
-           
+            
             // Recuperer les utlisateurs connecter
             socket.onmessage = (message) => {
                 var data = JSON.parse(message.data);
                 //
                 let dataSorted = sortUsers(data);
                 // console.log(dataSorted);
+                // const chatBodyContainer=document.querySelector('.chat-body-container');
+                // chatBodyContainer.innerHTML="";
+                createBodyChat(dataSorted)
                 userOnline(dataSorted);
 
                  // chat Mecanism

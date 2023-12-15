@@ -41,8 +41,8 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                                 </div>
                                 <div class="right-header"><img class="menu-dots" src="../assets/close-circle-svgrepo-com.svg"></div>
                             </div>
-
-                            <div class="chat-body"></div>
+                             <div class="chat-body-container">
+                            </div>
 
                             <form class="form-chat" method="post">
                                 <div class="btn-group-chat">
@@ -55,6 +55,35 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                             </div>  
     `;
 }
+const createBodyChat=(dataSorted)=>{
+    const chatBodyContainer=document.querySelector('.chat-body-container');
+    for (let i = 0; i < dataSorted.length; i++) {
+        let existingDiv = chatBodyContainer.querySelector(`.chat-body.${dataSorted[i]["Username"]}`);
+        if (!existingDiv) {
+            let div=document.createElement('div');
+            div.className=`chat-body ${dataSorted[i]["Username"]}`;
+            div.style.display="none";
+        
+            chatBodyContainer.appendChild(div);
+        }else{
+            existingDiv.className = `chat-body ${dataSorted[i]["Username"]}`;
+        }
+    }
+}
+
+// const createBodyChat=(dataSorted)=>{
+//     const chatBodyContainer=document.querySelector('.chat-body-container');
+//     for (let i = 0; i < dataSorted.length; i++) {
+//         let existingDiv = chatBodyContainer.querySelector(`.chat-body.${dataSorted[i]["Username"]}`);
+//         if (!existingDiv) {
+//             let div=document.createElement('div');
+//             div.className=`chat-body ${dataSorted[i]["Username"]}`;
+//             div.style.display="none";
+        
+//             chatBodyContainer.appendChild(div);
+//         }
+//     }
+// }
 
 const sendMessages = (senderName, messageSender, dateMessage) => {
     let mainDiv = document.createElement('div');
@@ -305,4 +334,4 @@ function displayComment(bloComment ,comments,createCommentForm) {
 
 
 
-export {leftBloc,middleBloc,rigthtBloc,displayComment,createPostMenue,posts,sendMessages,recipientMessages}
+export {leftBloc,middleBloc,rigthtBloc,displayComment,createPostMenue,posts,createBodyChat,sendMessages,recipientMessages}
