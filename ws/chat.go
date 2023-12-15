@@ -102,6 +102,11 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func GetUsername(db *sql.DB, user uuid.UUID) string {
+	us, _ := controller.GetUserByID(db, user)
+	return us.Username
+}
+
 type UsernameMessage struct {
 	Username string `json:"Username"`
 }
@@ -147,14 +152,18 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 		var msg GetMessage
 		err := conn.ReadJSON(&msg)
 		if err != nil {
-			log.Println("Error reading message:", err)
-			break
+			log.Println(err)
+			return
 		}
 
 		//fmt.Println("modele : ", msg)
 
 		sender, recipient, message, err := parseMessage(msg)
 		if err == nil {
+			if len(message) > 100 {
+				conn.WriteJSON("message is too long")
+				continue
+			}
 			err = SaveMessage(db, sender, recipient, message)
 			if err != nil {
 				fmt.Println(err)
@@ -214,7 +223,7 @@ func CloseConnection(username string) {
 			log.Printf("Error closing connection for user %s: %v", username, err)
 		}
 		delete(users, username)
-		delete(usersMessage, username)
+
 		usersConnected = removeElement(usersConnected, username)
 		for i, us := range userList {
 			if us.Username == username {
@@ -227,6 +236,18 @@ func CloseConnection(username string) {
 	} else {
 		log.Printf("User %s not found", username)
 	}
+
+	userMessage, okMessage := usersMessage[username]
+	if okMessage {
+		err := userMessage.Conn.Close()
+		if err != nil {
+			log.Printf("Error closing connection for user %s: %v", username, err)
+		}
+		delete(usersMessage, username)
+	} else {
+		log.Printf("User %s not found", username)
+	}
+
 }
 
 func removeUser(slice []UserToShow, user string) []UserToShow {

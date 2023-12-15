@@ -2,6 +2,7 @@ package ws
 
 import (
 	"database/sql"
+	"sort"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -12,7 +13,7 @@ type Message struct {
 	Sender    uuid.UUID
 	Recipient uuid.UUID
 	Message   string
-	Created   string
+	Created   time.Time
 }
 
 func CreateMessage(db *sql.DB, message Message) (uuid.UUID, error) {
@@ -34,31 +35,44 @@ func CreateMessage(db *sql.DB, message Message) (uuid.UUID, error) {
 	return newUUID, nil
 }
 
-// func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
-// 	var messages []Message
+func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
+	var messages []Message
 
-// 	// Get all messages sent by user 1
-// 	messages1 := getMessagesForUser(db, user1)
+	// Get all messages sent by user 1
+	messages1 := getMessagesForUser(db, user1)
 
-// 	// Get all messages sent by user 2
-// 	messages2 := getMessagesForUser(db, user2)
+	// Get all messages sent by user 2
+	messages2 := getMessagesForUser(db, user2)
 
-// 	// Find messages sent to both users
-// 	for _, m1 := range messages1 {
-// 		for _, m2 := range messages2 {
-// 			if m1.Recipient == user2.String() && m2.Recipient == user1.String() {
-// 				messages = append(messages, m1, m2)
-// 			}
-// 		}
-// 	}
+	// Find messages sent to both users
+	for _, m1 := range messages1 {
+		if m1.Recipient == user2 {
+			messages = append(messages, m1)
+		}
+	}
 
-// 	// Sort messages by creation date
-// 	sort.Slice(messages, func(i, j int) bool {
-// 		return messages[i].Created.Before(messages[j].Created)
-// 	})
+	for _, m2 := range messages2 {
+		if m2.Recipient == user1 {
+			messages = append(messages, m2)
+		}
+	}
 
-// 	return messages
-// }
+	// Sort messages by creation date
+	sort.Slice(messages, func(i, j int) bool {
+		return messages[i].Created.Before(messages[j].Created)
+	})
+
+	return messages
+}
+
+func GetCommunication(db *sql.DB,user1 string,user2 string)[]Message{
+	us1 := GetUserIDByUserName(db, user1)
+	us2 := GetUserIDByUserName(db, user2)
+
+	discussion := GetDiscussion(db,us1,us2)
+
+	return discussion
+}
 
 func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	query := `
