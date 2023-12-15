@@ -3,8 +3,11 @@ package ws
 import (
 	"database/sql"
 	"fmt"
+	"forum/controller"
+	"log"
 	"net/http"
 
+	"github.com/gofrs/uuid"
 	"github.com/gorilla/websocket"
 )
 
@@ -30,10 +33,22 @@ func CommunicationHandler(db *sql.DB) http.HandlerFunc {
 		}
 		fmt.Println(request.User1)
 		fmt.Println(request.User2)
-		discuss := GetCommunication(db, request.User1, request.User2)
-		goodDiscuss := GoodToSend(db, discuss)
+		discuss,err := GetCommunication(db, request.User1, request.User2)
+		if err != nil {
+			fmt.Println(err)
+			conn.Close()
+            return
+		}
+
+		goodDiscuss, err := GoodToSend(db, discuss)
+		if err != nil {
+			log.Println(err)
+			conn.Close()
+			return
+		}
 		fmt.Println(goodDiscuss)
 		conn.WriteJSON(goodDiscuss)
+		conn.Close()
 
 	}
 }
@@ -45,18 +60,49 @@ type messageToSend struct {
 	Created   string
 }
 
-func GoodToSend(db *sql.DB, discuss []Message) []messageToSend {
+func GoodToSend(db *sql.DB, discuss []Message) ([]messageToSend, error) {
 
 	var messToSend []messageToSend
 	for _, m := range discuss {
 		//fmt.Println(m.Message)
 		var mes messageToSend
-		mes.Sender = GetUsername(db, m.Sender)
-		mes.Recipient = GetUsername(db, m.Recipient)
+		send, err := GetUsername(db, m.Sender)
+		if err != nil {
+			return nil, err
+		}
+		mes.Sender = send
+		recep, err := GetUsername(db, m.Recipient)
+		if err != nil {
+			return nil, err
+		}
+		mes.Recipient = recep
 		mes.Message = m.Message
 		mes.Created = m.Created.Format("2006-01-02 15:04:05")
 		messToSend = append(messToSend, mes)
 	}
 	//fmt.Println(messToSend)
-	return messToSend
+	return messToSend, nil
+}
+
+func GetUsername(db *sql.DB, user uuid.UUID) (string, error) {
+	us, err := controller.GetUserByID(db, user)
+	if err != nil {
+		return "", err
+	}
+	return us.Username, nil
+}
+
+func GetCommunication(db *sql.DB, user1 string, user2 string) ([]Message, error) {
+	us1, err := GetUserIDByUserName(db, user1)
+	if err != nil {
+		return nil, err
+	}
+	us2, err := GetUserIDByUserName(db, user2)
+	if err != nil {
+		return nil, err
+	}
+
+	discussion := GetDiscussion(db, us1, us2)
+
+	return discussion, nil
 }
