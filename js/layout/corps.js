@@ -58,7 +58,7 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
 const createBodyChat=(dataSorted)=>{
     const chatBodyContainer=document.querySelector('.chat-body-container');
     for (let i = 0; i < dataSorted.length; i++) {
-        let existingDiv = chatBodyContainer.querySelector(`.chat-body.${dataSorted[i]["Username"]}`);
+        let existingDiv = chatBodyContainer.querySelector(`.${dataSorted[i]["Username"]}`);
         if (!existingDiv) {
             let div=document.createElement('div');
             div.className=`chat-body ${dataSorted[i]["Username"]}`;
@@ -71,19 +71,7 @@ const createBodyChat=(dataSorted)=>{
     }
 }
 
-// const createBodyChat=(dataSorted)=>{
-//     const chatBodyContainer=document.querySelector('.chat-body-container');
-//     for (let i = 0; i < dataSorted.length; i++) {
-//         let existingDiv = chatBodyContainer.querySelector(`.chat-body.${dataSorted[i]["Username"]}`);
-//         if (!existingDiv) {
-//             let div=document.createElement('div');
-//             div.className=`chat-body ${dataSorted[i]["Username"]}`;
-//             div.style.display="none";
-        
-//             chatBodyContainer.appendChild(div);
-//         }
-//     }
-// }
+
 
 const sendMessages = (senderName, messageSender, dateMessage) => {
     let mainDiv = document.createElement('div');

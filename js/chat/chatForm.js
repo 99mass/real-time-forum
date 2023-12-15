@@ -1,4 +1,4 @@
-import { sendMessages,recipientMessages } from "../layout/corps.js";
+import { sendMessages, recipientMessages } from "../layout/corps.js";
 
 
 const sendMessage = (userName_) => {
@@ -9,10 +9,10 @@ const sendMessage = (userName_) => {
     socket.onopen = () => {
         socket.send(JSON.stringify({ Username: userName_ }));
         console.log("WebSocket message on.");
-      
+
     };
 
-   
+
     // Handle form submission
     const formChat = document.querySelector('.form-chat');
     formChat.addEventListener('submit', async function (event) {
@@ -43,22 +43,22 @@ const sendMessage = (userName_) => {
 
         if (_data["sender"] == userName_) {
             console.log(userName_);
-            const _recipient=document.querySelector(`.chat-body-container .${_data["recipient"]}`); 
+            const _recipient = document.querySelector(`.chat-body-container .${_data["recipient"]}`);
             let send = sendMessages(_data["sender"], _data["message"], null);
             _recipient.appendChild(send);
 
             console.log("send: " + send);
-      
+
         }
         if (_data["recipient"] == userName_) {
-          
-            var _sender=document.querySelector(`.chat-body-container .${_data["sender"]}`); 
+
+            var _sender = document.querySelector(`.chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], null);
             _sender.appendChild(recip);
             console.log(userName_);
             console.log("recip: " + recip);
-         }        
-      
+        }
+
     };
 
     // Handle errors
@@ -67,4 +67,4 @@ const sendMessage = (userName_) => {
     };
 }
 
-export{sendMessage}
+export { sendMessage }

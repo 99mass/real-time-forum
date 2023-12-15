@@ -1,10 +1,10 @@
 
 const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat) => {
-    const chatBody = document.querySelectorAll('.chat-body'); 
+    const chatBody = document.querySelectorAll('.chat-body');
     for (let i = 0; i < chatText.length; i++) {
         const btnChat = chatText[i];
-        
-        btnChat.addEventListener('click', () => {               
+
+        btnChat.addEventListener('click', () => {
             for (let j = 0; j < chatBody.length; j++) {
                 chatBody[j].style.display = "none";
             }
@@ -12,12 +12,12 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             chatBody[i].style.display = "block";
             chatContainer.style.display = "block";
             UsernameinputChat.value = userNameOnline[i].textContent.trim();
-        });        
+        });
     }
-     
+
     menuDots.addEventListener('click', () => {
         chatContainer.style.display = "none";
-        for (let i = 0; i < chatText.length; i++) { 
+        for (let i = 0; i < chatText.length; i++) {
             chatBody[i].style.display = "none";
         }
     });

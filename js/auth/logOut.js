@@ -1,7 +1,7 @@
 import { linkApi } from "../helper/api_link.js";
 
 const logOut=(_btn)=>{
-
+     
     let _sessionId = getCookie('sessionID');
     _btn.addEventListener('click', async function(event) {
         try {
