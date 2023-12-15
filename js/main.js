@@ -77,11 +77,14 @@ const main = () => {
                     var data = JSON.parse(message.data);
                     //
                     let dataSorted = sortUsers(data);
-                    // console.log(dataSorted);
-
+                    console.log(dataSorted);
+                    let comptOnline=countOnlineUsers(dataSorted);
                     const chatBodyContainer = document.querySelector('.chat-body-container');
-                    chatBodyContainer.innerHTML = "";
-                    document.querySelector('.chat-container').style.display = "none";
+
+                    if (comptOnline<1) {                        
+                        chatBodyContainer.innerHTML = "";
+                        document.querySelector('.chat-container').style.display = "none";
+                    }
                     userOnline(dataSorted);
                     createBodyChat(data);
 
@@ -189,6 +192,11 @@ const main = () => {
 
     });
 
+}
+
+function countOnlineUsers(users) {
+    let onlineUsers = users.filter(user => user.Status === "online");
+    return onlineUsers.length;
 }
 
 function Authentification() {
