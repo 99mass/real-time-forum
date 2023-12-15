@@ -116,9 +116,9 @@ func readUsername(conn *websocket.Conn) (string, error) {
 }
 
 type GetMessage struct {
-	Sender    string    `json:"sender"`
-	Recipient string    `json:"recipient"`
-	Message   string    `json:"message"`
+	Sender    string `json:"sender"`
+	Recipient string `json:"recipient"`
+	Message   string `json:"message"`
 	Created   string `json:"created"`
 }
 
@@ -127,21 +127,21 @@ func parseMessage(msg GetMessage) (string, string, string, error) {
 	recipient := msg.Recipient
 	messageContent := msg.Message
 	if sender == "" || recipient == "" || messageContent == "" {
-		return "", "", "", errors.New("Invalid type for message")
+		return "", "", "", errors.New("invalid type for message")
 	}
 	log.Println("message parsed successfully")
 	return sender, recipient, messageContent, nil
 }
 
 func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
-	if user, ok := usersMessage[username]; ok {
-		// Si l'utilisateur existe déjà, mettez à jour la connexion
-		user.Conn = conn
-	} else {
-		// Sinon, créez un nouvel utilisateur
-		usersMessage[username] = &models.User{Conn: conn, Username: username}
-	}
 	for {
+		if user, ok := usersMessage[username]; ok {
+			// Si l'utilisateur existe déjà, mettez à jour la connexion
+			user.Conn = conn
+		} else {
+			// Sinon, créez un nouvel utilisateur
+			usersMessage[username] = &models.User{Conn: conn, Username: username}
+		}
 
 		//fmt.Println("list 2: ", usersMessage)
 		var msg GetMessage
@@ -186,7 +186,7 @@ func sendMessage(recipient string, message GetMessage) {
 	if user, ok := usersMessage[recipient]; ok {
 		user.Conn.WriteJSON(message)
 	}
-	log.Println("message sent successfully to : "+recipient)
+	log.Println("message sent successfully to : " + recipient)
 }
 
 func GetUserIDByUserName(db *sql.DB, userName string) uuid.UUID {
