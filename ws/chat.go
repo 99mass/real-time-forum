@@ -87,7 +87,7 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println("user : ", username)
+		//fmt.Println("user : ", username)
 
 		if user, ok := usersMessage[username]; ok {
 			// Si l'utilisateur existe déjà, mettez à jour la connexion
@@ -96,7 +96,7 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 			// Sinon, créez un nouvel utilisateur
 			usersMessage[username] = &models.User{Conn: conn, Username: username}
 		}
-		fmt.Println("list : ", usersMessage)
+		//fmt.Println("list : ", usersMessage)
 
 		go handleMessages(db, conn, username)
 	}
@@ -119,26 +119,31 @@ type GetMessage struct {
 	Sender    string    `json:"sender"`
 	Recipient string    `json:"recipient"`
 	Message   string    `json:"message"`
-	Created   time.Time `json:"created"`
+	Created   string `json:"created"`
 }
 
-func parseMessage(msg GetMessage) (string, string, string) {
+func parseMessage(msg GetMessage) (string, string, string, error) {
 	sender := msg.Sender
 	recipient := msg.Recipient
 	messageContent := msg.Message
-	return sender, recipient, messageContent
+	if sender == "" || recipient == "" || messageContent == "" {
+		return "", "", "", errors.New("Invalid type for message")
+	}
+	log.Println("message parsed successfully")
+	return sender, recipient, messageContent, nil
 }
 
 func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
+	if user, ok := usersMessage[username]; ok {
+		// Si l'utilisateur existe déjà, mettez à jour la connexion
+		user.Conn = conn
+	} else {
+		// Sinon, créez un nouvel utilisateur
+		usersMessage[username] = &models.User{Conn: conn, Username: username}
+	}
 	for {
-		if user, ok := usersMessage[username]; ok {
-			// Si l'utilisateur existe déjà, mettez à jour la connexion
-			user.Conn = conn
-		} else {
-			// Sinon, créez un nouvel utilisateur
-			usersMessage[username] = &models.User{Conn: conn, Username: username}
-		}
-		fmt.Println("list 2: ", usersMessage)
+
+		//fmt.Println("list 2: ", usersMessage)
 		var msg GetMessage
 		err := conn.ReadJSON(&msg)
 		if err != nil {
@@ -146,14 +151,18 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			break
 		}
 
-		fmt.Println("modele : ", msg)
+		//fmt.Println("modele : ", msg)
 
-		sender, recipient, message := parseMessage(msg)
-
-		msg.Created = time.Now()
-		sendMessage(recipient, msg)
-		sendMessage(sender, msg)
-		SaveMessage(db, sender, recipient, message)
+		sender, recipient, message, err := parseMessage(msg)
+		if err == nil {
+			err = SaveMessage(db, sender, recipient, message)
+			if err != nil {
+				fmt.Println(err)
+			}
+			msg.Created = time.Now().Format("2006-01-02 15:04:05")
+			sendMessage(recipient, msg)
+			sendMessage(sender, msg)
+		}
 
 	}
 }
@@ -167,8 +176,9 @@ func SaveMessage(db *sql.DB, sender string, recipient string, message string) er
 	Mes.Message = message
 	_, err := CreateMessage(db, Mes)
 	if err != nil {
-		return errors.New("can't create message")
+		return errors.New("can't create message : " + err.Error())
 	}
+	log.Println("message saved successfully")
 	return nil
 }
 
@@ -176,6 +186,7 @@ func sendMessage(recipient string, message GetMessage) {
 	if user, ok := usersMessage[recipient]; ok {
 		user.Conn.WriteJSON(message)
 	}
+	log.Println("message sent successfully to : "+recipient)
 }
 
 func GetUserIDByUserName(db *sql.DB, userName string) uuid.UUID {
@@ -203,6 +214,7 @@ func CloseConnection(username string) {
 			log.Printf("Error closing connection for user %s: %v", username, err)
 		}
 		delete(users, username)
+		delete(usersMessage, username)
 		usersConnected = removeElement(usersConnected, username)
 		for i, us := range userList {
 			if us.Username == username {
