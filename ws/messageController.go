@@ -12,7 +12,7 @@ type Message struct {
 	Sender    uuid.UUID
 	Recipient uuid.UUID
 	Message   string
-	Created   time.Time
+	Created   string
 }
 
 func CreateMessage(db *sql.DB, message Message) (uuid.UUID, error) {
