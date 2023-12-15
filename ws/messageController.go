@@ -65,14 +65,6 @@ func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
 	return messages
 }
 
-func GetCommunication(db *sql.DB,user1 string,user2 string)[]Message{
-	us1 := GetUserIDByUserName(db, user1)
-	us2 := GetUserIDByUserName(db, user2)
-
-	discussion := GetDiscussion(db,us1,us2)
-
-	return discussion
-}
 
 func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	query := `

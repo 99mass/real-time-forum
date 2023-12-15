@@ -102,11 +102,6 @@ func HandlerMessages(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func GetUsername(db *sql.DB, user uuid.UUID) string {
-	us, _ := controller.GetUserByID(db, user)
-	return us.Username
-}
-
 type UsernameMessage struct {
 	Username string `json:"Username"`
 }
@@ -177,13 +172,19 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 }
 
 func SaveMessage(db *sql.DB, sender string, recipient string, message string) error {
-	senderID := GetUserIDByUserName(db, sender)
-	recipientID := GetUserIDByUserName(db, recipient)
+	senderID,err := GetUserIDByUserName(db, sender)
+	if err!= nil {
+        return err
+    }
+	recipientID,err := GetUserIDByUserName(db, recipient)
+	if err!= nil {
+        return err
+    }
 	var Mes Message
 	Mes.Sender = senderID
 	Mes.Recipient = recipientID
 	Mes.Message = message
-	_, err := CreateMessage(db, Mes)
+	_, err = CreateMessage(db, Mes)
 	if err != nil {
 		return errors.New("can't create message : " + err.Error())
 	}
@@ -198,12 +199,12 @@ func sendMessage(recipient string, message GetMessage) {
 	log.Println("message sent successfully to : " + recipient)
 }
 
-func GetUserIDByUserName(db *sql.DB, userName string) uuid.UUID {
+func GetUserIDByUserName(db *sql.DB, userName string) (uuid.UUID , error) {
 	user, err := controller.GetUserByUsername(db, userName)
 	if err != nil {
-		return uuid.Nil
+		return uuid.Nil,err
 	}
-	return user.ID
+	return user.ID,nil
 }
 
 func removeElement(slice []string, el string) []string {
