@@ -18,7 +18,7 @@ type Message struct {
 
 func CreateMessage(db *sql.DB, message Message) (uuid.UUID, error) {
 	query := `
-        INSERT INTO messages (id, sender, recipient, message, created_at)
+        INSERT INTO messages (id, sender_id, recipient_id, message_text, created_at)
         VALUES (?, ?, ?, ?, ?);
     `
 
@@ -65,13 +65,12 @@ func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
 	return messages
 }
 
-
 func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	query := `
-        SELECT id, sender, recipient, message, created_at
+        SELECT id, sender_id, recipient_id, message_text, created_at
         FROM messages
-        WHERE recipient = ?
-        OR sender = ?;
+        WHERE recipient_id = ?
+        OR sender_id = ?;
     `
 
 	rows, err := db.Query(query, userID.String(), userID.String())
