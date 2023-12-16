@@ -48,7 +48,6 @@ const sendMessage = (userName_) => {
             var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
             let send = sendMessages(_data["sender"], _data["message"],formattedDate);
             _recipient.appendChild(send);
-
         }
 
         if (_data["recipient"] == userName_) {

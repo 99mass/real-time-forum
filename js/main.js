@@ -62,7 +62,7 @@ const main = () => {
                 //afficher l'interface des posts
                 indexPage(data);
 
-                OldChatMessage();
+                // OldChatMessage();
                 // Créez la connexion WebSocket 
                 var socket = new WebSocket("ws://localhost:8080/ws");
 
