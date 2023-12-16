@@ -581,10 +581,9 @@ color: var(--whiteffffff);
 .chat-body{
   margin-top: 50px;
   width: 100%;
-  height: 350px;
+  height: 300px;
   border-top: 2px dotted var(--whiteffffff);
-
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -680,7 +679,10 @@ color: var(--whiteffffff);
   border-radius: 20px 20px 0 20px;
  
 }
-
+.no-chat{
+  color: var(--whiteffffff);
+  text-align: center;
+}
 
 .chat-body::-webkit-scrollbar {
   width: 0px;

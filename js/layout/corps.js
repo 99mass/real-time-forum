@@ -124,7 +124,7 @@ const recipientMessages = (recipName, messageRecip, dateMessage) => {
     pMessage.textContent = messageRecip;
 
     let pDate = document.createElement('p');
-    pDate.textContent = dateMessage; 
+    pDate.textContent = "16:30"; 
 
     messageDateDiv.appendChild(pMessage);
     messageDateDiv.appendChild(pDate);

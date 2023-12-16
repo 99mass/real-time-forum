@@ -45,7 +45,9 @@ const sendMessage = (userName_) => {
         let formattedDate = chatDateFormatter(_data["created"]);
 
         if (_data["sender"] == userName_) {
-            var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
+          let  noChatTex=  document.querySelector('.no-chat');
+          if (noChatTex) noChatTex.style.display='none';
+          var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
             let send = sendMessages(_data["sender"], _data["message"],formattedDate);
             _recipient.appendChild(send);
         }
