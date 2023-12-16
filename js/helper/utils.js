@@ -44,6 +44,33 @@ function timeAgo(dateString) {
   }
 }
 
+function chatDateFormatter(date) {
+    const messageDate = new Date(date);
+    const now = new Date();
+
+    const messageDay = messageDate.getDate();
+    const messageMonth = messageDate.getMonth();
+    const messageYear = messageDate.getFullYear();
+
+    const nowDay = now.getDate();
+    const nowMonth = now.getMonth();
+    const nowYear = now.getFullYear();
+
+    if (messageDay === nowDay && messageMonth === nowMonth && messageYear === nowYear) {
+        // If the message was sent today
+        return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (messageDay === nowDay - 1 && messageMonth === nowMonth && messageYear === nowYear) {
+        // If the message was sent yesterday
+        return "Yesterday";
+    } else if (messageDate > new Date(nowYear, nowMonth, nowDay - 7)) {
+        // If the message was sent within the last week
+        return messageDate.toLocaleDateString([], { weekday: 'long' });
+    } else {
+        // If the message was sent more than a week ago
+        return messageDate.toLocaleDateString();
+    }
+}
+
 const commentTemporel=(ComContent,ComUserName)=>{
     let currentDate = new Date();
     let formattedDate = currentDate.getFullYear() + '-' + 
@@ -172,4 +199,4 @@ function countOnlineUsers(users) {
 }
 
 
-export{isGoodNumber,timeAgo,commentTemporel,sortUsers,statusPostUser,statusPostFilteredUser,throttle}
+export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,statusPostUser,statusPostFilteredUser,throttle}

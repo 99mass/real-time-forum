@@ -1,4 +1,5 @@
 import { sendMessages, recipientMessages } from "../layout/corps.js";
+import {  chatDateFormatter } from "../helper/utils.js";
 
 
 const sendMessage = (userName_) => {
@@ -35,26 +36,26 @@ const sendMessage = (userName_) => {
             console.log("message send.");
         }
     });
+
     // Handle incoming messages
     socket.onmessage = (message) => {
 
         var _data = JSON.parse(message.data);
         console.log(_data);
+        let formattedDate = chatDateFormatter('2023-12-15 13:20:28');
+
+        console.log(formattedDate);
 
         if (_data["sender"] == userName_) {
-            console.log(userName_);
             var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
-            console.log('--------------------------------');
-            console.log(_recipient);
-            let send = sendMessages(_data["sender"], _data["message"], null);
+            let send = sendMessages(_data["sender"], _data["message"],formattedDate);
             _recipient.appendChild(send);
 
         }
 
         if (_data["recipient"] == userName_) {
-            console.log(_data["sender"]);
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
-            let recip = recipientMessages(_data["sender"], _data["message"], null);
+            let recip = recipientMessages(_data["sender"], _data["message"], formattedDate);
             _sender.appendChild(recip);
         }
 
