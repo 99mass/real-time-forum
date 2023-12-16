@@ -166,4 +166,10 @@ const sortUsers = (users) => {
     });
 }
 
+function countOnlineUsers(users) {
+    let onlineUsers = users.filter(user => user.Status === "online");
+    return onlineUsers.length;
+}
+
+
 export{isGoodNumber,timeAgo,commentTemporel,sortUsers,statusPostUser,statusPostFilteredUser,throttle}

@@ -1,6 +1,5 @@
 import { routes, addRouter, replaceRouter, currentPath, titlePage } from "./router/route.js";
 
-
 import { linkApi } from "./helper/api_link.js";
 import { isSessionFoundBoolean } from "./verify_sessions.js";
 import { displayFom } from "./pages/signUpSignIn.js";
@@ -75,17 +74,11 @@ const main = () => {
                 // Recuperer les utlisateurs connecter
                 socket.onmessage = (message) => {
                     var data = JSON.parse(message.data);
-                    //
                     let dataSorted = sortUsers(data);
                     console.log(dataSorted);
-                    let comptOnline=countOnlineUsers(dataSorted);
-                    const chatBodyContainer = document.querySelector('.chat-body-container');
-
-                    if (comptOnline<1) {                        
-                        chatBodyContainer.innerHTML = "";
-                        document.querySelector('.chat-container').style.display = "none";
-                    }
+                    //afficher le statuses des utlisateurs connect  
                     userOnline(dataSorted);
+                    // creer le container des discussions
                     createBodyChat(data);
 
                     // chat Mecanism
@@ -100,11 +93,8 @@ const main = () => {
 
                 };
 
-
-
+                //envoyer les messages entre utilisateur
                 sendMessage(data["User"]["Username"]);
-
-
 
                 // add post fom et  methode
                 const myModal = document.querySelector('#myModal');
@@ -194,10 +184,6 @@ const main = () => {
 
 }
 
-function countOnlineUsers(users) {
-    let onlineUsers = users.filter(user => user.Status === "online");
-    return onlineUsers.length;
-}
 
 function Authentification() {
     // make route

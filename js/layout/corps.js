@@ -55,6 +55,8 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                             </div>  
     `;
 }
+
+
 const createBodyChat=(dataSorted)=>{
     const chatBodyContainer=document.querySelector('.chat-body-container');
     for (let i = 0; i < dataSorted.length; i++) {
@@ -64,14 +66,16 @@ const createBodyChat=(dataSorted)=>{
             div.className=`chat-body ${dataSorted[i]["Username"]}`;
             div.style.display="none";
         
-            chatBodyContainer.appendChild(div);
-        }else{
-            existingDiv.className = `chat-body ${dataSorted[i]["Username"]}`;
+            // Insert the new div at the correct index
+            chatBodyContainer.insertBefore(div, chatBodyContainer.children[i]);
+        } else {
+            // If the div already exists, remove it first
+            chatBodyContainer.removeChild(existingDiv);
+            // Then insert it at the correct index
+            chatBodyContainer.insertBefore(existingDiv, chatBodyContainer.children[i]);
         }
     }
 }
-
-
 
 const sendMessages = (senderName, messageSender, dateMessage) => {
     let mainDiv = document.createElement('div');

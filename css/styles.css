@@ -498,8 +498,9 @@ color: var(--whiteffffff);
 .menu-droite .chat-container{
   display: none;
   position: absolute;
+  bottom: 100px;
   width: 140%;
-  height: 500px;
+  height: 450px;
   box-sizing: border-box;
   margin-left: -40%;
   background-color:#3d464e; 

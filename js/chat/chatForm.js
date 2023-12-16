@@ -37,26 +37,25 @@ const sendMessage = (userName_) => {
     });
     // Handle incoming messages
     socket.onmessage = (message) => {
-        const chatBody = document.querySelectorAll('.chat-body');
+
         var _data = JSON.parse(message.data);
         console.log(_data);
 
         if (_data["sender"] == userName_) {
             console.log(userName_);
-            const _recipient = document.querySelector(`.chat-body-container .${_data["recipient"]}`);
+            var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
+            console.log('--------------------------------');
+            console.log(_recipient);
             let send = sendMessages(_data["sender"], _data["message"], null);
             _recipient.appendChild(send);
 
-            console.log("send: " + send);
-
         }
-        if (_data["recipient"] == userName_) {
 
-            var _sender = document.querySelector(`.chat-body-container .${_data["sender"]}`);
+        if (_data["recipient"] == userName_) {
+            console.log(_data["sender"]);
+            var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], null);
             _sender.appendChild(recip);
-            console.log(userName_);
-            console.log("recip: " + recip);
         }
 
     };

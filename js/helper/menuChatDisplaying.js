@@ -1,6 +1,7 @@
 
 const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat) => {
     const chatBody = document.querySelectorAll('.chat-body');
+
     for (let i = 0; i < chatText.length; i++) {
         const btnChat = chatText[i];
 
@@ -8,8 +9,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             for (let j = 0; j < chatBody.length; j++) {
                 chatBody[j].style.display = "none";
             }
-
-            chatBody[i].style.display = "block";
+            if (chatBody[i]) chatBody[i].style.display = "block";
             chatContainer.style.display = "block";
             UsernameinputChat.value = userNameOnline[i].textContent.trim();
         });
@@ -18,12 +18,13 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
     menuDots.addEventListener('click', () => {
         chatContainer.style.display = "none";
         for (let i = 0; i < chatText.length; i++) {
-            chatBody[i].style.display = "none";
+            if (chatBody[i])
+                chatBody[i].style.display = "none";
         }
     });
 }
 
-const alertMessage=()=>{
+const alertMessage = () => {
     return `
             <div class="alert">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
@@ -32,4 +33,4 @@ const alertMessage=()=>{
     `;
 }
 
-export{chatContainerDisplaying}
+export { chatContainerDisplaying }

@@ -1,32 +1,32 @@
 
 const userOnline = (data) => {
 
-            const containUsers=document.querySelector('.bloc-users-on-line');
-            var users="";
-            
-            if (data["message"]) {    
-                users=`<div class="no-user">  ${data["message"]}</div>`;                    
-            }else{
-                for (let i = 0; i < data.length; i++) {
-                    const user = data[i]; 
-                    let status=user['Status']=="online"? 'status-active-svgrepo-com.svg' : 'status-no-active-svgrepo-com.svg';
+    const containUsers = document.querySelector('.bloc-users-on-line');
+    var users = "";
 
-                    users+=`<div class="user user-on-line ">  
+    if (data["message"]) {
+        users = `<div class="no-user">  ${data["message"]}</div>`;
+    } else {
+        for (let i = 0; i < data.length; i++) {
+            const user = data[i];
+            let status = user['Status'] == "online" ? 'status-active-svgrepo-com.svg' : 'status-no-active-svgrepo-com.svg';
+
+            users += `<div class="user user-on-line ">  
                                 <div class="user-infos">                               
                                     <img src="assets/user-profile-svgrepo-com.svg" alt="">
                                     <div>
                                         <p><span class="user-name-online">${user['Username']}</span><img class="user-name-online-img"  src="assets/${status}" alt=""> </p>                            
                                     </div>
                                 </div> 
-                            <div class="chat-text btn-chat">
+                            <div class="chat-text btn-chat ">
                                 <span>chat</span>
                                 <img src="assets/chat-dots-svgrepo-com.svg" alt="">
                             </div>
                         </div>
-                    `;                
-                }
-            }
-            containUsers.innerHTML=users;
+                    `;
+        }
+    }
+    containUsers.innerHTML = users;
 
 }
 
