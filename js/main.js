@@ -27,6 +27,8 @@ import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";
 import { sortUsers, statusPostUser, statusPostFilteredUser } from "./helper/utils.js";
 import { sendMessage } from "./chat/chatForm.js";
+import { OldChatMessage } from "./chat/chatOldMessage.js";
+
 
 import { logOut } from "./auth/logOut.js";
 
@@ -60,6 +62,7 @@ const main = () => {
                 //afficher l'interface des posts
                 indexPage(data);
 
+                OldChatMessage();
                 // Créez la connexion WebSocket 
                 var socket = new WebSocket("ws://localhost:8080/ws");
 

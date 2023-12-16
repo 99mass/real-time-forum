@@ -42,9 +42,7 @@ const sendMessage = (userName_) => {
 
         var _data = JSON.parse(message.data);
         console.log(_data);
-        let formattedDate = chatDateFormatter('2023-12-15 13:20:28');
-
-        console.log(formattedDate);
+        let formattedDate = chatDateFormatter(_data["created"]);
 
         if (_data["sender"] == userName_) {
             var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
