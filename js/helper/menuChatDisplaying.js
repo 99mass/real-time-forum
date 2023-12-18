@@ -56,6 +56,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                 }
                 if (messageQueue.length < 10) {
                     for (let k = 0 ; k <  messageQueue.length; k++) {
+                        messageQueue.pop();
                         if (messageQueue[k]) {                                                   
                             let _data = messageQueue[k];            
                             let formattedDate = timeAgo(_data["Created"]);                                   

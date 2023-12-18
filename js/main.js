@@ -68,7 +68,6 @@ const main = () => {
                     socket.send(JSON.stringify({
                         Username: data["User"]["Username"],
                     }));
-                    // console.log("socket: "+data["User"]["Username"]);
                 }
 
                 // Recuperer les utlisateurs connecter

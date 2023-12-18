@@ -30,7 +30,7 @@ body{
   position: relative;
   height: 100vh;
   display: flex;
-  margin: 10px 40px;
+  margin: 10px 20px;
     
 }
 .corps .menu-gauche{
@@ -477,7 +477,16 @@ color: var(--whiteffffff);
 .menu-droite .user .user-infos img{
    height: 40px;
 }
-
+/* .menu-droite .user .user-infos div{
+  display: flex;
+  align-items: center;
+} */
+.notification{
+  display: flex;
+}
+.notification img{
+  /* margin-top: -15px; */
+}
 .menu-droite .user .user-infos div p{
    display: flex;
    align-items: center;

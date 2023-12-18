@@ -12,12 +12,20 @@ const userOnline = (data) => {
             let status = user['Status'] == "online" ? 'status-active-svgrepo-com.svg' : 'status-no-active-svgrepo-com.svg';
 
             users += `<div class="user user-on-line ">  
-                                <div class="user-infos">                               
-                                    <img src="assets/user-profile-svgrepo-com.svg" alt="">
-                                    <div>
-                                        <p><span class="user-name-online">${user['Username']}</span><img class="user-name-online-img"  src="assets/${status}" alt=""> </p>                            
-                                    </div>
-                                </div> 
+                            <div class="user-infos">                               
+                                <img src="assets/user-profile-svgrepo-com.svg" alt="">
+                                
+                                <div>                                        
+                                    <p>
+                                        <span class="user-name-online">${user['Username']}</span>                                            
+                                        <img class="user-name-online-img"  src="assets/${status}" alt="">                                            
+                                    </p>                            
+                                </div>
+                            </div> 
+                            <div class="notification">
+                                <img src="assets/notification-bell-svgrepo-com.svg" alt="">
+                                <span>12</span>
+                            </div>
                             <div class="chat-text btn-chat ">
                                 <span>chat</span>
                                 <img src="assets/chat-dots-svgrepo-com.svg" alt="">
