@@ -99,6 +99,7 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 		conn.WriteJSON(mess)
 
 		BroadcastUsers(userList)
+		
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 	}
@@ -184,8 +185,6 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			log.Println(err)
 			return
 		}
-
-		//fmt.Println("modele : ", msg)
 
 		sender, recipient, message, err := parseMessage(msg)
 		if err == nil {
