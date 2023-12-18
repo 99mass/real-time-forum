@@ -33,11 +33,11 @@ func CommunicationHandler(db *sql.DB) http.HandlerFunc {
 		}
 		fmt.Println(request.User1)
 		fmt.Println(request.User2)
-		discuss,err := GetCommunication(db, request.User1, request.User2)
+		discuss, err := GetCommunication(db, request.User1, request.User2)
 		if err != nil {
 			fmt.Println(err)
 			conn.Close()
-            return
+			return
 		}
 
 		goodDiscuss, err := GoodToSend(db, discuss)
@@ -101,16 +101,18 @@ func GetCommunication(db *sql.DB, user1 string, user2 string) ([]Message, error)
 	if err != nil {
 		return nil, err
 	}
-	message,err := GetMessageSentByOneUserToAnotherOne(db,us2,us1)
+	message, err := GetMessageSentByOneUserToAnotherOne(db, us2, us1)
 	if err != nil {
 		return nil, err
 	}
-	for _, m := range message{
-		if !m.Read{
+
+	discussion := GetDiscussion(db, us1, us2)
+
+	for _, m := range message {
+		if !m.Read {
 			MarkMessageAsRead(db, m.ID)
 		}
 	}
-	discussion := GetDiscussion(db, us1, us2)
 
 	return discussion, nil
 }

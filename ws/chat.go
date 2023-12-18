@@ -19,10 +19,41 @@ var users map[string]*models.User = make(map[string]*models.User)
 var userList []UserToShow
 var usersMessage map[string]*models.User = make(map[string]*models.User)
 
+type UserToShow struct {
+	Username string `json:"Username"`
+	Status   string `json:"Status"`
+}
 type ConnectedUser struct {
 	Users []string
 }
 
+type MessageUnread struct {
+	Sender        string
+	NumberMessage int
+}
+
+func GetNumberMessage(db *sql.DB, user []UserToShow, receiver string) []MessageUnread {
+	var messagesUnread []MessageUnread
+	receiverID, _ := GetUserIDByUserName(db, receiver)
+
+	for _, us := range user {
+		usID, _ := GetUserIDByUserName(db, us.Username)
+		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+		var n int
+		for _, m := range message {
+			if !m.Read {
+				n++
+			}
+		}
+		var mess MessageUnread
+		mess.Sender = us.Username
+		mess.NumberMessage = n
+		messagesUnread = append(messagesUnread, mess)
+	}
+
+	return messagesUnread
+
+}
 func WSHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
@@ -63,6 +94,9 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 		fmt.Println(users)
 
 		fmt.Println(usersConnected)
+		mess := GetNumberMessage(db, userList, username)
+		fmt.Println(mess)
+		conn.WriteJSON(mess)
 
 		BroadcastUsers(userList)
 
@@ -172,14 +206,14 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 }
 
 func SaveMessage(db *sql.DB, sender string, recipient string, message string) error {
-	senderID,err := GetUserIDByUserName(db, sender)
-	if err!= nil {
-        return err
-    }
-	recipientID,err := GetUserIDByUserName(db, recipient)
-	if err!= nil {
-        return err
-    }
+	senderID, err := GetUserIDByUserName(db, sender)
+	if err != nil {
+		return err
+	}
+	recipientID, err := GetUserIDByUserName(db, recipient)
+	if err != nil {
+		return err
+	}
 	var Mes Message
 	Mes.Sender = senderID
 	Mes.Recipient = recipientID
@@ -199,12 +233,12 @@ func sendMessage(recipient string, message GetMessage) {
 	log.Println("message sent successfully to : " + recipient)
 }
 
-func GetUserIDByUserName(db *sql.DB, userName string) (uuid.UUID , error) {
+func GetUserIDByUserName(db *sql.DB, userName string) (uuid.UUID, error) {
 	user, err := controller.GetUserByUsername(db, userName)
 	if err != nil {
-		return uuid.Nil,err
+		return uuid.Nil, err
 	}
-	return user.ID,nil
+	return user.ID, nil
 }
 
 func removeElement(slice []string, el string) []string {
@@ -268,11 +302,6 @@ func BroadcastUsers(userList []UserToShow) {
 		user.Conn.WriteJSON(usersConn)
 
 	}
-}
-
-type UserToShow struct {
-	Username string `json:"Username"`
-	Status   string `json:"Status"`
 }
 
 func GetAllUserNames(db *sql.DB) ([]UserToShow, error) {
