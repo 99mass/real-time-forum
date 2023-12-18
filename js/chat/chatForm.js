@@ -1,5 +1,5 @@
 import { sendMessages, recipientMessages } from "../layout/corps.js";
-import {  chatDateFormatter } from "../helper/utils.js";
+import {  timeAgo } from "../helper/utils.js";
 
 
 const sendMessage = (userName_) => {
@@ -42,7 +42,7 @@ const sendMessage = (userName_) => {
 
         var _data = JSON.parse(message.data);
         console.log(_data);
-        let formattedDate = chatDateFormatter(_data["created"]);
+        let formattedDate = timeAgo(_data["created"]);
 
         if (_data["sender"] == userName_) {
           let  noChatTex=  document.querySelector('.no-chat');
