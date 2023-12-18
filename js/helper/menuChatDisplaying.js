@@ -1,11 +1,12 @@
 import { OldChatMessage } from "../chat/chatOldMessage.js";
 import { sendMessages, recipientMessages } from "../layout/corps.js";
-import { chatDateFormatter } from "../helper/utils.js";
+import { chatDateFormatter,timeAgo } from "../helper/utils.js";
 import { throttle } from "../helper/utils.js";
 
 
 const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat) => {
     const chatBody = document.querySelectorAll('.chat-body');
+    const autherUser=document.querySelector(".auther-user");
     let messageQueue = [];
 
     for (let i = 0; i < chatText.length; i++) {
@@ -31,6 +32,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             }
             chatContainer.style.display = "block";
             UsernameinputChat.value = userNameOnline[i].textContent.trim();
+            autherUser.innerHTML=userNameOnline[i].textContent.trim();
             let _User1 = document.querySelector('.user').textContent.trim();
             let _User2 = userNameOnline[i].textContent.trim();
 
@@ -56,9 +58,10 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     // Display the last 10 messages when the chat is opened
                     for (let j = 0; j < 10 && messageQueue.length > 0; j++) {
                         // Remove the last message from the queue
-                        let _data = messageQueue.pop();
+                        let _data = messageQueue.shift();
             
-                        let formattedDate = chatDateFormatter(_data["Created"]);
+                        let formattedDate = timeAgo(_data["Created"]);
+                        console.log(formattedDate);
             
                         let newMessage;
                         if (_data["Sender"] == _User1) {
@@ -93,9 +96,9 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                         for (let j = 0; j < 10; j++) {
                             if (messageQueue.length > 0) {
                                 alert('ok')
-                                let _data = messageQueue.pop();
+                                let _data = messageQueue.shift();
             
-                                let formattedDate = chatDateFormatter(_data["Created"]);
+                                let formattedDate = timeAgo(_data["Created"]);
             
                                 let newMessage;
                                 if (_data["Sender"] == _User1) {

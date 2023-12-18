@@ -19,15 +19,15 @@ function timeAgo(dateString) {
   const secondsPast = (now.getTime() - date.getTime()) / 1000;
 
   if(secondsPast < 60) {
-      return parseInt(secondsPast) + ' seconds ago';
+      return parseInt(secondsPast) + ' sec ago';
   }
 
   if(secondsPast < 3600) {
-      return parseInt(secondsPast/60) + ' minutes ago';
+      return parseInt(secondsPast/60) + ' mn ago';
   }
 
   if(secondsPast <= 86400) {
-      return parseInt(secondsPast/3600) + ' hours ago';
+      return parseInt(secondsPast/3600) + ' h ago';
   }
 
   if(secondsPast > 86400) {

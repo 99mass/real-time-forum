@@ -37,7 +37,7 @@ const rigthtBloc=(_rigthtBloc,userName)=>{
                                 <div></div>
                                 <div class="midle-header">
                                     <div></div>
-                                    <div>${userName}</div>
+                                    <div class="auther-user"></div>
                                 </div>
                                 <div class="right-header"><img class="menu-dots" src="../assets/close-circle-svgrepo-com.svg"></div>
                             </div>
@@ -124,7 +124,7 @@ const recipientMessages = (recipName, messageRecip, dateMessage) => {
     pMessage.textContent = messageRecip;
 
     let pDate = document.createElement('p');
-    pDate.textContent = "16:30"; 
+    pDate.textContent = dateMessage; 
 
     messageDateDiv.appendChild(pMessage);
     messageDateDiv.appendChild(pDate);
