@@ -27,7 +27,6 @@ import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";
 import { sortUsers, statusPostUser, statusPostFilteredUser } from "./helper/utils.js";
 import { sendMessage } from "./chat/chatForm.js";
-// import { OldChatMessage } from "./chat/chatOldMessage.js";
 
 
 import { logOut } from "./auth/logOut.js";
