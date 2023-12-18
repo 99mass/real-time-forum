@@ -12,6 +12,7 @@ type Message struct {
 	ID        uuid.UUID
 	Sender    uuid.UUID
 	Recipient uuid.UUID
+	Read      bool
 	Message   string
 	Created   time.Time
 }
@@ -67,7 +68,7 @@ func GetDiscussion(db *sql.DB, user1 uuid.UUID, user2 uuid.UUID) []Message {
 
 func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	query := `
-        SELECT id, sender_id, recipient_id, message_text, created_at
+        SELECT id, sender_id, recipient_id, message_text, read, created_at
         FROM messages
         WHERE recipient_id = ?
         OR sender_id = ?;
@@ -82,7 +83,7 @@ func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	var messages []Message
 	for rows.Next() {
 		var message Message
-		err := rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Message, &message.Created)
+		err := rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Message, &message.Read, &message.Created)
 		if err != nil {
 			return []Message{}
 		}
@@ -90,4 +91,40 @@ func getMessagesForUser(db *sql.DB, userID uuid.UUID) []Message {
 	}
 
 	return messages
+}
+
+func MarkMessageAsRead(db *sql.DB, messageID uuid.UUID) error {
+	query := `
+        UPDATE messages
+        SET read = TRUE
+        WHERE id = ?;
+    `
+
+	_, err := db.Exec(query, messageID.String())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetMessageSentByOneUserToAnotherOne(db *sql.DB, Sender uuid.UUID, Receiver uuid.UUID) ([]Message, error) {
+	query := `SELECT id, sender_id, recipient_id, read, message_text, created_at FROM messages WHERE sender_id = ? AND recipient_id = ?;`
+	rows, err := db.Query(query, Sender, Receiver)
+	if err != nil {
+		return []Message{},err
+	}
+	defer rows.Close()
+
+	var messages []Message
+	for rows.Next() {
+		var message Message
+		err := rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Read, &message.Message, &message.Created)
+		if err != nil {
+			return []Message{},err
+		}
+		messages = append(messages, message)
+	}
+
+	return messages,nil
 }

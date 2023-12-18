@@ -98,10 +98,11 @@ CREATE TABLE IF NOT EXISTS comment_dislikes (
 
 CREATE TABLE messages (
     id INT PRIMARY KEY,
-    sender TEXT NOT NULL,
-    recipient TEXT NOT NULL,
-    message TEXT NOT NULL,
+    sender_id TEXT NOT NULL,
+    recipient_id TEXT NOT NULL,
+    message_text TEXT NOT NULL,
+    read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender) REFERENCES users(id),
-    FOREIGN KEY (recipient) REFERENCES users(id)
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (recipient_id) REFERENCES users(id)
 );
