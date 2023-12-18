@@ -96,7 +96,7 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 		fmt.Println(usersConnected)
 		mess := GetNumberMessage(db, userList, username)
 		fmt.Println(mess)
-		conn.WriteJSON(mess)
+		// conn.WriteJSON(mess)
 
 		BroadcastUsers(userList)
 		

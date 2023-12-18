@@ -72,11 +72,7 @@ const main = () => {
                 // Recuperer les utlisateurs connecter
                 socket.onmessage = (message) => {
                     var data = JSON.parse(message.data);
-                    data.forEach(element => {
-                        if ('Sender' in element && "NumberMessage" in element) {
-                        console.log("hello", element)
-                        }else{
-                            let dataSorted = sortUsers(data);
+                    let dataSorted = sortUsers(data);
                     console.log(dataSorted);
                     //afficher le statuses des utlisateurs connect  
                     userOnline(dataSorted);
@@ -92,9 +88,6 @@ const main = () => {
 
                     chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
                     statusPostUser(dataSorted);
-                        }
-                    });
-                    
 
                 };
 
