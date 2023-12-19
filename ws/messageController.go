@@ -112,7 +112,7 @@ func GetMessageSentByOneUserToAnotherOne(db *sql.DB, Sender uuid.UUID, Receiver 
 	query := `SELECT id, sender_id, recipient_id, read, message_text, created_at FROM messages WHERE sender_id = ? AND recipient_id = ? ORDER BY created_at DESC;`
 	rows, err := db.Query(query, Sender, Receiver)
 	if err != nil {
-		return []Message{},err
+		return []Message{}, err
 	}
 	defer rows.Close()
 
@@ -121,10 +121,11 @@ func GetMessageSentByOneUserToAnotherOne(db *sql.DB, Sender uuid.UUID, Receiver 
 		var message Message
 		err := rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Read, &message.Message, &message.Created)
 		if err != nil {
-			return []Message{},err
+			return []Message{}, err
 		}
 		messages = append(messages, message)
 	}
 
-	return messages,nil
+	return messages, nil
 }
+
