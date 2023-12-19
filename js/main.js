@@ -25,7 +25,7 @@ import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";
-import { sortUsers, statusPostUser, statusPostFilteredUser } from "./helper/utils.js";
+import { sortUsers, statusPostUser, statusPostFilteredUser ,sortArray} from "./helper/utils.js";
 import { sendMessage } from "./chat/chatForm.js";
 
 
@@ -69,20 +69,27 @@ const main = () => {
                         Username: data["User"]["Username"],
                     }));
                 }
+
                 // Recuperer les utlisateurs connecter
+                var tab=[]
                 socket.onmessage = (message) => {
                     var data = JSON.parse(message.data);
-                    data.forEach(element => {
+                    let dataSorted = sortUsers(data);
+                    
+                    
+                    dataSorted.forEach(element => {
                         if ('Sender' in element && "NumberMessage" in element) {
                         console.log("hello", element)
-                        }else{
-                    let dataSorted = sortUsers(data);
-                    console.log(dataSorted);
+                        tab.push(element)
+                        }
+                    });
+                        tab=sortArray(tab)
+                    
                     //afficher le statuses des utlisateurs connect  
-                    userOnline(dataSorted);
+                    userOnline(dataSorted,tab);
                     // creer le container des discussions
                     createBodyChat(data);
-
+                    // console.log(dataSorted);
                     // chat Mecanism
                     const chatText = document.querySelectorAll('.user-on-line .btn-chat');
                     const userNameOnline = document.querySelectorAll('.user-name-online');
@@ -92,9 +99,10 @@ const main = () => {
 
                     chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
                     statusPostUser(dataSorted);
-                        }});
+                    
 
-                };
+            
+                }
 
                 //envoyer les messages entre utilisateur
                 sendMessage(data["User"]["Username"]);
@@ -169,7 +177,6 @@ const main = () => {
 
                 // filter category diplaying
                 filterByCategory();
-
 
 
 

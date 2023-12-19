@@ -188,4 +188,24 @@ function countOnlineUsers(users) {
 }
 
 
-export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,statusPostUser,statusPostFilteredUser,throttle}
+const sortArray = (data) =>{
+    return data.sort((a, b) => {
+        if (a.NumberMessage > b.NumberMessage) {
+            return -1;
+        } else if (a.NumberMessage < b.NumberMessage) {
+            return 1;
+        } else {
+            // Si NumberMessage est égal, trier par Sender
+            if (a.Sender < b.Sender) {
+                return -1;
+            } else if (a.Sender > b.Sender) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    });
+}
+
+
+export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,statusPostUser,statusPostFilteredUser,throttle,sortArray}
