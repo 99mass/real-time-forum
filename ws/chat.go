@@ -56,6 +56,18 @@ func GetNumberMessage(db *sql.DB, user []UserToShow, receiver string) []MessageU
 	return messagesUnread
 
 }
+func GetUserOrder(db *sql.DB,receiver string,users []UserToShow) []UserToShow {
+	var userList []UserToShow
+	var messages [][]Message
+	receiverID, _ := GetUserIDByUserName(db, receiver)
+	for _, us := range users {
+		usID,_:= GetUserIDByUserName(db, us.Username)
+		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+		messages = append(messages,message)
+	}
+
+	return userList
+}
 func WSHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
@@ -104,10 +116,6 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 	}
-}
-
-func GetUserOrder(){
-
 }
 
 func HandlerMessages(db *sql.DB) http.HandlerFunc {
