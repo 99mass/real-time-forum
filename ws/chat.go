@@ -72,7 +72,7 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 		fmt.Println(m.Created)
 	}
 	sort.Slice(messages, func(i, j int) bool {
-		return messages[i].Created.Before(messages[j].Created)
+		return messages[i].Created.After(messages[j].Created)
 	})
 
 	fmt.Println("after sorting")
@@ -82,13 +82,24 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 
 	}
 	for _, m := range messages {
-
 		var us UserToShow
 		name, _ := GetUsername(db, m.Sender)
 		us.Username = name
 		us.Status = "offline"
-		userList = append(userList, us)
-
+	
+		// Check if user already exists in userList
+		exists := false
+		for _, user := range userList {
+			if user.Username == us.Username {
+				exists = true
+				break
+			}
+		}
+	
+		// If user does not exist in userList, append
+		if !exists {
+			userList = append(userList, us)
+		}
 	}
 
 	return userList
