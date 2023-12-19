@@ -181,6 +181,31 @@ const sortUsers = (users) => {
         }
     });
 }
+const sortUsers2 = (users) => {
+    return users.sort((a, b) => {
+        if (a.Status === 'online' && b.Status === 'offline') {
+            return -1;
+        } else if (a.Status === 'offline' && b.Status === 'online') {
+            return 1;
+        } else {
+            // If both users are online or offline, sort by NumberMessage.
+            if (a.NumberMessage > b.NumberMessage) {
+                return -1;
+            } else if (a.NumberMessage < b.NumberMessage) {
+                return 1;
+            } else {
+                // If both users have the same NumberMessage, sort by username.
+                if (a.Username < b.Username) {
+                    return -1;
+                } else if (a.Username > b.Username) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    });
+}
 
 function countOnlineUsers(users) {
     let onlineUsers = users.filter(user => user.Status === "online");
@@ -188,4 +213,54 @@ function countOnlineUsers(users) {
 }
 
 
-export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,statusPostUser,statusPostFilteredUser,throttle}
+const sortArray = (data) =>{
+    return data.sort((a, b) => {
+        if (a.NumberMessage > b.NumberMessage) {
+            return -1;
+        } else if (a.NumberMessage < b.NumberMessage) {
+            return 1;
+        } else {
+            // Si NumberMessage est égal, trier par Sender
+            if (a.Sender < b.Sender) {
+                return -1;
+            } else if (a.Sender > b.Sender) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    });
+}
+const alertMessage = (sender, Recipient) => {
+    const div = document.createElement('div');
+    div.className = 'notif';
+
+    const span = document.createElement('span');
+    span.className = 'welcome_text';
+
+    span.innerHTML = `Hey, <span class="notif-user"> ${Recipient}</span>  you have a new message from <span class="notif-user"> ${sender}</span>`;
+
+    div.appendChild(span);
+
+    return div;
+}
+
+const loader=()=>{
+    return `<div class="loader ">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+                <div class="bar4"></div>
+                <div class="bar5"></div>
+                <div class="bar6"></div>
+                <div class="bar7"></div>
+                <div class="bar8"></div>
+                <div class="bar9"></div>
+                <div class="bar10"></div>
+                <div class="bar11"></div>
+                <div class="bar12"></div>
+        </div>
+    `;
+}
+
+export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,sortUsers2,statusPostUser,statusPostFilteredUser,throttle,sortArray,alertMessage,loader}

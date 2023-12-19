@@ -1,16 +1,41 @@
-
-const userOnline = (data) => {
+import { sortUsers2,loader } from "../helper/utils.js";
+const userOnline = (data,tab) => {
 
     const containUsers = document.querySelector('.bloc-users-on-line');
+    containUsers.innerHTML=loader();
+    containUsers.style.display="flex" ;
+    containUsers.style.justifyContent= "center";
+    
     var users = "";
 
-    if (data["message"]) {
+    if (data["message"]) {        
         users = `<div class="no-user">  ${data["message"]}</div>`;
     } else {
         for (let i = 0; i < data.length; i++) {
-            const user = data[i];
-            let status = user['Status'] == "online" ? 'status-active-svgrepo-com.svg' : 'status-no-active-svgrepo-com.svg';
+            let user = data[i];
+            for (let j = 0; j < tab.length; j++) {
+                let not = tab[j];     
+                if (user['Username']===not.Sender ) {           
+                    user.NumberMessage = not.NumberMessage;         
+                }     
+           
+            }
+        }
+        // trier les utlisateurs
+        data=sortUsers2(data)
 
+        for (let i = 0; i < data.length; i++) {
+            let user = data[i];
+            let status = user['Status'] == "online" ? 'status-active-svgrepo-com.svg' : 'status-no-active-svgrepo-com.svg';           
+
+            let countNotif=""
+          
+            if ( user['NumberMessage']>0 ) {                    
+                countNotif=` <img src="assets/notification-bell-svgrepo-com.svg" alt="">
+                            <span class="notif-value-${user['Username']}" >${user['NumberMessage']}</span>                                              
+                `;           
+            }     
+               
             users += `<div class="user user-on-line ">  
                             <div class="user-infos">                               
                                 <img src="assets/user-profile-svgrepo-com.svg" alt="">
@@ -22,10 +47,9 @@ const userOnline = (data) => {
                                     </p>                            
                                 </div>
                             </div> 
-                            <div class="notification">
-                                <img src="assets/notification-bell-svgrepo-com.svg" alt="">
-                                <span>12</span>
-                            </div>
+                            <div class="notification number-message-${user['Username']}" >
+                                ${countNotif}
+                             </div> 
                             <div class="chat-text btn-chat ">
                                 <span>chat</span>
                                 <img src="assets/chat-dots-svgrepo-com.svg" alt="">
@@ -33,9 +57,14 @@ const userOnline = (data) => {
                         </div>
                     `;
         }
+        
     }
-    containUsers.innerHTML = users;
-
+   setTimeout(() => {   
+        let loaders= document.querySelector('.loader'); 
+        containUsers.style.display="block" ;
+       if (loaders) loaders.remove();
+       containUsers.innerHTML = users;
+   }, 1000);
 }
 
 export { userOnline }

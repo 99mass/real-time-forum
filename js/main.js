@@ -25,7 +25,7 @@ import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";
-import { sortUsers, statusPostUser, statusPostFilteredUser } from "./helper/utils.js";
+import { sortUsers, statusPostUser, statusPostFilteredUser ,sortArray} from "./helper/utils.js";
 import { sendMessage } from "./chat/chatForm.js";
 
 
@@ -69,17 +69,19 @@ const main = () => {
                         Username: data["User"]["Username"],
                     }));
                 }
+
                 // Recuperer les utlisateurs connecter
+                var tab=[]
                 socket.onmessage = (message) => {
                     var data = JSON.parse(message.data);
+                
                     data.forEach(element => {
-                        if ('Sender' in element && "NumberMessage" in element) {
-                        console.log("hello", element)
-                        }else{
-                    let dataSorted = sortUsers(data);
-                    console.log(dataSorted);
+                        if ('Sender' in element && "NumberMessage" in element) 
+                             tab.push(element);                        
+                    });
+
                     //afficher le statuses des utlisateurs connect  
-                    userOnline(dataSorted);
+                    userOnline(data,tab);
                     // creer le container des discussions
                     createBodyChat(data);
 
@@ -91,10 +93,11 @@ const main = () => {
                     const UsernameinputChat = document.querySelector('.Username-input-chat');
 
                     chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
-                    statusPostUser(dataSorted);
-                        }});
+                    statusPostUser(data);
+                    
 
-                };
+            
+                }
 
                 //envoyer les messages entre utilisateur
                 sendMessage(data["User"]["Username"]);
@@ -169,7 +172,6 @@ const main = () => {
 
                 // filter category diplaying
                 filterByCategory();
-
 
 
 
