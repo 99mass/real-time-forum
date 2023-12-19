@@ -106,6 +106,10 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func GetUserOrder(){
+
+}
+
 func HandlerMessages(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{

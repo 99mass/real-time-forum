@@ -109,7 +109,7 @@ func MarkMessageAsRead(db *sql.DB, messageID uuid.UUID) error {
 }
 
 func GetMessageSentByOneUserToAnotherOne(db *sql.DB, Sender uuid.UUID, Receiver uuid.UUID) ([]Message, error) {
-	query := `SELECT id, sender_id, recipient_id, read, message_text, created_at FROM messages WHERE sender_id = ? AND recipient_id = ?;`
+	query := `SELECT id, sender_id, recipient_id, read, message_text, created_at FROM messages WHERE sender_id = ? AND recipient_id = ? ORDER BY created_at DESC;`
 	rows, err := db.Query(query, Sender, Receiver)
 	if err != nil {
 		return []Message{},err
