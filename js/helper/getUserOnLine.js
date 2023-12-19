@@ -1,10 +1,14 @@
-import { sortUsers2 } from "../helper/utils.js";
+import { sortUsers2,loader } from "../helper/utils.js";
 const userOnline = (data,tab) => {
 
     const containUsers = document.querySelector('.bloc-users-on-line');
+    containUsers.innerHTML=loader();
+    containUsers.style.display="flex" ;
+    containUsers.style.justifyContent= "center";
+    
     var users = "";
 
-    if (data["message"]) {
+    if (data["message"]) {        
         users = `<div class="no-user">  ${data["message"]}</div>`;
     } else {
         for (let i = 0; i < data.length; i++) {
@@ -53,9 +57,14 @@ const userOnline = (data,tab) => {
                         </div>
                     `;
         }
+        
     }
-    containUsers.innerHTML = users;
-
+   setTimeout(() => {   
+        let loaders= document.querySelector('.loader'); 
+        containUsers.style.display="block" ;
+       if (loaders) loaders.remove();
+       containUsers.innerHTML = users;
+   }, 1000);
 }
 
 export { userOnline }
