@@ -8,6 +8,7 @@ import (
 	"forum/models"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -55,6 +56,32 @@ func GetNumberMessage(db *sql.DB, user []UserToShow, receiver string) []MessageU
 
 	return messagesUnread
 
+}
+func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow {
+	var userList []UserToShow
+	var messages [][]Message
+	receiverID, _ := GetUserIDByUserName(db, receiver)
+	for _, us := range users {
+		usID, _ := GetUserIDByUserName(db, us.Username)
+		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+		messages = append(messages, message)
+	}
+	sort.Slice(messages, func(i, j int) bool {
+		// Check if the inner slices are not empty
+		if len(messages[i]) > 0 && len(messages[j]) > 0 {
+			return messages[i][0].Created.Before(messages[j][0].Created)
+		}
+		return false
+	})
+	for i, m := range messages {
+		var us UserToShow
+		name, _ := GetUsername(db, m[i].Sender)
+		us.Username = name
+		us.Status = "offline"
+		userList = append(userList, us)
+	}
+
+	return userList
 }
 func WSHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
