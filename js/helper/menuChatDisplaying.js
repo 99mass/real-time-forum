@@ -32,14 +32,17 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             chatContainer.style.display = "block";
             UsernameinputChat.value = userNameOnline[i].textContent.trim();
             autherUser.innerHTML=userNameOnline[i].textContent.trim();
-            let _User1 = document.querySelector('.user').textContent.trim();
+            let _User1 = document.querySelector('.user').textContent.trim();            
             let _User2 = userNameOnline[i].textContent.trim();
 
             let Messdata = {
                 User1: _User1,
                 User2: _User2,
             }
-
+            let closeNotif= document.querySelector(`.number-message-${_User2}`);
+            if (closeNotif) {
+                closeNotif.innerHTML=""
+            }
             console.log(Messdata);
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify(Messdata));
@@ -157,13 +160,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
 
 
 
-const alertMessage = () => {
-    return `
-            <div class="alert">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-            <strong>Info!</strong> you have a new message.
-        </div>
-    `;
-}
+
 
 export { chatContainerDisplaying }

@@ -37,18 +37,20 @@ func GetNumberMessage(db *sql.DB, user []UserToShow, receiver string) []MessageU
 	receiverID, _ := GetUserIDByUserName(db, receiver)
 
 	for _, us := range user {
-		usID, _ := GetUserIDByUserName(db, us.Username)
-		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
-		var n int
-		for _, m := range message {
-			if !m.Read {
-				n++
+		if us.Username != receiver {
+			usID, _ := GetUserIDByUserName(db, us.Username)
+			message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+			var n int
+			for _, m := range message {
+				if !m.Read {
+					n++
+				}
 			}
+			var mess MessageUnread
+			mess.Sender = us.Username
+			mess.NumberMessage = n
+			messagesUnread = append(messagesUnread, mess)
 		}
-		var mess MessageUnread
-		mess.Sender = us.Username
-		mess.NumberMessage = n
-		messagesUnread = append(messagesUnread, mess)
 	}
 
 	return messagesUnread

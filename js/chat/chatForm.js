@@ -1,5 +1,5 @@
 import { sendMessages, recipientMessages } from "../layout/corps.js";
-import {  timeAgo } from "../helper/utils.js";
+import {  timeAgo,alertMessage } from "../helper/utils.js";
 
 
 const sendMessage = (userName_) => {
@@ -56,6 +56,24 @@ const sendMessage = (userName_) => {
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], formattedDate);
             _sender.appendChild(recip);
+
+            let tempUser=document.querySelector(`.${_data["sender"]}`);
+            let chatContainer=document.querySelector('.chat-container');
+            // send notification au Recepient
+            var notifValue=document.querySelector(`.notif-value-${_data["sender"]}`);
+            
+            if (tempUser && tempUser.style.display==="none" && chatContainer.style.display==="none") {     
+                notifValue=notifValue ? Number(notifValue.textContent.trim()) : 0;
+                notifValue+=1;
+                document.querySelector(`.number-message-${_data["sender"]}`).innerHTML=`
+                        <img src="assets/notification-bell-svgrepo-com.svg" alt="">
+                        <span class="notif-value-${_data["sender"]}">${notifValue}</span> 
+                `;
+            }
+            document.querySelector('body').appendChild(alertMessage(_data["sender"],_data["recipient"]))
+            setTimeout(() => {            
+                document.querySelector('.notif').remove();
+            }, 6000);
         }
 
     };

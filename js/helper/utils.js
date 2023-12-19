@@ -181,6 +181,31 @@ const sortUsers = (users) => {
         }
     });
 }
+const sortUsers2 = (users) => {
+    return users.sort((a, b) => {
+        if (a.Status === 'online' && b.Status === 'offline') {
+            return -1;
+        } else if (a.Status === 'offline' && b.Status === 'online') {
+            return 1;
+        } else {
+            // If both users are online or offline, sort by NumberMessage.
+            if (a.NumberMessage > b.NumberMessage) {
+                return -1;
+            } else if (a.NumberMessage < b.NumberMessage) {
+                return 1;
+            } else {
+                // If both users have the same NumberMessage, sort by username.
+                if (a.Username < b.Username) {
+                    return -1;
+                } else if (a.Username > b.Username) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    });
+}
 
 function countOnlineUsers(users) {
     let onlineUsers = users.filter(user => user.Status === "online");
@@ -206,6 +231,17 @@ const sortArray = (data) =>{
         }
     });
 }
+const alertMessage = (sender, Recipient) => {
+    const div = document.createElement('div');
+    div.className = 'notif';
 
+    const span = document.createElement('span');
+    span.className = 'welcome_text';
 
-export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,statusPostUser,statusPostFilteredUser,throttle,sortArray}
+    span.innerHTML = `Hey, <span class="notif-user"> ${Recipient}</span>  you have a new message from <span class="notif-user"> ${sender}</span>`;
+
+    div.appendChild(span);
+
+    return div;
+}
+export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,sortUsers2,statusPostUser,statusPostFilteredUser,throttle,sortArray,alertMessage}

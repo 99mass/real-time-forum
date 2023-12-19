@@ -74,22 +74,17 @@ const main = () => {
                 var tab=[]
                 socket.onmessage = (message) => {
                     var data = JSON.parse(message.data);
-                    let dataSorted = sortUsers(data);
-                    
-                    
-                    dataSorted.forEach(element => {
-                        if ('Sender' in element && "NumberMessage" in element) {
-                        console.log("hello", element)
-                        tab.push(element)
-                        }
+                
+                    data.forEach(element => {
+                        if ('Sender' in element && "NumberMessage" in element) 
+                             tab.push(element);                        
                     });
-                        tab=sortArray(tab)
-                    
+
                     //afficher le statuses des utlisateurs connect  
-                    userOnline(dataSorted,tab);
+                    userOnline(data,tab);
                     // creer le container des discussions
                     createBodyChat(data);
-                    // console.log(dataSorted);
+
                     // chat Mecanism
                     const chatText = document.querySelectorAll('.user-on-line .btn-chat');
                     const userNameOnline = document.querySelectorAll('.user-name-online');
@@ -98,7 +93,7 @@ const main = () => {
                     const UsernameinputChat = document.querySelector('.Username-input-chat');
 
                     chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
-                    statusPostUser(dataSorted);
+                    statusPostUser(data);
                     
 
             

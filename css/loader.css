@@ -1,0 +1,38 @@
+.notif{
+    position: absolute;
+    top: 15%;
+    right: 0; 
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    width: fit-content;
+    height: 70px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateX(0); 
+    animation: slideIn 6s ease forwards;
+    z-index: 9999;
+}
+.welcome_text{
+    font-size: 20px;
+    
+}
+.notif .welcome_text .notif-user{
+    color: var(--orangeff6934);
+    font-weight: bold;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%); /* Start from the right */
+        opacity: 0;
+        right: 25%;
+    }
+    5%, 90% {
+        transform: translateX(0); /* Move to the center */
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
