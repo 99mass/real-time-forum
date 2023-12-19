@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS comment_dislikes (
     FOREIGN KEY (comment_id) REFERENCES comments(id)
 );
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id INT PRIMARY KEY,
     sender_id TEXT NOT NULL,
     recipient_id TEXT NOT NULL,
