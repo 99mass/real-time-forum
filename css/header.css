@@ -68,21 +68,25 @@ header{
 /* Medias query */
 
 @media screen  and (max-width: 768px) {
+    header{
+      position: fixed;
+      top: 0px;
+    }
     .titre{
-        width: 30%;
-        font-size: 30px;        
+        width: fit-content;
+        font-size: 22px;        
     }
    
 }
 
-@media screen  and (max-width: 425px) {
+@media screen  and (max-width: 600px) {
     .titre{
         font-size: 22px;
-        
+        width: 30%;
     }
     .titre img{
         height: 40px;
-       }
+    }
 .btns .profile{
     display: flex;
     flex-direction: column;

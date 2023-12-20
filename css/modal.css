@@ -42,6 +42,7 @@
   .modal .categoryContent{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   width: 100%;
 }
   label {
@@ -116,7 +117,7 @@ padding-left: 0px;
 
 .custum-file-upload {
     height: fit-content;
-    width: 85%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: space-between;
@@ -166,3 +167,38 @@ padding-left: 0px;
     font-size: 14px;
      
   }
+
+  /* Medais Query */
+
+ 
+  @media screen and (max-width:1200px) {
+    .modal-content {
+      width: 50%;
+    }
+    .custum-file-upload {
+      width: 100%;
+
+    }
+  }
+
+  @media screen and (max-width:768px) {
+    .modal-content {
+      width: 70%;
+      top: 20%;
+    }
+  }
+  @media screen and (max-width:500px) {
+    .modal-content {
+      width: 90%;
+   
+    }
+  
+  }
+
+  @media screen and (max-width:400px) {
+    .categories-bolc div {
+      padding: 20px;
+    }
+  }
+
+
