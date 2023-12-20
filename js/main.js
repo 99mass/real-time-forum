@@ -86,16 +86,19 @@ const main = () => {
                     createBodyChat(data);
 
                     // chat Mecanism
-                    const chatText = document.querySelectorAll('.user-on-line .btn-chat');
-                    const userNameOnline = document.querySelectorAll('.user-name-online');
-                    const menuDots = document.querySelector('.menu-dots');
-                    const chatContainer = document.querySelector('.menu-droite .chat-container');
-                    const UsernameinputChat = document.querySelector('.Username-input-chat');
+                    setTimeout(() => {                        
+                        const chatText = document.querySelectorAll('.user-on-line .btn-chat');                 
+                        const userNameOnline = document.querySelectorAll('.user-name-online');
+                        const menuDots = document.querySelector('.menu-dots');
+                        const chatContainer = document.querySelector('.menu-droite .chat-container');
+                        const UsernameinputChat = document.querySelector('.Username-input-chat');
+    
+                        chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
+                        
+                    }, 1000);
 
-                    chatContainerDisplaying(chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat);
                     statusPostUser(data);
-                    
-
+                
             
                 }
 

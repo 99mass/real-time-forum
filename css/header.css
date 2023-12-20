@@ -63,3 +63,39 @@ header{
     color: var(--whiteffffff);
     cursor: pointer;
 }
+
+
+/* Medias query */
+
+@media screen  and (max-width: 768px) {
+    .titre{
+        width: 30%;
+        font-size: 30px;        
+    }
+   
+}
+
+@media screen  and (max-width: 425px) {
+    .titre{
+        font-size: 22px;
+        
+    }
+    .titre img{
+        height: 40px;
+       }
+.btns .profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.btns button{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+}
+
+}

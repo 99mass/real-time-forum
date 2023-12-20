@@ -3,8 +3,7 @@ const userOnline = (data,tab) => {
 
     const containUsers = document.querySelector('.bloc-users-on-line');
     containUsers.innerHTML=loader();
-    containUsers.style.display="flex" ;
-    containUsers.style.justifyContent= "center";
+    containUsers.classList.add('temp-class');
     
     var users = "";
 
@@ -50,7 +49,7 @@ const userOnline = (data,tab) => {
                             <div class="notification number-message-${user['Username']}" >
                                 ${countNotif}
                              </div> 
-                            <div class="chat-text btn-chat ">
+                            <div  class="chat-text btn-chat ">
                                 <span>chat</span>
                                 <img src="assets/chat-dots-svgrepo-com.svg" alt="">
                             </div>
@@ -59,9 +58,10 @@ const userOnline = (data,tab) => {
         }
         
     }
+   
    setTimeout(() => {   
         let loaders= document.querySelector('.loader'); 
-        containUsers.style.display="block" ;
+        containUsers.classList.remove('temp-class');
        if (loaders) loaders.remove();
        containUsers.innerHTML = users;
    }, 1000);
