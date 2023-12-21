@@ -73,8 +73,7 @@ const main = () => {
                 // Recuperer les utlisateurs connecter
                 var tab=[]
                 socket.onmessage = (message) => {
-                    var data = JSON.parse(message.data);
-                
+                    var data = JSON.parse(message.data);               
                     data.forEach(element => {
                         if ('Sender' in element && "NumberMessage" in element) 
                              tab.push(element);                        

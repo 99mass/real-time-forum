@@ -4,8 +4,6 @@ import { body, Header, corpsContent, menuGauche, menuMilieu, menuDroite } from "
 
 
 const indexPage = (data) => {
-    console.log(data);
-
 
     let posts = data["Datas"] ? data["Datas"] : "";
 

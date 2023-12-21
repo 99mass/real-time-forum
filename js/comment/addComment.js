@@ -40,7 +40,7 @@ const addComment=(formAddComment,blocComment)=>{
                 }
                 
             } catch (error) {
-               console.log("error : "+error);
+               console.error("error : "+error);
             }
 
 

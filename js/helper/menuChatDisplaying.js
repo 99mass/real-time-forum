@@ -19,7 +19,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
           
             // Send user connected message when connection is open
             socket.onopen = () => {
-                console.log("WebSocket communication on.");
             }
             for (let j = 0; j < chatBody.length; j++) {
                 chatBody[j].style.display = "none";
@@ -44,16 +43,12 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             if (closeNotif) {
                 closeNotif.innerHTML=""
             }
-            console.log(Messdata);
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify(Messdata));
-                console.log(Messdata);
-                console.log("message send via communication.");
             }
 
             socket.onmessage = (message) => {
-                var _datas = JSON.parse(message.data);
-                console.log(_datas);
+                var _datas = JSON.parse(message.data);            
             
                 if (_datas) {
                     messageQueue.push(..._datas);

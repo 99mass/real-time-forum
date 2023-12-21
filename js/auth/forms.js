@@ -47,7 +47,7 @@ const signInForm = async (_ContentForms, formSignIn, formSignUp, spinner, linkAp
                         } else {
                             errorp.style.display = "block";
                             errorp.innerHTML = "error : veillez tenter encore.";
-                            console.log('Error : api inaccessible');
+                            console.error('Error : api inaccessible');
                         }
                     }
                     (async () => {
@@ -58,7 +58,7 @@ const signInForm = async (_ContentForms, formSignIn, formSignUp, spinner, linkAp
                     let error = await response.json();
                     errorp.style.display = "block";
                     errorp.innerHTML = error["message"];
-                    console.log(error["message"]);
+                    console.error(error["message"]);
 
                 }
 
@@ -123,7 +123,7 @@ const signUpForm = async (_ContentForms, formSignUp, formSignIn, spinner, linkAp
                         } else {
                             errorp.style.display = "block";
                             errorp.innerHTML = "error : veillez tenter encore.";
-                            console.log('Error : api inaccessible');
+                            console.error('Error : api inaccessible');
                         }
                     }
                     (async () => {
@@ -133,7 +133,7 @@ const signUpForm = async (_ContentForms, formSignUp, formSignIn, spinner, linkAp
                     let error = await response.json();
                     errorp.style.display = "block";
                     errorp.innerHTML = error["message"];
-                    console.log(error["message"]);
+                    console.error(error["message"]);
 
                 }
             } catch (error) {

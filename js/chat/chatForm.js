@@ -9,8 +9,6 @@ const sendMessage = (userName_) => {
     // Send user connected message when connection is open
     socket.onopen = () => {
         socket.send(JSON.stringify({ Username: userName_ }));
-        console.log("WebSocket message on.");
-
     };
 
 
@@ -33,7 +31,6 @@ const sendMessage = (userName_) => {
         if (socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify(messageData));
             document.querySelector('textarea[name="Message"]').value = "";
-            console.log("message send.");
         }
     });
 
@@ -41,7 +38,6 @@ const sendMessage = (userName_) => {
     socket.onmessage = (message) => {
 
         var _data = JSON.parse(message.data);
-        console.log(_data);
         let formattedDate = timeAgo(_data["created"]);
 
         if (_data["sender"] == userName_) {

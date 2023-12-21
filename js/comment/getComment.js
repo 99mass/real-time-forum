@@ -15,7 +15,7 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
             })
                 .then(response => {
                     if (response.status !== 200) {
-                      console.log('Error:' + response["message"]);
+                      console.error('Error:' + response["message"]);
                       return;
                     }
                     return response.json()

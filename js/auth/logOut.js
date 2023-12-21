@@ -21,7 +21,7 @@ const logOut=(_btn)=>{
             }
             
         } catch (error) {
-           console.log("error : "+error);
+           console.error("error : "+error);
         }
      })
 }

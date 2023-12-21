@@ -44,12 +44,12 @@ const liskeComment=(likeComment,likeCommentId,likeCommentScore,dislikeCommentSco
                 }else{
 
                     const er = await response.json();
-                    console.log('Error : ' + er.message);
+                    console.error('Error : ' + er.message);
                     return;
                 }
                 
             } catch (error) {
-            console.log("error : "+error);
+            console.error("error : "+error);
             }
         };
 

@@ -1,4 +1,5 @@
 import { sortUsers2,loader } from "../helper/utils.js";
+
 const userOnline = (data,tab) => {
 
     const containUsers = document.querySelector('.bloc-users-on-line');
@@ -21,7 +22,7 @@ const userOnline = (data,tab) => {
             }
         }
         // trier les utlisateurs
-        data=sortUsers2(data)
+        // data=sortUsers2(data)
 
         for (let i = 0; i < data.length; i++) {
             let user = data[i];

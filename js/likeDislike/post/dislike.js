@@ -43,12 +43,12 @@ const DisLiskePost=(dislikePost,dislikePostId,likePostScore,dislikePostScore,lik
                 }else{
 
                     const er = await response.json();
-                    console.log('Error : ' + er.message);
+                    console.error('Error : ' + er.message);
                     return;
                 }
                 
             } catch (error) {
-            console.log("error : "+error);
+            console.error("error : "+error);
             }
         };
 

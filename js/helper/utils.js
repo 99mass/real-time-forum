@@ -147,7 +147,7 @@ const statusPostFilteredUser=()=>{
     const _userNameOnlineImg=document.querySelectorAll('.user-infos div .user-name-online-img'); 
     const postUsername=document.querySelectorAll('.content-poster-like .content-poster .poster div p span');
     const postUsernameImg=document.querySelectorAll('.content-poster-like .content-poster .poster div p img');
-    console.log(_userNameOnlineImg[2].src);
+
     for (let i = 0; i < postUsername.length; i++) {
             for (let j = 0; j < userNameOnline.length; j++) {
                 let name=userNameOnline[j].textContent.trim();
