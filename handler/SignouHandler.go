@@ -35,7 +35,7 @@ func SignOutHandler(db *sql.DB) http.HandlerFunc {
 		sessionID := SessionReq.Session
 		IDsess, _ := uuid.FromString(sessionID)
 		user, _ := controller.GetUserBySessionId(IDsess, db)
-		ws.CloseConnection(user.Username)
+		ws.CloseConnection(db, user.Username)
 		helper.DeleteSession(db, sessionID, w, r)
 
 		helper.SendResponse(w, models.ErrorResponse{}, http.StatusOK)

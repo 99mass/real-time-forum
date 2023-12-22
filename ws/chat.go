@@ -65,9 +65,9 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 		usID, _ := GetUserIDByUserName(db, us.Username)
 		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
 		if message == nil {
-			user,_ := controller.GetUserByUsername(db,us.Username)
-			fmt.Println("there is no message from :",us.Username)
-			if us.Username != receiver{
+			user, _ := controller.GetUserByUsername(db, us.Username)
+			fmt.Println("there is no message from :", us.Username)
+			if us.Username != receiver {
 				var mess Message
 				mess.Sender = user.ID
 				message = append(message, mess)
@@ -155,12 +155,10 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 		fmt.Println(usersConnected)
 
 		correctUserOrder := GetUserOrder(db, username, userList)
+		changeElementStatus(correctUserOrder, usersConnected)
 		fmt.Println("this is the correct user order :", correctUserOrder)
-		mess := GetNumberMessage(db, correctUserOrder, username)
-		fmt.Println(mess)
-		conn.WriteJSON(mess)
 
-		BroadcastUsers(userList)
+		BroadcastUsers(db,userList)
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 	}
@@ -310,7 +308,7 @@ func removeElement(slice []string, el string) []string {
 	return slice
 }
 
-func CloseConnection(username string) {
+func CloseConnection(db *sql.DB,username string) {
 	user, ok := users[username]
 	if ok {
 		err := user.Conn.Close()
@@ -326,7 +324,7 @@ func CloseConnection(username string) {
 			}
 		}
 		fmt.Println(userList)
-		BroadcastUsers(userList)
+		BroadcastUsers(db,userList)
 
 	} else {
 		log.Printf("User %s not found", username)
@@ -355,10 +353,15 @@ func removeUser(slice []UserToShow, user string) []UserToShow {
 	return tab
 }
 
-func BroadcastUsers(userList []UserToShow) {
+func BroadcastUsers(db*sql.DB,userList []UserToShow) {
 	for _, user := range users {
-		usersConn := removeUser(userList, user.Username)
+		cur := GetUserOrder(db, user.Username, userList)
+		changeElementStatus(cur, usersConnected)
 
+		usersConn := removeUser(cur, user.Username)
+		mess := GetNumberMessage(db, cur, user.Username)
+		fmt.Println(mess)
+		user.Conn.WriteJSON(mess)
 		user.Conn.WriteJSON(usersConn)
 
 	}
