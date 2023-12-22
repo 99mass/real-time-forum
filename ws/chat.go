@@ -236,7 +236,7 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			// Sinon, créez un nouvel utilisateur
 			usersMessage[username] = &models.User{Conn: conn, Username: username}
 		}
-
+		BroadcastUsers(db,userList)
 		//fmt.Println("list 2: ", usersMessage)
 		var msg GetMessage
 		err := conn.ReadJSON(&msg)
@@ -323,7 +323,7 @@ func CloseConnection(db *sql.DB,username string) {
 				userList[i].Status = "offline"
 			}
 		}
-		fmt.Println(userList)
+		//fmt.Println(userList)
 		BroadcastUsers(db,userList)
 
 	} else {
@@ -360,7 +360,7 @@ func BroadcastUsers(db*sql.DB,userList []UserToShow) {
 
 		usersConn := removeUser(cur, user.Username)
 		mess := GetNumberMessage(db, cur, user.Username)
-		fmt.Println(mess)
+		//fmt.Println(mess)
 		user.Conn.WriteJSON(mess)
 		user.Conn.WriteJSON(usersConn)
 
