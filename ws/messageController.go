@@ -119,7 +119,7 @@ func GetMessageSentByOneUserToAnotherOne(db *sql.DB, Sender uuid.UUID, Receiver 
 	var messages []Message
 	for rows.Next() {
 		var message Message
-		err := rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Read, &message.Message, &message.Created)
+		 rows.Scan(&message.ID, &message.Sender, &message.Recipient, &message.Read, &message.Message, &message.Created)
 		if err != nil {
 			return []Message{}, err
 		}

@@ -64,29 +64,38 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 	for _, us := range users {
 		usID, _ := GetUserIDByUserName(db, us.Username)
 		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+		if message == nil {
+			user,_ := controller.GetUserByUsername(db,us.Username)
+			fmt.Println("there is no message from :",us.Username)
+			if us.Username != receiver{
+				var mess Message
+				mess.Sender = user.ID
+				message = append(message, mess)
+			}
+		}
 		messages = append(messages, message...)
 	}
-	fmt.Println("before sorting")
-	for _, m := range messages {
+	// fmt.Println("before sorting")
+	// for _, m := range messages {
 
-		fmt.Println(m.Created)
-	}
+	// 	fmt.Println(m.Created)
+	// }
 	sort.Slice(messages, func(i, j int) bool {
 		return messages[i].Created.After(messages[j].Created)
 	})
 
-	fmt.Println("after sorting")
-	for _, m := range messages {
+	// fmt.Println("after sorting")
+	// for _, m := range messages {
 
-		fmt.Println(m.Created)
+	// 	fmt.Println(m.Created)
 
-	}
+	// }
 	for _, m := range messages {
 		var us UserToShow
 		name, _ := GetUsername(db, m.Sender)
 		us.Username = name
 		us.Status = "offline"
-	
+
 		// Check if user already exists in userList
 		exists := false
 		for _, user := range userList {
@@ -95,7 +104,7 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 				break
 			}
 		}
-	
+
 		// If user does not exist in userList, append
 		if !exists {
 			userList = append(userList, us)
