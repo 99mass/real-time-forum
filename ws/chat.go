@@ -66,7 +66,6 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
 		if message == nil {
 			user, _ := controller.GetUserByUsername(db, us.Username)
-			fmt.Println("there is no message from :", us.Username)
 			if us.Username != receiver {
 				var mess Message
 				mess.Sender = user.ID
@@ -154,11 +153,11 @@ func WSHandler(db *sql.DB) http.HandlerFunc {
 
 		fmt.Println(usersConnected)
 
-		correctUserOrder := GetUserOrder(db, username, userList)
-		changeElementStatus(correctUserOrder, usersConnected)
-		fmt.Println("this is the correct user order :", correctUserOrder)
+		// correctUserOrder := GetUserOrder(db, username, userList)
+		// changeElementStatus(correctUserOrder, usersConnected)
+		// fmt.Println("this is the correct user order :", correctUserOrder)
 
-		BroadcastUsers(db,userList)
+		BroadcastUsers(db, userList)
 
 		//broadcastMessage(fmt.Sprintf("%s has joined the chat", username))
 	}
@@ -236,7 +235,7 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			// Sinon, créez un nouvel utilisateur
 			usersMessage[username] = &models.User{Conn: conn, Username: username}
 		}
-		BroadcastUsers(db,userList)
+
 		//fmt.Println("list 2: ", usersMessage)
 		var msg GetMessage
 		err := conn.ReadJSON(&msg)
@@ -259,7 +258,8 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			sendMessage(recipient, msg)
 			sendMessage(sender, msg)
 		}
-
+		//update order of the users list
+		BroadcastUsers(db, userList)
 	}
 }
 
@@ -308,7 +308,7 @@ func removeElement(slice []string, el string) []string {
 	return slice
 }
 
-func CloseConnection(db *sql.DB,username string) {
+func CloseConnection(db *sql.DB, username string) {
 	user, ok := users[username]
 	if ok {
 		err := user.Conn.Close()
@@ -324,7 +324,7 @@ func CloseConnection(db *sql.DB,username string) {
 			}
 		}
 		//fmt.Println(userList)
-		BroadcastUsers(db,userList)
+		BroadcastUsers(db, userList)
 
 	} else {
 		log.Printf("User %s not found", username)
@@ -353,7 +353,7 @@ func removeUser(slice []UserToShow, user string) []UserToShow {
 	return tab
 }
 
-func BroadcastUsers(db*sql.DB,userList []UserToShow) {
+func BroadcastUsers(db *sql.DB, userList []UserToShow) {
 	for _, user := range users {
 		cur := GetUserOrder(db, user.Username, userList)
 		changeElementStatus(cur, usersConnected)
