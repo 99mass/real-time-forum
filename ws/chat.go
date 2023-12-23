@@ -379,6 +379,9 @@ func GetAllUserNames(db *sql.DB) ([]UserToShow, error) {
 		us.Status = "offline"
 		userList = append(userList, us)
 	}
+	sort.Slice(userList, func(i, j int) bool {
+		return userList[i].Username < userList[j].Username
+	})
 	return userList, nil
 }
 
