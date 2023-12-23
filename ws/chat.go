@@ -64,6 +64,7 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 	for _, us := range users {
 		usID, _ := GetUserIDByUserName(db, us.Username)
 		message, _ := GetMessageSentByOneUserToAnotherOne(db, usID, receiverID)
+		//mess,_ := GetMessageSentByOneUserToAnotherOne(db, receiverID,usID)
 		if message == nil {
 			user, _ := controller.GetUserByUsername(db, us.Username)
 			if us.Username != receiver {
@@ -72,23 +73,16 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 				message = append(message, mess)
 			}
 		}
+		 
 		messages = append(messages, message...)
+		//messages = append(messages,mess...)
 	}
-	// fmt.Println("before sorting")
-	// for _, m := range messages {
-
-	// 	fmt.Println(m.Created)
-	// }
+	
 	sort.Slice(messages, func(i, j int) bool {
 		return messages[i].Created.After(messages[j].Created)
 	})
 
-	// fmt.Println("after sorting")
-	// for _, m := range messages {
-
-	// 	fmt.Println(m.Created)
-
-	// }
+	
 	for _, m := range messages {
 		var us UserToShow
 		name, _ := GetUsername(db, m.Sender)
