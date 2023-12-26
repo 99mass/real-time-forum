@@ -122,7 +122,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     for (let t = 0; t < Math.max(10, messageQueue.length-1); t++) {
                         let _data = messageQueue.pop();
 
-                        console.log(_data);
                         if (_data) {                          
                                 let formattedDate = timeAgo(_data["Created"]);                
                                 let newMessage;
@@ -144,7 +143,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     chatBody[i].scrollTop = chatBody[i].scrollTop + (scrollHeightAfter - scrollHeightBefore);
                 }
             }, 3000));
-            // return;
         });
  
     }
