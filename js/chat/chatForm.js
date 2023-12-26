@@ -55,6 +55,22 @@ const sendMessage = (userName_) => {
 
             let tempUser=document.querySelector(`.${_data["sender"]}`);
             let chatContainer=document.querySelector('.chat-container');
+
+                console.log(chatContainer.style.display);
+                
+                if (chatContainer.style.display==="block") {
+                    const socketCom = new WebSocket("ws://localhost:8080/communication");
+                    let Messdata = {
+                        User1: _data["recipient"], 
+                        User2: _data["sender"],
+                    }
+                    console.log(Messdata);
+                    socketCom.onopen = () => {
+                        socketCom.send(JSON.stringify(Messdata));
+                        console.log('ok');
+                     }
+                    }
+
             // send notification au Recepient
             var notifValue=document.querySelector(`.notif-value-${_data["sender"]}`);
             
