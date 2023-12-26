@@ -415,7 +415,7 @@ color: var(--whiteffffff);
     
 }
 .menu-droite .bloc{
-    height: 230px;
+    height: 500px;
     padding-right: 10px;
     box-sizing: border-box;
     overflow-y: scroll;
@@ -453,8 +453,7 @@ color: var(--whiteffffff);
   .bloc::-webkit-scrollbar-corner {
     background: var(--black-1e252b);
   }
-.menu-droite .user{
-   
+.menu-droite .user{   
   display: flex;
   justify-content: space-between;
   width: 100%;
