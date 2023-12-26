@@ -76,18 +76,23 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                         chatBody[i].scrollTop = chatBody[i].scrollHeight;
                      }
                      messageQueue=[];
-                }else {
+                }
+                else {
                     var tempMessageQueue = [];
+                    var countTemp=0;
                     // Get the last 10 messages
-                    for (let t = 0; t < Math.max(10, messageQueue.length); t++) {
+                    // for (let t = 0; t < Math.max(10, messageQueue.length); t++) {
+                    for (let t = 0; t <  messageQueue.length; t++) {
+
                         if (messageQueue[t]) {                            
                             let tTemp = messageQueue.pop();
                             tempMessageQueue.push(tTemp);
                         }
+                        countTemp++;
+                        if (countTemp==10) break
                     }
-                    if (messageQueue[0]) {                        
-                        tempMessageQueue.push(messageQueue.pop());
-                    }
+                    
+                    console.log(tempMessageQueue);
                     // Display the messages in reverse order
                     for (let j = tempMessageQueue.length-1 ; j >= 0; j--) {
                         if (tempMessageQueue[j]) {                                                   
@@ -138,7 +143,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     let scrollHeightAfter = chatBody[i].scrollHeight;
                     chatBody[i].scrollTop = chatBody[i].scrollTop + (scrollHeightAfter - scrollHeightBefore);
                 }
-            }, 1000));
+            }, 3000));
             // return;
         });
  
