@@ -81,7 +81,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     var tempMessageQueue = [];
                     var countTemp=0;
                     // Get the last 10 messages
-                    // for (let t = 0; t < Math.max(10, messageQueue.length); t++) {
                     for (let t = 0; t <  messageQueue.length; t++) {
 
                         if (messageQueue[t]) {                            
@@ -92,7 +91,6 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                         if (countTemp==10) break
                     }
                     
-                    console.log(tempMessageQueue);
                     // Display the messages in reverse order
                     for (let j = tempMessageQueue.length-1 ; j >= 0; j--) {
                         if (tempMessageQueue[j]) {                                                   
@@ -123,6 +121,8 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
             
                     for (let t = 0; t < Math.max(10, messageQueue.length-1); t++) {
                         let _data = messageQueue.pop();
+
+                        console.log(_data);
                         if (_data) {                          
                                 let formattedDate = timeAgo(_data["Created"]);                
                                 let newMessage;
