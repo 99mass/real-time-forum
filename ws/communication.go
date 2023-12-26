@@ -105,19 +105,10 @@ func GetCommunication(db *sql.DB, user1 string, user2 string) ([]Message, error)
 	if err != nil {
 		return nil, err
 	}
-	message2, err := GetMessageSentByOneUserToAnotherOne(db, us1, us2)
-	if err != nil {
-		return nil, err
-	}
 
 	discussion := GetDiscussion(db, us1, us2)
 
 	for _, m := range message1 {
-		if !m.Read {
-			MarkMessageAsRead(db, m.ID)
-		}
-	}
-	for _, m := range message2 {
 		if !m.Read {
 			MarkMessageAsRead(db, m.ID)
 		}
