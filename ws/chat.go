@@ -78,10 +78,10 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 	for _, us := range users {
 		usID, _ := GetUserIDByUserName(db, us.Username)
 		message, _ := GetMessageSentByOneUserToAnotherOne(db, receiverID, usID)
-		if message !=nil{
+		if message != nil {
 			messages = append(messages, message...)
 		}
-		
+
 	}
 
 	sort.Slice(messages, func(i, j int) bool {
@@ -90,15 +90,15 @@ func GetUserOrder(db *sql.DB, receiver string, users []UserToShow) []UserToShow 
 
 	for _, m := range messages {
 		var us UserToShow
-		
+
 		name, _ := GetUsername(db, m.Sender)
-		if name != receiver{
+		if name != receiver {
 			us.Username = name
-		}else{
-			na,_:= GetUsername(db,m.Recipient)
+		} else {
+			na, _ := GetUsername(db, m.Recipient)
 			us.Username = na
 		}
-		
+
 		us.Status = "offline"
 
 		// Check if user already exists in userList
@@ -261,8 +261,8 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 				fmt.Println(err)
 			}
 			msg.Created = time.Now().Format("2006-01-02 15:04:05")
-			sendMessage(recipient, msg)
-			sendMessage(sender, msg)
+			sendMessage(db, recipient, msg)
+			//sendMessage(db, sender, msg)
 		}
 		//update order of the users list
 		BroadcastUsers(db, userList)
@@ -290,9 +290,22 @@ func SaveMessage(db *sql.DB, sender string, recipient string, message string) er
 	return nil
 }
 
-func sendMessage(recipient string, message GetMessage) {
+func sendMessage(db *sql.DB, recipient string, message GetMessage) {
 	if user, ok := usersMessage[recipient]; ok {
 		user.Conn.WriteJSON(message)
+	}
+	fmt.Println(users)
+	if _, ok := users[recipient]; ok {
+		fmt.Println(ok)
+		sender, recipient, _, _ := parseMessage(message)
+		sendr, _ := GetUserIDByUserName(db, sender)
+		receprnt, _ := GetUserIDByUserName(db, recipient)
+		message1, _ := GetMessageSentByOneUserToAnotherOne(db, sendr, receprnt)
+		for _, m := range message1 {
+			if !m.Read {
+				MarkMessageAsRead(db, m.ID)
+			}
+		}
 	}
 	log.Println("message sent successfully to : " + recipient)
 }
