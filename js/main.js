@@ -144,14 +144,14 @@ const main = () => {
                 // recuperer et affcher les  commentaires
                 getComments(comments, IdPost, createCommentForm, function (_data) {
                     displayComment(blocComment, _data, createCommentForm, lastBlocComment);
-
+                  
                     // like an dislike Comments
-                    const likeComment = document.querySelectorAll('.like-comment');
-                    const dislikeComment = document.querySelectorAll('.dislike-comment');
+                    const likeComment = document.querySelectorAll('.like-comment-block .like-comment');
+                    const dislikeComment = document.querySelectorAll('.like-comment-block .dislike-comment');
                     const likeCommentId = document.querySelectorAll('.id-comment-like');
                     const dislikeCommentId = document.querySelectorAll('.id-comment-dislike');
-                    const likeCommentScore = document.querySelectorAll('.scorecommentLike');
-                    const dislikeCommentScore = document.querySelectorAll('.scorecommentDisLike');
+                    const likeCommentScore = document.querySelectorAll('.like-comment-block .like-comment .scorecommentLike');
+                    const dislikeCommentScore = document.querySelectorAll('.like-comment-block .dislike-comment .scorecommentDisLike');
 
                     liskeComment(likeComment, likeCommentId, likeCommentScore, dislikeCommentScore, dislikeComment);
                     DisLiskeComment(dislikeComment, dislikeCommentId, likeCommentScore, dislikeCommentScore, likeComment);
@@ -171,9 +171,9 @@ const main = () => {
 
                 liskePost(likePost, likePostId, likePostScore, dislikePostScore, dislikePost);
                 DisLiskePost(dislikePost, dislikePostId, likePostScore, dislikePostScore, likePost);
-
+            
                 // filter category diplaying
-                filterByCategory();
+                filterByCategory(data["User"]["ID"]);
 
 
 
@@ -217,7 +217,7 @@ function Authentification() {
 
 
 // filter posts
-function filterByCategory() {
+function filterByCategory(userId) {
     const contenCatId = document.querySelectorAll('.contenCatId');
     const categoryId = document.querySelectorAll('.categoryId');
     const contentPostBlock = document.querySelector('.content-post-block');
@@ -226,7 +226,7 @@ function filterByCategory() {
         // nettoyer et avec les posts filtre
         contentPostBlock.innerHTML = ""
         let div = document.createElement('div');
-        div.innerHTML = _data ? postsFilter(_data) : contentPostBlock.innerHTML = "<p id='err'>NO POST FOUND </p>"
+        div.innerHTML = _data ? postsFilter(_data,userId) : contentPostBlock.innerHTML = "<p id='err'>NO POST FOUND </p>"
 
         contentPostBlock.appendChild(div);
 

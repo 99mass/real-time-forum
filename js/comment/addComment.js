@@ -1,5 +1,9 @@
 import { linkApi } from "../helper/api_link.js";
 import { commentTemporel } from "../helper/utils.js";
+import { liskeComment } from "../likeDislike/comment/like.js";
+import { DisLiskeComment } from "../likeDislike/comment/dislike.js";
+
+
 const addComment=(formAddComment,blocComment)=>{
 
   for (let i = 0; i < formAddComment.length; i++) {
@@ -27,12 +31,31 @@ const addComment=(formAddComment,blocComment)=>{
                 });
             
                 if(response.status === 200){    
-                    window.location.reload();
-                    // const commentCount=document.querySelectorAll('.commentCount');
-                    // let newComment=commentTemporel(content,userName);
-                    // blocComment[i].insertAdjacentHTML('afterbegin', newComment);
-                    // commentCount[i].textContent=parseInt(commentCount[i].textContent)+1;
-        
+                    const data = await response.json();
+                    // afficher le derniere commentaire
+                    if (data["Comment"][0]) {
+                                           
+                        let contentCom=data["Comment"][0]["Comment"]["Content"];
+                        let dateCom=data["Comment"][0]["Comment"]["CreatedAt"];
+                        let idCom=data["Comment"][0]["Comment"]["ID"];
+                        let userCom=data["Comment"][0]["User"]["Username"];
+                        let newComment=commentTemporel(contentCom,userCom,0,0,idCom,dateCom);
+                        
+                        blocComment[i].insertAdjacentHTML('afterbegin', newComment);
+                        
+                        setTimeout(() => {                        
+                            const likeComment = document.querySelectorAll('.like-comment-block .like-comment');
+                            const dislikeComment = document.querySelectorAll('.like-comment-block .dislike-comment');
+                            const likeCommentId = document.querySelectorAll('.id-comment-like');
+                            const dislikeCommentId = document.querySelectorAll('.id-comment-dislike');
+                            const likeCommentScore = document.querySelectorAll('.like-comment-block .like-comment .scorecommentLike');
+                            const dislikeCommentScore = document.querySelectorAll('.like-comment-block .dislike-comment .scorecommentDisLike');
+                            
+                            liskeComment(likeComment, likeCommentId, likeCommentScore, dislikeCommentScore, dislikeComment);
+                            DisLiskeComment(dislikeComment, dislikeCommentId, likeCommentScore, dislikeCommentScore, likeComment);        
+                        }, 1000);
+                    }
+
                 }else{
                     const data = await response.json();
                     alert('Error : ' + data.message);
@@ -43,7 +66,8 @@ const addComment=(formAddComment,blocComment)=>{
                console.error("error : "+error);
             }
 
-
+            
+            
         });
     } 
 }

@@ -1,7 +1,7 @@
 import { timeAgo } from "../helper/utils.js";
 
 
-const postsFilter=(_posts) => {
+const postsFilter=(_posts,userId) => {
     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
@@ -14,7 +14,7 @@ const postsFilter=(_posts) => {
         const commentCount=post["CommentCount"];
         const postLikeCount=post["PostLike"];
         const postDislikCount=post["PostDislike"];
-        const userId=post["Posts"]["UserID"];
+        // const userId=post["Posts"]["UserID"];
         const postId=post["Posts"]["ID"];
         const stateLiked=post["Liked"];
         const stateDisLiked=post["Disliked"];

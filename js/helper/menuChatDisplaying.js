@@ -1,6 +1,5 @@
 import { sendMessages, recipientMessages } from "../layout/corps.js";
-import { timeAgo } from "../helper/utils.js";
-import { throttle } from "../helper/utils.js";
+import { timeAgo, throttle,loaderMessage} from "../helper/utils.js";
 
 
 const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContainer, UsernameinputChat) => {
@@ -16,7 +15,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
         const socket = new WebSocket("ws://localhost:8080/communication");
 
         btnChat.addEventListener('click', () => {
-          
+            
             // Send user connected message when connection is open
             socket.onopen = () => {
             }

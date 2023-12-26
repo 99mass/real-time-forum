@@ -9,6 +9,7 @@ const indexPage = (data) => {
 
     let CatgoryArray = data["Category"];
     let Username = data["User"]["Username"];
+    let userId=data["User"]["ID"];
     body.appendChild(Header);
     corpsContent.appendChild(menuGauche);
     corpsContent.appendChild(menuMilieu);
@@ -22,7 +23,7 @@ const indexPage = (data) => {
 
     header(_header, Username);
     leftBloc(_leftBloc, CatgoryArray);
-    middleBloc(_middleBloc, posts);
+    middleBloc(_middleBloc, posts,userId);
     rigthtBloc(_rigthtBloc,Username);
  
 }

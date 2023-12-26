@@ -21,10 +21,10 @@ const leftBloc=(_leftBloc,CatgoryArray)=>{
        }
 }
 
-const middleBloc=(_middleBloc,_posts)=>{
+const middleBloc=(_middleBloc,_posts,userId)=>{
     _middleBloc.appendChild(createPostMenue());
 
-    _middleBloc.appendChild(contentPostBloc(_posts));
+    _middleBloc.appendChild(contentPostBloc(_posts,userId));
 
 
 }
@@ -163,17 +163,19 @@ function createPostMenue() {
 
 
 
-function contentPostBloc(_posts) {
+function contentPostBloc(_posts,userId) {
   
   let _div=  document.createElement('div');
     _div.className="content-post-block";
-    _div.innerHTML=posts(_posts);
+    _div.innerHTML=posts(_posts,userId);
     return _div;
 }
 
 
 
-function posts(_posts) {
+function posts(_posts,userId) {
+    console.log(userId);
+    
     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
@@ -187,7 +189,7 @@ function posts(_posts) {
         const commentCount=post["CommentCount"];
         const postLikeCount=post["PostLike"];
         const postDislikCount=post["PostDislike"];
-        const userId=post["Posts"]["UserID"];
+        // const userId=post["Posts"]["UserID"];
         const postId=post["Posts"]["ID"];
         const stateLiked=post["Liked"];
         const stateDisLiked=post["Disliked"];
