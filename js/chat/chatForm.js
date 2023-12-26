@@ -11,7 +11,7 @@ const sendMessage = (userName_) => {
         socket.send(JSON.stringify({ Username: userName_ }));
     };
 
-
+    var mess="aaaaa";
     // Handle form submission
     const formChat = document.querySelector('.form-chat');
     formChat.addEventListener('submit', async function (event) {
@@ -20,7 +20,7 @@ const sendMessage = (userName_) => {
         let _Sender = document.querySelector('input[name="Sender"]').value.trim();
         let _Recipient = document.querySelector('input[name="Recipient"]').value.trim();
         let _Message = document.querySelector('textarea[name="Message"]').value.trim();
-
+        mess=_Message;
         let messageData = {
             Sender: _Sender,
             Recipient: _Recipient,
@@ -41,6 +41,8 @@ const sendMessage = (userName_) => {
         let formattedDate = timeAgo(_data["created"]);
 
         if (_data["sender"] == userName_) {
+            let currentDateTime = new Date();
+            console.log(currentDateTime.toLocaleString());
           let  noChatTex=  document.querySelector('.no-chat');
           if (noChatTex) noChatTex.style.display='none';
           var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
