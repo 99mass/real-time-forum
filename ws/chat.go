@@ -262,7 +262,7 @@ func handleMessages(db *sql.DB, conn *websocket.Conn, username string) {
 			}
 			msg.Created = time.Now().Format("2006-01-02 15:04:05")
 			sendMessage(db, recipient, msg)
-			//sendMessage(db, sender, msg)
+			conn.WriteJSON(msg)
 		}
 		//update order of the users list
 		BroadcastUsers(db, userList)
