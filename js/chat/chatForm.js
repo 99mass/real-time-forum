@@ -46,7 +46,9 @@ const sendMessage = (userName_) => {
           var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
             let send = sendMessages(_data["sender"], _data["message"],formattedDate);
             _recipient.appendChild(send);
+
         }
+
 
         if (_data["recipient"] == userName_) {
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
@@ -56,20 +58,6 @@ const sendMessage = (userName_) => {
             let tempUser=document.querySelector(`.${_data["sender"]}`);
             let chatContainer=document.querySelector('.chat-container');
 
-                console.log(chatContainer.style.display);
-                
-                if (chatContainer.style.display==="block") {
-                    const socketCom = new WebSocket("ws://localhost:8080/communication");
-                    let Messdata = {
-                        User1: _data["recipient"], 
-                        User2: _data["sender"],
-                    }
-                    console.log(Messdata);
-                    socketCom.onopen = () => {
-                        socketCom.send(JSON.stringify(Messdata));
-                        console.log('ok');
-                     }
-                    }
 
             // send notification au Recepient
             var notifValue=document.querySelector(`.notif-value-${_data["sender"]}`);
@@ -87,7 +75,7 @@ const sendMessage = (userName_) => {
                 document.querySelector('.notif').remove();
             }, 6000);
         }
-
+     
     };
 
     // Handle errors

@@ -159,7 +159,7 @@ body{
     display: grid;
     grid-template-columns: repeat(2,auto);
     width: 100%;
-    height: 420px;
+    height: fit-content;
     box-sizing: border-box;
     background-color:var(--black2c353d) ;
     margin-top: 25px;
@@ -240,9 +240,12 @@ body{
 .milieu .one-post-block .post-content .content-poster-like,
 .content-comment-like {
     display: flex;
-    align-items: center;
+    align-items: self-start;
     width: 100%;
-    height: 100px;    
+    height: 150px;    
+}
+.content-comment-like {
+  height: 100px;    
 }
 .milieu .one-post-block .post-content .content-poster-like .content-poster,
 .content-comment{
@@ -255,10 +258,11 @@ body{
 
 .milieu .one-post-block .post-content .content-poster-like .content-poster .poster,
 .comment{
-    width: 200px;
+    width: 300px;
     display: flex;
     align-items: center;
-}
+} 
+
 .milieu .one-post-block .post-content .content-poster-like .content-poster .poster img,
 .comment img{
     height: 40px;
@@ -398,7 +402,10 @@ color: var(--whiteffffff);
 
 
 
-
+.hide-excess-lines {
+  max-height: 4.5em; /* Adjust this value to fit your line height */
+  overflow: hidden;
+}
 
 
 

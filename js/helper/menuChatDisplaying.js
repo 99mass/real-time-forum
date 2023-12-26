@@ -149,10 +149,26 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
 
 
     menuDots.addEventListener('click', () => {
+        
         chatContainer.style.display = "none";
         for (let i = 0; i < chatText.length; i++) {
-            if (chatBody[i])
+            const _socket = new WebSocket("ws://localhost:8080/communication");
+            if (chatBody[i]){
+               
+                let _User1 = document.querySelector('.user').textContent.trim();            
+                let _User2 = userNameOnline[i].textContent.trim();
+    
+                let Messdata = {
+                    User1: _User1,
+                    User2: _User2,
+                }
+                _socket.onopen = () => {
+                    _socket.send(JSON.stringify(Messdata));                    
+                }
+                let numMess=  document.querySelector(`.number-message-${_User2}`);
+                if (numMess) numMess.innerHTML="";
                 chatBody[i].style.display = "none";
+            }
         }
     });
 }

@@ -26,28 +26,57 @@ const displayFormMecanisme=(formSignUp,formSignIn,row)=>{
     }
 }
 
+
 const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
     
     if (cardDescription && readMoreButton) {
            for (let j = 0; j < cardDescription.length; j++) {
            const desc = cardDescription[j];
+           desc.classList.add("hide-excess-lines"); 
            readMoreButton[j].addEventListener("click", function () {
                desc.classList.toggle("expanded");
+               desc.classList.toggle("hide-excess-lines"); 
                readMoreButton[j].textContent = desc.classList.contains("expanded")
                ? "Read less"
                : "Read more";
                if (desc.classList.contains("expanded")) {
-                onePostBlocks[j].style.height="500px";
+                onePostBlocks[j].style.height="fit-content";
                 readMoreButton[j].textContent ="Read less";
                }else{
                 readMoreButton[j].textContent ="Read more";
-                onePostBlocks[j].style.height="400px";
+                onePostBlocks[j].style.height="fit-content";
 
                }
            });
            }
        }
 }
+const seeMore=(cardDescription,readMoreButton)=>{
+  
+    if (cardDescription && readMoreButton) {
+        for (let j = 0; j < cardDescription.length; j++) {
+            const desc = cardDescription[j];
+            const lineCount = desc.textContent.split('\n').length;
+            if (lineCount <= 3) {
+                readMoreButton[j].style.display='none';
+            } else {
+                readMoreButton[j].style.display='block';
+            }
+        }
+    }
+}
+// const seeMore=(cardDescription,readMoreButton)=>{
+  
+//     if (cardDescription && readMoreButton) {
+//         for (let j = 0; j < cardDescription.length; j++) {
+//             const desc = cardDescription[j];
+//             if (cardDescription[j].textContent.trim().length<100) {
+//                 readMoreButton[j].style.display='none';
+//             }
+
+//         }
+// }
+// }
 
 const displayFomPost=(btn,modal,span)=>{
     let r1=routes["/Home"]['name'];
@@ -78,18 +107,7 @@ const displayFomPost=(btn,modal,span)=>{
         }
 }
 
-const seeMore=(cardDescription,readMoreButton)=>{
-  
-    if (cardDescription && readMoreButton) {
-        for (let j = 0; j < cardDescription.length; j++) {
-            const desc = cardDescription[j];
-            if (cardDescription[j].textContent.trim().length<100) {
-                readMoreButton[j].style.display='none';
-            }
 
-        }
-}
-}
 
 
 const disPlayComment=(comments,createCommentForm,lastPost,lastFormComment,lastBlocComment)=>{
