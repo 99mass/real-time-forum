@@ -11,7 +11,6 @@ const sendMessage = (userName_) => {
         socket.send(JSON.stringify({ Username: userName_ }));
     };
 
-    var mess="aaaaa";
     // Handle form submission
     const formChat = document.querySelector('.form-chat');
     formChat.addEventListener('submit', async function (event) {
@@ -20,7 +19,7 @@ const sendMessage = (userName_) => {
         let _Sender = document.querySelector('input[name="Sender"]').value.trim();
         let _Recipient = document.querySelector('input[name="Recipient"]').value.trim();
         let _Message = document.querySelector('textarea[name="Message"]').value.trim();
-        mess=_Message;
+
         let messageData = {
             Sender: _Sender,
             Recipient: _Recipient,
@@ -40,6 +39,7 @@ const sendMessage = (userName_) => {
         var _data = JSON.parse(message.data);
         let formattedDate = timeAgo(_data["created"]);
 
+        // Sender
         if (_data["sender"] == userName_) {
             let currentDateTime = new Date();
             console.log(currentDateTime.toLocaleString());
@@ -51,27 +51,12 @@ const sendMessage = (userName_) => {
 
         }
 
-
+        // recipient
         if (_data["recipient"] == userName_) {
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], formattedDate);
             _sender.appendChild(recip);
 
-            let tempUser=document.querySelector(`.${_data["sender"]}`);
-            let chatContainer=document.querySelector('.chat-container');
-
-
-            // send notification au Recepient
-            var notifValue=document.querySelector(`.notif-value-${_data["sender"]}`);
-            
-            if (tempUser && tempUser.style.display==="none" && chatContainer.style.display==="none") {     
-                notifValue=notifValue ? Number(notifValue.textContent.trim()) : 0;
-                notifValue+=1;
-                document.querySelector(`.number-message-${_data["sender"]}`).innerHTML=`
-                        <img src="assets/notification-bell-svgrepo-com.svg" alt="">
-                        <span class="notif-value-${_data["sender"]}">${notifValue}</span> 
-                `;
-            }
             document.querySelector('body').appendChild(alertMessage(_data["sender"],_data["recipient"]))
             setTimeout(() => {            
                 document.querySelector('.notif').remove();
