@@ -72,7 +72,7 @@ func AddComment(db *sql.DB) http.HandlerFunc {
 			}, http.StatusBadRequest)
 			return
 		}
-		if len(Content) > 1000 {
+		if len(Content) > 500 {
 			helper.SendResponse(w, models.ErrorResponse{
 				Status:  "error",
 				Message: "the number of characters must not exceed 1000",
@@ -313,7 +313,7 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 					Categories: _postCategories,
 				}
 			} else {
-				
+
 				imgSize := (float64(len(img)) / 1024.0) / 1024.0
 				if imgSize > 20 {
 					helper.SendResponse(w, models.ErrorResponse{
@@ -356,7 +356,6 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 
 	}
 }
-
 
 // Like post
 func LikePoste(db *sql.DB) http.HandlerFunc {
