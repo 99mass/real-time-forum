@@ -34,7 +34,7 @@ func SinginHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			datas, err := helper.GetDataTemplate("",db, r, false, false, false, true, false)
+			datas, err := helper.GetDataTemplate("", db, r, false, false, false, true, false)
 
 			if err != nil {
 				helper.SendResponse(w, models.ErrorResponse{
@@ -92,10 +92,10 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			var registerReq models.RegisterRequest
 			err := json.NewDecoder(r.Body).Decode(&registerReq)
 			if err != nil {
-				helper.SendResponse(w,models.ErrorResponse{
-					Status: "error",
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
 					Message: "incorrect request",
-				},http.StatusBadRequest)
+				}, http.StatusBadRequest)
 				return
 			}
 			username := registerReq.UserName
@@ -115,20 +115,27 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			confirmPassword := registerReq.Confpassword
 			confirmPassword = strings.TrimSpace(confirmPassword)
 			// Hasher le mot de passe
-			validage,ageok,err := helper.CheckAge(age)
-			if !ageok {
-				helper.SendResponse(w,models.ErrorResponse{
-					Status: "error",
-					Message: err.Error(),
-				},http.StatusBadRequest)
+			if firstname == "" || lastname == "" {
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "empty field",
+				}, http.StatusBadRequest)
 				return
 			}
-			genderOk,err:=helper.CheckGender(gender)
-			if !genderOk {
-				helper.SendResponse(w,models.ErrorResponse{
-					Status: "error",
+			validage, ageok, err := helper.CheckAge(age)
+			if !ageok {
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
 					Message: err.Error(),
-				},http.StatusBadRequest)
+				}, http.StatusBadRequest)
+				return
+			}
+			genderOk, err := helper.CheckGender(gender)
+			if !genderOk {
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: err.Error(),
+				}, http.StatusBadRequest)
 				return
 			}
 			hashedPassword, _ := helper.HashPassword(password)
@@ -137,10 +144,10 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 			if !ok {
 				//homeData.ErrorAuth = ErrAuth
-				helper.SendResponse(w,models.ErrorResponse{
-					Status: "error",
-					Message: "register format: "+ErrAuth.GeneralError+ErrAuth.EmailError+ErrAuth.PasswordError+ErrAuth.UserNameError,
-				},http.StatusBadRequest)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "register format: " + ErrAuth.GeneralError + ErrAuth.EmailError + ErrAuth.PasswordError + ErrAuth.UserNameError,
+				}, http.StatusBadRequest)
 				//homeData.ErrorAuth = models.ErrorAuth{}
 				return
 			}
@@ -148,9 +155,9 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			user := models.User{
 				Username:  username,
 				FirstName: firstname,
-				LastName: lastname,
-				Gender: gender,
-				Age: validage,
+				LastName:  lastname,
+				Gender:    gender,
+				Age:       validage,
 				Email:     email,
 				Password:  hashedPassword,
 				CreatedAt: time.Now(),
@@ -158,16 +165,16 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 			id, err := controller.CreateUser(db, user)
 			if err != nil {
-				helper.SendResponse(w,models.ErrorResponse{
-                 Status: "error",
-				 Message: "User not created: "+err.Error(),
-				},http.StatusBadRequest)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "User not created: " + err.Error(),
+				}, http.StatusBadRequest)
 				return
 			}
 
 			// create a session - TODO
 			helper.AddSession(w, id, db)
-			helper.SendResponse(w,user,http.StatusOK)
+			helper.SendResponse(w, user, http.StatusOK)
 			//helper.RenderTemplate(w, "index", "index", "homedata")
 			return
 
@@ -180,10 +187,10 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 		// 	}
 		// 	helper.RenderTemplate(w, "register", "auth", homeData)
 		default:
-			helper.SendResponse(w,models.ErrorResponse{
-				Status: "error Method",
+			helper.SendResponse(w, models.ErrorResponse{
+				Status:  "error Method",
 				Message: "Method not Allowed",
-			},http.StatusMethodNotAllowed)
+			}, http.StatusMethodNotAllowed)
 			return
 		}
 	}
