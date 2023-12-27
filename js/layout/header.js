@@ -22,5 +22,3 @@ const header = (_header,userName)=>{
 }
 
 export {header}
-
-{/* <div class="content-input"><input type="search" placeholder="Type here to search..."></div> */}

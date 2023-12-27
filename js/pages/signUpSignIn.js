@@ -59,6 +59,7 @@ function form1() {
         input.type = el.type;
         input.name = el.name;
         input.required = true;
+        input.setAttribute("autocomplete", "off");
 
         const label = document.createElement('label');
         label.textContent = el.label;
@@ -137,6 +138,7 @@ function form2() {
         input.type = el.type;
         input.name = el.name;
         input.required = true;
+        input.setAttribute("autocomplete", "off");
 
         const label = document.createElement('label');
         label.textContent = el.label;
