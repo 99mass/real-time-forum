@@ -25,7 +25,7 @@ import { liskeComment } from "./likeDislike/comment/like.js";
 import { DisLiskeComment } from "./likeDislike/comment/dislike.js";
 
 import { chatContainerDisplaying } from "./helper/menuChatDisplaying.js";
-import { sortUsers, statusPostUser, statusPostFilteredUser ,sortArray} from "./helper/utils.js";
+import { statusPostUser, statusPostFilteredUser } from "./helper/utils.js";
 import { sendMessage } from "./chat/chatForm.js";
 
 
@@ -130,36 +130,41 @@ const main = () => {
                 let btnLogOut = document.querySelector('.log-out');
                 logOut(btnLogOut);
 
-                let comments = document.querySelectorAll('.comment');
-                let IdPost = document.querySelectorAll('.Id-post');
-                let createCommentForm = document.querySelectorAll('.create-comment');
+                const formComment = document.querySelectorAll('.form-comment');
                 let blocComment = document.querySelectorAll('.bloc-comment');
-                let lastPost = document.querySelector('.last-post');
-                let lastFormComment = document.querySelector('.last-form-comment');
-                let lastBlocComment = document.querySelector('.last-bloc-comment');
-
+                let comments = document.querySelectorAll('.comment');
+                let createCommentForm = document.querySelectorAll('.create-comment');
+                let IdPost = document.querySelectorAll('.Id-post');
+                
                 // gerer l'affichage des commenataires
-                disPlayComment(comments, createCommentForm, lastPost, lastFormComment, lastBlocComment);
+                // ajouter un commentair
+                if (comments) {                    
+                    disPlayComment(comments, createCommentForm);
+                }
+                addComment(formComment, blocComment);
+                
+                
 
                 // recuperer et affcher les  commentaires
-                getComments(comments, IdPost, createCommentForm, function (_data) {
-                    displayComment(blocComment, _data, createCommentForm, lastBlocComment);
-                  
-                    // like an dislike Comments
-                    const likeComment = document.querySelectorAll('.like-comment-block .like-comment');
-                    const dislikeComment = document.querySelectorAll('.like-comment-block .dislike-comment');
-                    const likeCommentId = document.querySelectorAll('.id-comment-like');
-                    const dislikeCommentId = document.querySelectorAll('.id-comment-dislike');
-                    const likeCommentScore = document.querySelectorAll('.like-comment-block .like-comment .scorecommentLike');
-                    const dislikeCommentScore = document.querySelectorAll('.like-comment-block .dislike-comment .scorecommentDisLike');
+                if (comments.length>0) {                                   
+                    getComments(comments, IdPost, createCommentForm, function (_data) {
+                        if (_data) {                                        
+                            displayComment(blocComment, _data, createCommentForm);
+                        
+                            // like an dislike Comments
+                            const likeComment = document.querySelectorAll('.like-comment-block .like-comment');
+                            const dislikeComment = document.querySelectorAll('.like-comment-block .dislike-comment');
+                            const likeCommentId = document.querySelectorAll('.id-comment-like');
+                            const dislikeCommentId = document.querySelectorAll('.id-comment-dislike');
+                            const likeCommentScore = document.querySelectorAll('.like-comment-block .like-comment .scorecommentLike');
+                            const dislikeCommentScore = document.querySelectorAll('.like-comment-block .dislike-comment .scorecommentDisLike');
 
-                    liskeComment(likeComment, likeCommentId, likeCommentScore, dislikeCommentScore, dislikeComment);
-                    DisLiskeComment(dislikeComment, dislikeCommentId, likeCommentScore, dislikeCommentScore, likeComment);
-                });
+                            liskeComment(likeComment, likeCommentId, likeCommentScore, dislikeCommentScore, dislikeComment);
+                            DisLiskeComment(dislikeComment, dislikeCommentId, likeCommentScore, dislikeCommentScore, likeComment);
+                         }
+                    });
+               }
 
-                // ajouter un commentair
-                const formComment = document.querySelectorAll('.form-comment');
-                addComment(formComment, blocComment);
 
                 // like an dislike Posts
                 const likePost = document.querySelectorAll('.like-post');
@@ -230,21 +235,21 @@ function filterByCategory(userId) {
 
         contentPostBlock.appendChild(div);
 
-        let _comments = document.querySelectorAll('.one-post-block .post-content .content-poster-like .content-poster .like-comment-block .comment')
-        let _createCommentForm = document.querySelectorAll('.create-comment');
-        let _blocComment = document.querySelectorAll('.bloc-comment');
-        let _lastPost = document.querySelector('.last-post');
-        let _lastFormComment = document.querySelector('.last-form-comment');
-        let _lastBlocComment = document.querySelector('.last-bloc-comment');
-
-        disPlayCommentFilter(_comments, _createCommentForm, _blocComment, _lastPost, _lastFormComment, _lastBlocComment);
-
         const _readMoreButton = document.querySelectorAll('.one-post-block .post-content .myBtn');
         const _cardDescription = document.querySelectorAll(".one-post-block .post-content .post-text .card-description");
         const _onePostBlocks = document.querySelectorAll(".one-post-block");
         // tronc long text post
         seeMore(_cardDescription, _readMoreButton);
         readMore(_cardDescription, _readMoreButton, _onePostBlocks);
+
+        
+        let _comments = document.querySelectorAll('.one-post-block .post-content .content-poster-like .content-poster .like-comment-block .comment')
+        let _createCommentForm = document.querySelectorAll('.create-comment');
+        let _blocComment = document.querySelectorAll('.bloc-comment');
+
+        disPlayCommentFilter(_comments, _createCommentForm, _blocComment);
+
+
         const _formComment = document.querySelectorAll('.create-comment .form-comment');
         addComment(_formComment, _blocComment);
 

@@ -8,7 +8,6 @@ const DisLiskeComment=(dislikeComment,dislikeCommentId,likeCommentScore,dislikeC
         const btnDislikeComment = dislikeComment[i];
 
         const handleClick = async function() {
-            alert("dislike")
             let commentID=dislikeCommentId[i].textContent.trim();
             try {
                 const response = await fetch(`${linkApi}dislikecomment`, {

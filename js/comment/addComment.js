@@ -10,11 +10,12 @@ const addComment=(formAddComment,blocComment)=>{
 
         const _form = formAddComment[i];    
         _form.addEventListener('submit', async function(e) {
+
             e.preventDefault();
+            
             let postId = document.querySelectorAll('input[name="postId"]')[i].value.trim();
             let userId = document.querySelectorAll('input[name="userId"]')[i].value.trim();
             let content = document.querySelectorAll('textarea[name="ContentComment"]')[i].value.trim();
-            let userName = document.querySelectorAll('input[name="userName"]')[i].value.trim();
 
             let data = {
                 PostID: postId,
@@ -31,18 +32,26 @@ const addComment=(formAddComment,blocComment)=>{
                 });
             
                 if(response.status === 200){    
+
                     const data = await response.json();
+
                     // afficher le derniere commentaire
                     if (data["Comment"][0]) {
-                                           
+
                         let contentCom=data["Comment"][0]["Comment"]["Content"];
                         let dateCom=data["Comment"][0]["Comment"]["CreatedAt"];
                         let idCom=data["Comment"][0]["Comment"]["ID"];
                         let userCom=data["Comment"][0]["User"]["Username"];
                         let newComment=commentTemporel(contentCom,userCom,0,0,idCom,dateCom);
+
+                        if (blocComment[i].children.length ==0) {
+                            blocComment[i].innerHTML=newComment;
+                            blocComment[i].style.display="block";
+                        }else{                
+                            blocComment[i].insertAdjacentHTML('afterbegin', newComment);
+                        }
                         
-                        blocComment[i].insertAdjacentHTML('afterbegin', newComment);
-                        
+
                         setTimeout(() => {                        
                             const likeComment = document.querySelectorAll('.like-comment-block .like-comment');
                             const dislikeComment = document.querySelectorAll('.like-comment-block .dislike-comment');
@@ -55,7 +64,7 @@ const addComment=(formAddComment,blocComment)=>{
                             DisLiskeComment(dislikeComment, dislikeCommentId, likeCommentScore, dislikeCommentScore, likeComment);        
                         }, 1000);
                     }
-
+                    document.querySelectorAll('textarea[name="ContentComment"]')[i].value="";
                 }else{
                     const data = await response.json();
                     alert('Error : ' + data.message);
@@ -65,7 +74,6 @@ const addComment=(formAddComment,blocComment)=>{
             } catch (error) {
                console.error("error : "+error);
             }
-
             
             
         });

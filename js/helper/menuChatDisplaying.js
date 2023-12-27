@@ -15,6 +15,8 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
         const socket = new WebSocket("ws://localhost:8080/communication");
 
         btnChat.addEventListener('click', () => {
+
+          
             
             // Send user connected message when connection is open
             socket.onopen = () => {
@@ -23,12 +25,15 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                 chatBody[j].style.display = "none";
             }
             if (chatBody[i]) {
-                 chatBody[i].style.display = "block";                
+                 chatBody[i].style.display = "block";  
+                          
                  setTimeout(() => {
                      chatBody[i].scrollTo(0,chatBody[i].scrollHeight);
                 }, 10);
             }
             chatContainer.style.display = "block";
+
+                 
             UsernameinputChat.value = userNameOnline[i].textContent.trim();
             autherUser.innerHTML=userNameOnline[i].textContent.trim();
             let _User1 = document.querySelector('.user').textContent.trim();            
@@ -112,6 +117,29 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                      }
                 }
             };
+            
+           var countLoader=0;
+            chatBody[i].addEventListener('scroll',(event)=>{
+                if (event.target.scrollTop === 0) {
+                    let scrollHeightBefore = chatBody[i].scrollHeight;
+                    if (countLoader==0) {                        
+                        chatBody[i].insertAdjacentHTML('afterbegin', loaderMessage());
+                        countLoader++;
+                    }
+
+                    setTimeout(() => {                        
+                        const _loaderMessage=document.querySelectorAll('.center');
+                        if (_loaderMessage.length>0) 
+                        _loaderMessage.forEach(_loader=>{
+                            if (_loader) _loader.remove();
+                        });
+                        countLoader=0;
+                    }, 499);
+                  
+                    let scrollHeightAfter = chatBody[i].scrollHeight;
+                    chatBody[i].scrollTop = chatBody[i].scrollTop + (scrollHeightAfter - scrollHeightBefore);
+                }
+            });
 
             chatBody[i].addEventListener('scroll', throttle((event) => {
                 // Check if user has scrolled to the top
@@ -141,7 +169,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                     let scrollHeightAfter = chatBody[i].scrollHeight;
                     chatBody[i].scrollTop = chatBody[i].scrollTop + (scrollHeightAfter - scrollHeightBefore);
                 }
-            }, 3000));
+            }, 500));
         });
  
     }

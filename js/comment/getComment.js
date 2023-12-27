@@ -24,7 +24,7 @@ const getComments = (_comments, IdPost,createCommentForm, callback) => {
                     callback(data);
                 })
                 .catch((error) => {
-                    console.error('Error: '+error);
+                    console.log('Error: '+error);
                 });
         });
     }

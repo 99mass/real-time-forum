@@ -65,18 +65,7 @@ const seeMore=(cardDescription,readMoreButton)=>{
         }
     }
 }
-// const seeMore=(cardDescription,readMoreButton)=>{
-  
-//     if (cardDescription && readMoreButton) {
-//         for (let j = 0; j < cardDescription.length; j++) {
-//             const desc = cardDescription[j];
-//             if (cardDescription[j].textContent.trim().length<100) {
-//                 readMoreButton[j].style.display='none';
-//             }
 
-//         }
-// }
-// }
 
 const displayFomPost=(btn,modal,span)=>{
     let r1=routes["/Home"]['name'];
@@ -110,68 +99,27 @@ const displayFomPost=(btn,modal,span)=>{
 
 
 
-const disPlayComment=(comments,createCommentForm,lastPost,lastFormComment,lastBlocComment)=>{
+const disPlayComment=(comments,createCommentForm)=>{
     for (let k = 0; k < comments.length; k++) {
-        comments[k].addEventListener("click", function () {
-            if (k!== comments.length-1 && createCommentForm[k].style.display==="none" ) {
-                createCommentForm[k].style.display="block";              
+        comments[k].addEventListener("click", function () {           
+            if ( createCommentForm[k].style.display==="none" ) {
+                createCommentForm[k].style.display="block"; 
             }else{
-                if (k!== comments.length-1) createCommentForm[k].style.display="none" ;               
-            }
-            if (k===comments.length-1 && createCommentForm[k].style.display==="none"  && lastFormComment.style.display==="none" && lastBlocComment.children<2) {
-                createCommentForm[k].style.display="block";
-                lastPost.style.marginBottom="0px";
-                lastFormComment.style.marginBottom="400px";
-                return
-            }else{
-                if (k===comments.length-1&& createCommentForm[k].style.display==="block" ) {                                    
-                    createCommentForm[k].style.display="none" 
-                    lastPost.style.marginBottom="400px";
-                    return
-                }
-            }
-            if (k===comments.length-1) {
-                createCommentForm[k].style.display="block";
-                lastPost.style.marginBottom="0px";
-                lastFormComment.style.marginBottom="0px";
-                lastBlocComment.style.marginBottom="400px";
-                return
-            }else{
-                if (k===comments.length-1 && createCommentForm[k].style.display==="block") {                    
-                    lastBlocComment.style.marginBottom="0px";
-                    lastPost.style.marginBottom="400px";
-                }
+                createCommentForm[k].style.display="none"; 
             }
         });
     }
 }
 
-const disPlayCommentFilter=(comments,createCommentForm,blocComment,lastPost,lastFormComment,lastBlocComment)=>{
+const disPlayCommentFilter=(comments,createCommentForm,blocComment)=>{
     for (let k = 0; k < comments.length; k++) {
         comments[k].addEventListener("click", function () {
-            if (k!== comments.length-1 && createCommentForm[k].style.display==="none" && blocComment[k].style.display==="none"  ) {
-                createCommentForm[k].style.display="block";    
-                blocComment[k].style.display="block";            
+            if ( createCommentForm[k].style.display==="none" ) {
+                createCommentForm[k].style.display="block"; 
+                blocComment[k].style.display="block";   
             }else{
-                if (k!== comments.length-1){
-                     createCommentForm[k].style.display="none" ;  
-                     blocComment[k].style.display="none" ;   
-                }            
-            }
-            if (k===comments.length-1 && createCommentForm[k].style.display==="none" && blocComment[k].style.display==="none" ) {
-                createCommentForm[k].style.display="block";
-                blocComment[k].style.display="block"; 
-                lastPost.style.marginBottom="0px";
-                lastBlocComment.style.marginBottom="400px";
-               
-            }else{
-                if (k===comments.length-1) {
-                    createCommentForm[k].style.display="none";
-                    blocComment[k].style.display="none"; 
-                    lastPost.style.marginBottom="400px";
-                    lastBlocComment.style.marginBottom="0px";
-                }
-
+                createCommentForm[k].style.display="none" ;
+                blocComment[k].style.display="none" ;   
             }
 
         });

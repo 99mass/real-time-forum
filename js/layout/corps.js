@@ -174,8 +174,7 @@ function contentPostBloc(_posts,userId) {
 
 
 function posts(_posts,userId) {
-    console.log(userId);
-    
+
     var posts="",lastPost="",lastFormComment="",lastBlocComment="";
     for (let i = 0; i < _posts.length; i++) {
         const post = _posts[i];
@@ -189,7 +188,6 @@ function posts(_posts,userId) {
         const commentCount=post["CommentCount"];
         const postLikeCount=post["PostLike"];
         const postDislikCount=post["PostDislike"];
-        // const userId=post["Posts"]["UserID"];
         const postId=post["Posts"]["ID"];
         const stateLiked=post["Liked"];
         const stateDisLiked=post["Disliked"];
@@ -274,7 +272,6 @@ function displayComment(bloComment ,comments,createCommentForm) {
                 const ComId= comment["Comment"]["ID"];
 
                 idPost=ComPostId;
-                const ComUserId= comment["Comment"]["UserID"];
                 const ComLike=comment["CommentLike"];
                 const ComDislike=comment["CommentDislike"];
                 const ComUserName=comment["User"]["Username"];             

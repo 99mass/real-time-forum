@@ -44,32 +44,6 @@ function timeAgo(dateString) {
   }
 }
 
-function chatDateFormatter(date) {
-    const messageDate = new Date(date);
-    const now = new Date();
-
-    const messageDay = messageDate.getDate();
-    const messageMonth = messageDate.getMonth();
-    const messageYear = messageDate.getFullYear();
-
-    const nowDay = now.getDate();
-    const nowMonth = now.getMonth();
-    const nowYear = now.getFullYear();
-
-    if (messageDay === nowDay && messageMonth === nowMonth && messageYear === nowYear) {
-        // If the message was sent today
-        return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    } else if (messageDay === nowDay - 1 && messageMonth === nowMonth && messageYear === nowYear) {
-        // If the message was sent yesterday
-        return "Yesterday";
-    } else if (messageDate > new Date(nowYear, nowMonth, nowDay - 7)) {
-        // If the message was sent within the last week
-        return messageDate.toLocaleDateString([], { weekday: 'long' });
-    } else {
-        // If the message was sent more than a week ago
-        return messageDate.toLocaleDateString();
-    }
-}
 
 const commentTemporel=(ComContent,ComUserName,scoreDisLike,scoreLike,comId ,dateCom)=>{
 
@@ -96,7 +70,6 @@ const commentTemporel=(ComContent,ComUserName,scoreDisLike,scoreLike,comId ,date
     `;
 
 };
-
 
 const throttle = (callback, delay)=> {
     var last;
@@ -156,75 +129,6 @@ const statusPostFilteredUser=()=>{
     }
 }
 
-
-const sortUsers = (users) => {
-    return users.sort((a, b) => {
-        if (a.Status === 'online' && b.Status === 'offline') {
-            return -1;
-        } else if (a.Status === 'offline' && b.Status === 'online') {
-            return 1;
-        } else {
-            // Si les deux utilisateurs sont en online ou offline, trier par nom d'utilisateur.
-            if (a.Username < b.Username) {
-                return -1;
-            } else if (a.Username > b.Username) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    });
-}
-const sortUsers2 = (users) => {
-    return users.sort((a, b) => {
-        if (a.Status === 'online' && b.Status === 'offline') {
-            return -1;
-        } else if (a.Status === 'offline' && b.Status === 'online') {
-            return 1;
-        } else {
-            // If both users are online or offline, sort by NumberMessage.
-            if (a.NumberMessage > b.NumberMessage) {
-                return -1;
-            } else if (a.NumberMessage < b.NumberMessage) {
-                return 1;
-            } else {
-                // If both users have the same NumberMessage, sort by username.
-                if (a.Username < b.Username) {
-                    return -1;
-                } else if (a.Username > b.Username) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        }
-    });
-}
-
-function countOnlineUsers(users) {
-    let onlineUsers = users.filter(user => user.Status === "online");
-    return onlineUsers.length;
-}
-
-
-const sortArray = (data) =>{
-    return data.sort((a, b) => {
-        if (a.NumberMessage > b.NumberMessage) {
-            return -1;
-        } else if (a.NumberMessage < b.NumberMessage) {
-            return 1;
-        } else {
-            // Si NumberMessage est égal, trier par Sender
-            if (a.Sender < b.Sender) {
-                return -1;
-            } else if (a.Sender > b.Sender) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    });
-}
 const alertMessage = (sender, Recipient) => {
     const div = document.createElement('div');
     div.className = 'notif';
@@ -257,7 +161,7 @@ const loader=()=>{
     `;
 }
 const loaderMessage=()=>{
-    return `<div id="center">
+    return `<div class="center">
                 <div class="wave"></div>
                 <div class="wave"></div>
                 <div class="wave"></div>
@@ -272,4 +176,4 @@ const loaderMessage=()=>{
     `;
 }
 
-export{isGoodNumber,timeAgo,commentTemporel,chatDateFormatter,sortUsers,sortUsers2,statusPostUser,statusPostFilteredUser,throttle,sortArray,alertMessage,loader,loaderMessage}
+export{isGoodNumber,timeAgo,commentTemporel,statusPostUser,statusPostFilteredUser,throttle,alertMessage,loader,loaderMessage}
