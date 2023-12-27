@@ -169,10 +169,6 @@ body{
     z-index: -1;
 }
 
-/* .last-post{
-    margin-bottom: 400px;
-
-} */
 .milieu .one-post-block .image-post{
     width: 350px;
     height: 350px;
@@ -330,6 +326,7 @@ body{
   resize: none;
   padding: 10px;
   padding-right: 0px;
+  font-size: 18px;
   background: transparent;
   color: var(--whiteffffff);
   border: none;

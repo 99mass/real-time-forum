@@ -194,6 +194,7 @@ const chatContainerDisplaying = (chatText, userNameOnline, menuDots, chatContain
                 }
                 let numMess=  document.querySelector(`.number-message-${_User2}`);
                 if (numMess) numMess.innerHTML="";
+                
                 chatBody[i].style.display = "none";
             }
         }

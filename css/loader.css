@@ -10,7 +10,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transform: translateX(0); 
-    animation: slideIn 6s ease forwards;
+    animation: slideIn 7s ease forwards;
     z-index: 9999;
 }
 .welcome_text{

@@ -1,5 +1,5 @@
 import { sendMessages, recipientMessages } from "../layout/corps.js";
-import {  timeAgo,alertMessage } from "../helper/utils.js";
+import {  timeAgo,alertMessage ,songNotification} from "../helper/utils.js";
 
 
 const sendMessage = (userName_) => {
@@ -42,7 +42,7 @@ const sendMessage = (userName_) => {
         // Sender
         if (_data["sender"] == userName_) {
             let currentDateTime = new Date();
-            console.log(currentDateTime.toLocaleString());
+          
           let  noChatTex=  document.querySelector('.no-chat');
           if (noChatTex) noChatTex.style.display='none';
           var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
@@ -56,11 +56,13 @@ const sendMessage = (userName_) => {
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], formattedDate);
             _sender.appendChild(recip);
-
+            //   paly song notification
+            let audio = songNotification();
+            audio.play();
             document.querySelector('body').appendChild(alertMessage(_data["sender"],_data["recipient"]))
             setTimeout(() => {            
                 document.querySelector('.notif').remove();
-            }, 6000);
+            }, 7000);
         }
      
     };

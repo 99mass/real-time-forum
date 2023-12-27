@@ -176,4 +176,10 @@ const loaderMessage=()=>{
     `;
 }
 
-export{isGoodNumber,timeAgo,commentTemporel,statusPostUser,statusPostFilteredUser,throttle,alertMessage,loader,loaderMessage}
+const songNotification= ()=> {
+    let x = document.createElement("audio");
+    x.src = "assets/audio/song.wav";
+    return x;
+  }
+
+export{isGoodNumber,timeAgo,commentTemporel,statusPostUser,statusPostFilteredUser,throttle,alertMessage,loader,loaderMessage,songNotification}

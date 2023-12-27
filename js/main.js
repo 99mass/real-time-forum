@@ -35,7 +35,7 @@ import { logOut } from "./auth/logOut.js";
 const main = () => {
 
     document.addEventListener('DOMContentLoaded', (event) => {
-
+ 
         // 404 page if route is note correcte
         let rd = routes[currentPath];
         if (!rd) {
