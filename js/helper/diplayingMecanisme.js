@@ -56,8 +56,9 @@ const seeMore=(cardDescription,readMoreButton)=>{
     if (cardDescription && readMoreButton) {
         for (let j = 0; j < cardDescription.length; j++) {
             const desc = cardDescription[j];
-            const lineCount = desc.textContent.split('\n').length;
-            if (lineCount <= 3) {
+            // const lineCount = desc.textContent.split('\n').length;
+            const lineCount = desc.textContent.split(/\n|\r/).length;
+            if (lineCount <5) {
                 readMoreButton[j].style.display='none';
             } else {
                 readMoreButton[j].style.display='block';

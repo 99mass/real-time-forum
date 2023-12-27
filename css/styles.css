@@ -184,22 +184,20 @@ body{
 
 .milieu .one-post-block .post-content{
    width: 100%;
-   height: 80%;
+   height: 95%;
    margin-top: 25px;
    margin-right: 20px; 
    color: var(--whiteffffff);
    overflow: hidden;
    
 }
-.milieu pre{
-  overflow-x: scroll;
-  
-}
+
 
 .milieu .post-text {
   margin-top: 20px;
   font-size: 18px;
-    transition: max-height 0.7s;
+  transition: max-height 0.7s;
+   
 }
 .myBtn{
   margin-top: 5px ;
@@ -209,27 +207,19 @@ body{
   color: var(--whiteffffff);
   border: none;
 }
-
-
-.card-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 5px;
-    margin-top: 0px;
-    overflow-wrap: anywhere;
+pre{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  
 }
-.card-description.expanded {
-  -webkit-line-clamp: unset;
-}
+
 
 .milieu .one-post-block .post-content .categorie-post {
     margin: 20px 0px;
+    
 }
 .milieu .one-post-block .post-content .categorie-post span {
     background-color: var(--black-1e252b);
-
     margin-right: 10px;
     padding: 10px;
     border-radius: 5px;
@@ -368,7 +358,7 @@ color: var(--whiteffffff);
 
 
 
-.milieu pre::-webkit-scrollbar{
+/* .milieu pre::-webkit-scrollbar{
   width: 1px;
   height: 4px;
 }
@@ -377,7 +367,7 @@ color: var(--whiteffffff);
   background: var(--back262d34);
   border: 0px none var(--black-1e252b);
   border-radius: 50px;
-}
+} */
 
 #err{
   padding-top: 200px;

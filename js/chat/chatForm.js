@@ -35,20 +35,16 @@ const sendMessage = (userName_) => {
 
     // Handle incoming messages
     socket.onmessage = (message) => {
-
         var _data = JSON.parse(message.data);
         let formattedDate = timeAgo(_data["created"]);
 
         // Sender
-        if (_data["sender"] == userName_) {
-            let currentDateTime = new Date();
-          
+        if (_data["sender"] == userName_) {          
           let  noChatTex=  document.querySelector('.no-chat');
           if (noChatTex) noChatTex.style.display='none';
-          var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
+            var _recipient = document.querySelector(`.chat-container .chat-body-container .${_data["recipient"]}`);
             let send = sendMessages(_data["sender"], _data["message"],formattedDate);
             _recipient.appendChild(send);
-
         }
 
         // recipient
@@ -56,9 +52,11 @@ const sendMessage = (userName_) => {
             var _sender = document.querySelector(`.chat-container .chat-body-container .${_data["sender"]}`);
             let recip = recipientMessages(_data["sender"], _data["message"], formattedDate);
             _sender.appendChild(recip);
+
             //   paly song notification
             let audio = songNotification();
             audio.play();
+
             document.querySelector('body').appendChild(alertMessage(_data["sender"],_data["recipient"]))
             setTimeout(() => {            
                 document.querySelector('.notif').remove();
