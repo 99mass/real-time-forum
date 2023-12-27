@@ -10,7 +10,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transform: translateX(0); 
-    animation: slideIn 6s ease forwards;
+    animation: slideIn 7s ease forwards;
     z-index: 9999;
 }
 .welcome_text{
@@ -133,55 +133,56 @@
   
 
 /* Loader message */
-  #center {
-    height: 50px;
+ .center {
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   
-  .wave {
-    width: 6px;
-    height: 50px;
+  .center .wave {
+    width: 2px;
+    height: 20px;
     background: linear-gradient(45deg, var(--orangeff6934), #fff);
-    margin: 10px;
+    margin: 3px;
+    margin-top: 0px;
     animation: wave 1s linear infinite;
-    border-radius: 20px;
+    border-radius: 5px;
   }
   
-  .wave:nth-child(2) {
+  .center .wave:nth-child(2) {
     animation-delay: 0.1s;
   }
   
-  .wave:nth-child(3) {
+  .center .wave:nth-child(3) {
     animation-delay: 0.2s;
   }
   
-  .wave:nth-child(4) {
+  .center .wave:nth-child(4) {
     animation-delay: 0.3s;
   }
   
-  .wave:nth-child(5) {
+  .center .wave:nth-child(5) {
     animation-delay: 0.4s;
   }
   
-  .wave:nth-child(6) {
+  .center .wave:nth-child(6) {
     animation-delay: 0.5s;
   }
   
-  .wave:nth-child(7) {
+  .center .wave:nth-child(7) {
     animation-delay: 0.6s;
   }
   
-  .wave:nth-child(8) {
+  .center .wave:nth-child(8) {
     animation-delay: 0.7s;
   }
   
-  .wave:nth-child(9) {
+  .center .wave:nth-child(9) {
     animation-delay: 0.8s;
   }
   
-  .wave:nth-child(10) {
+  .center .wave:nth-child(10) {
     animation-delay: 0.9s;
   }
   

@@ -1,9 +1,11 @@
+import { routes, replaceRouter, currentPath} from "../router/route.js";
 
 
 const formAddPost=(formCreatPost)=>{
     formCreatPost.addEventListener('submit', function(e) {
         e.preventDefault();
-
+        let errorPostForm=document.querySelector('.error-post-form');
+       
         let selectedCategories = [];
         document.querySelectorAll('input[name="categories"]:checked').forEach((checkbox) => {
             selectedCategories.push(checkbox.value);
@@ -18,7 +20,7 @@ const formAddPost=(formCreatPost)=>{
             let fileSize = file.size / (1024 * 1024); // size in MB
 
             if (!(['image/jpeg', 'image/svg+xml', 'image/png', 'image/gif'].includes(fileType) && fileSize <= 20)) {
-                alert('File is not valid')
+                errorPostForm.innerHTML='File format is not valid';
                 return;
             }
         }
@@ -44,13 +46,16 @@ const formAddPost=(formCreatPost)=>{
             })
             .then(response =>{ 
                 if (response.status===200) {
+                    let r = routes["/Home"]['name'];
+                    replaceRouter(r);
                     window.location.reload();
                 }
                 return  response.json()
             })
             .then(data =>{ 
                 if (data["message"]) {                    
-                    alert(data["message"]);
+                    // alert(data["message"]);
+                    errorPostForm.innerHTML=data["message"];
                 }
             })
             .catch((error) => {

@@ -120,6 +120,7 @@ body{
   overflow-y: auto;
   overflow-x: hidden;
   height: 100vh; 
+  padding-bottom: 400px;
 }
 
 
@@ -168,10 +169,6 @@ body{
     z-index: -1;
 }
 
-.last-post{
-    margin-bottom: 400px;
-
-}
 .milieu .one-post-block .image-post{
     width: 350px;
     height: 350px;
@@ -329,6 +326,7 @@ body{
   resize: none;
   padding: 10px;
   padding-right: 0px;
+  font-size: 18px;
   background: transparent;
   color: var(--whiteffffff);
   border: none;
@@ -859,10 +857,10 @@ color: var(--whiteffffff);
   height: fit-content; 
   margin-bottom: 0px;
 }
-.last-post{
+/* .last-post{
   margin-bottom: 40px;
 
-}
+} */
 
 .menu-droite .bloc{
   width: 100%;

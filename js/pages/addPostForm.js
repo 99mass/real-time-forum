@@ -5,10 +5,10 @@ const addPostFrom=(myModal,data)=>{
             <div class="modal-content">
             <span class="close">&times;</span>
             <form class="form-creat-post" method="post" enctype="multipart/form-data">
-                <div class="error-post" style="display: none;"></div>
                 <div class="categories-bolc">
                     <h3>check the Categorie(s): </h3>
-                  <div class="categoryContent" > </div>              
+                    <div class="error-post-form" style="color: var(--red60);margin-bottom:8px; text-transform: capitalize;width: 100%;"></div>            
+                  <div class="categoryContent" > </div>  
                     <div class="form-group">
                         <input type="text" name="Title" id="Title" placeholder="Title" required>
                     </div>

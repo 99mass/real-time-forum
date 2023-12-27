@@ -10,7 +10,6 @@ const liskeComment=(likeComment,likeCommentId,likeCommentScore,dislikeCommentSco
         const btnlikeComment = likeComment[i];
 
         const handleClick = async function() {
-            alert("like")
             let commentID=likeCommentId[i].textContent.trim();
             try {
                 const response = await fetch(`${linkApi}likecomment`, {
