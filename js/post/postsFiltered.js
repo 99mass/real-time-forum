@@ -85,7 +85,7 @@ const postsFilter=(_posts,userId) => {
                 ${image}
                 <div class="post-content">
                     <h2>${title}</h2>
-                    <div class="post-text "><pre class="card-description">${content}</pre></div>
+                    <pre class="card-description post-text">${content}</pre>
                    <button class="myBtn">Read more</button>
                     <div class="categorie-post">${NameCategories}</div>
                     <div class="content-poster-like">

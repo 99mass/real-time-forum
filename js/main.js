@@ -10,7 +10,7 @@ import { userOnline } from "./helper/getUserOnLine.js";
 
 import { filterPost } from "./post/filterPost.js";
 import { postsFilter } from "./post/postsFiltered.js";
-import { displayFormMecanisme, readMore, displayFomPost, seeMore, disPlayComment, disPlayCommentFilter } from "./helper/diplayingMecanisme.js";
+import { displayFormMecanisme, readMore, displayFomPost, seeMore, disPlayComment, disPlayCommentFilter,reloadPost } from "./helper/diplayingMecanisme.js";
 import { addPostFrom } from "./pages/addPostForm.js";
 import { formAddPost } from "./post/formAddPost.js";
 
@@ -126,6 +126,7 @@ const main = () => {
                 seeMore(cardDescription, readMoreButton);
                 readMore(cardDescription, readMoreButton, onePostBlocks);
 
+
                 // log out 
                 let btnLogOut = document.querySelector('.log-out');
                 logOut(btnLogOut);
@@ -182,7 +183,7 @@ const main = () => {
 
 
 
-
+                reloadPost();
             }
         }
 
@@ -236,7 +237,7 @@ function filterByCategory(userId) {
         contentPostBlock.appendChild(div);
 
         const _readMoreButton = document.querySelectorAll('.one-post-block .post-content .myBtn');
-        const _cardDescription = document.querySelectorAll(".one-post-block .post-content .post-text .card-description");
+        const _cardDescription = document.querySelectorAll(".one-post-block .post-content .post-text ");
         const _onePostBlocks = document.querySelectorAll(".one-post-block");
         // tronc long text post
         seeMore(_cardDescription, _readMoreButton);

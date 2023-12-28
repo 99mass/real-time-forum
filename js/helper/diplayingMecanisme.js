@@ -51,22 +51,32 @@ const readMore=(cardDescription,readMoreButton,onePostBlocks)=>{
            }
        }
 }
+
 const seeMore=(cardDescription,readMoreButton)=>{
-  
+    
     if (cardDescription && readMoreButton) {
         for (let j = 0; j < cardDescription.length; j++) {
+            var lines=[];
             const desc = cardDescription[j];
-            // const lineCount = desc.textContent.split('\n').length;
-            const lineCount = desc.textContent.split(/\n|\r/).length;
-            if (lineCount <5) {
+             lines=desc.textContent.split(/\n|\r/);
+            if (lines[0]=="") lines.shift();
+            if (lines[lines.length]=="") lines.pop();
+            const lineCount = lines.length;
+
+            if (lineCount <=1) {
                 readMoreButton[j].style.display='none';
             } else {
                 readMoreButton[j].style.display='block';
             }
         }
+       
     }
 }
-
+const reloadPost=()=>{
+    document.querySelector('#all-categories').addEventListener('click',()=>{
+        window.location.reload();
+    })
+}
 
 const displayFomPost=(btn,modal,span)=>{
     let r1=routes["/Home"]['name'];
@@ -127,4 +137,4 @@ const disPlayCommentFilter=(comments,createCommentForm,blocComment)=>{
     }
 }
 
-export{displayFormMecanisme,readMore,displayFomPost,seeMore,disPlayComment,disPlayCommentFilter}
+export{displayFormMecanisme,readMore,displayFomPost,seeMore,disPlayComment,disPlayCommentFilter,reloadPost}

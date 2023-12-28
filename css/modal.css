@@ -199,6 +199,9 @@ padding-left: 0px;
     .categories-bolc div {
       padding: 20px;
     }
+    .modal-content {
+      top: 25%;
+    }
   }
 
 

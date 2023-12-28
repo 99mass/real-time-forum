@@ -2,7 +2,7 @@ import { timeAgo } from "../helper/utils.js";
 
 
 const leftBloc=(_leftBloc,CatgoryArray)=>{
-       _leftBloc.innerHTML=`<div> <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories</div>
+       _leftBloc.innerHTML=`<div id="all-categories"> <img src="assets/category-list-solid-svgrepo-com.svg" alt="">Categories</div>
        `;
        if (CatgoryArray) {
           CatgoryArray.forEach(category => {
@@ -215,7 +215,7 @@ function posts(_posts,userId) {
                 ${image}
                 <div class="post-content">
                     <h2>${title}</h2>
-                    <div class="post-text "><pre class="card-description">${content}</pre></div>
+                    <pre class="card-description post-text">${content}</pre>
                    <button class="myBtn">Read more</button>
                     <div class="categorie-post">${NameCategories}</div>
                     <div class="content-poster-like">

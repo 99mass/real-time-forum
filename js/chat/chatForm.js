@@ -55,7 +55,7 @@ const sendMessage = (userName_) => {
 
             //   paly song notification
             let audio = songNotification();
-            audio.play();
+            // audio.play();
 
             document.querySelector('body').appendChild(alertMessage(_data["sender"],_data["recipient"]))
             setTimeout(() => {            
