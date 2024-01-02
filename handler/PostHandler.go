@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -294,6 +295,17 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 			dataUrl := newPost.Image
+			mimeType := strings.Split(dataUrl, ";")[0]
+			mimeType = strings.TrimPrefix(mimeType, "data:")
+			if mimeType != "image/jpeg" && mimeType != "image/png" {
+				fmt.Println(mimeType)
+				helper.SendResponse(w, models.ErrorResponse{
+					Status:  "error",
+					Message: "File format is not valid : " + err.Error(),
+				}, http.StatusBadRequest)
+				return
+			}
+
 			base64Data := dataUrl[strings.IndexByte(dataUrl, ',')+1:]
 			img, err := base64.StdEncoding.DecodeString(base64Data)
 			if err != nil {
