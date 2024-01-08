@@ -47,7 +47,7 @@ function form1() {
 
 
     const formElements = [
-        { type: 'text', name: 'Email', label: 'Email or Username' },
+        { type: 'text', name: 'Email', label: 'Email or Nickname' },
         { type: 'password', name: 'Motdepasse', label: 'Password' }
     ];
 

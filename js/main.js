@@ -218,7 +218,10 @@ function Authentification() {
 
     // enoyer les donnes du formulaire
     if (formSignIn) signInForm(_ContentForms, formSignIn, formSignUp, spinner, linkApi)
-    if (formSignUp) signUpForm(_ContentForms, formSignUp, formSignIn, spinner, linkApi)
+    if (formSignUp) {
+        document.querySelector('body').style.overflowY="scroll"
+        signUpForm(_ContentForms, formSignUp, formSignIn, spinner, linkApi)
+    }
 }
 
 
