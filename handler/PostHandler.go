@@ -295,15 +295,17 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 			dataUrl := newPost.Image
-			mimeType := strings.Split(dataUrl, ";")[0]
-			mimeType = strings.TrimPrefix(mimeType, "data:")
-			if mimeType != "image/jpeg" && mimeType != "image/png" {
-				fmt.Println(mimeType)
-				helper.SendResponse(w, models.ErrorResponse{
-					Status:  "error",
-					Message: "File format is not valid : " + err.Error(),
-				}, http.StatusBadRequest)
-				return
+			if newPost.Image != "" {
+				mimeType := strings.Split(dataUrl, ";")[0]
+				mimeType = strings.TrimPrefix(mimeType, "data:")
+				if mimeType != "image/jpeg" && mimeType != "image/png" {
+					fmt.Println(mimeType)
+					helper.SendResponse(w, models.ErrorResponse{
+						Status:  "error",
+						Message: "File format is not valid : " + err.Error(),
+					}, http.StatusBadRequest)
+					return
+				}
 			}
 
 			base64Data := dataUrl[strings.IndexByte(dataUrl, ',')+1:]
