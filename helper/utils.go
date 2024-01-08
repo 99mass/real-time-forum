@@ -49,7 +49,7 @@ func CheckRegisterFormat(username, email, password, confirmPassword string, db *
 			ErrAuth.EmailError = errdup.Error()
 			//return false,models.ErrorAuth{}
 		}
-		username, err := controller.IsDuplicateUsername(db,username)
+		username, err := controller.IsDuplicateUsername(db, username)
 		if username {
 			ok = false
 			ErrAuth.UserNameError = err.Error()
@@ -59,19 +59,22 @@ func CheckRegisterFormat(username, email, password, confirmPassword string, db *
 	return ok, *ErrAuth
 }
 
-func CheckGender(gender string)(bool,error){
-	if strings.ToLower(gender)== "male" || strings.ToLower(gender) == "female"{
-		return true,nil
+func CheckGender(gender string) (bool, error) {
+	if strings.ToLower(gender) == "male" || strings.ToLower(gender) == "female" {
+		return true, nil
 	}
-	return false,errors.New("gender must be male or female")
+	return false, errors.New("gender must be male or female")
 }
 
-func CheckAge(age string)(int,bool,error){
-	res,err := strconv.Atoi(age)
-	if err != nil{
-		return 0,false,errors.New("age must be an integer")
+func CheckAge(age string) (int, bool, error) {
+	res, err := strconv.Atoi(age)
+	if err != nil {
+		return 0, false, errors.New("age must be an integer")
 	}
-	return res,true,nil
+	if res < 0 || res > 100 {
+		return 0, false, errors.New("incorrect age")
+	}
+	return res, true, nil
 }
 
 // Check if the form it valid and try to connect the user
